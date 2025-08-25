@@ -1,36 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcat.c                                        :+:      :+:    :+:   */
+/*   ft_len_double_char.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bertrmar <bertrmar@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/18 08:55:16 by bertrmar          #+#    #+#             */
-/*   Updated: 2025/06/18 08:58:29 by bertrmar         ###   ########.fr       */
+/*   Created: 2025/08/25 10:33:33 by bertrmar          #+#    #+#             */
+/*   Updated: 2025/08/25 16:48:03 by bertrmar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strcat(const char *s1, const char *s2)
+int	ft_len_double_char(char **av)
 {
-	char	*str;
-	int		i;
-	int		j;
+	int	i;
 
-	str = NULL;
 	i = 0;
-	while (s1[i])
-	{
-		str[i] = s1[i];
+	while (av && av[i])
 		i++;
-	}
-	j = 0;
-	while (s2[j])
-	{
-		str[i + j] = s2[j];
-		j++;
-	}
-	str[i + j] = '\0';
-	return (str);
+	return (i);
 }

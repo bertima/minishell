@@ -19,11 +19,12 @@ CFLAGS = -Wall -Werror -Wextra -g
 #----------------------HEADER----------------------#
 
 INCLUDE = ./include
-LIBFT_DIR = ./libft
+LIBFT_DIR = ./src/libft
 
 #---------------------LIBRARIE---------------------#
 
 LIBFT = $(LIBFT_DIR)/libft.a
+LIB_READ = -lreadline -lncurses
 
 #----------------------DIRECT----------------------#
 
@@ -31,7 +32,17 @@ OBJDIR = object
 
 #--------------------SRC/OBJECT--------------------#
 
-FSRC = src/main.c
+FSRC = src/main.c \
+	   \
+	   src/pipe/child.c \
+	   src/pipe/error_close.c \
+	   src/pipe/exec.c \
+	   src/pipe/redirection.c \
+	   src/pipe/verfi_init.c \
+	   \
+	   src/here_doc/here_doc.c \
+	   src/here_doc/here_doc_2.c
+
 OBJ_FILES = $(patsubst src/%.c,$(OBJDIR)/%.o,$(FSRC))
 
 #-----------------------RULE-----------------------#
@@ -39,7 +50,7 @@ OBJ_FILES = $(patsubst src/%.c,$(OBJDIR)/%.o,$(FSRC))
 all: $(NAME)
 
 $(NAME): $(LIBFT) $(OBJ_FILES)
-	@$(CC) $(CFLAGS) $(OBJ_FILES) $(LIBFT) -o $(NAME)
+	@$(CC) $(CFLAGS) $(LIB_READ) $(OBJ_FILES) $(LIBFT) -o $(NAME)
 	@echo "$(NAME) ok"
 
 $(LIBFT):
