@@ -12,18 +12,18 @@
 
 #include "minishell.h"
 
-static int	search_double_quote(t_traitement *traitement)
+static int	search_double_quote(t_minishell *minishell)
 {
 	int	i;
 	int	count;
 
 	i = 0;
 	count = 0;
-	while (traitement->line[i])
+	while (minishell->line[i])
 	{
-		if (traitement->line[i] == '\"' && count == 1)
+		if (minishell->line[i] == '\"' && count == 1)
 			count--;
-		if (traitement->line[i] == '\"' && count == 0)
+		if (minishell->line[i] == '\"' && count == 0)
 			count++;
 		if (count > 1 || count < 0)
 			return (1);
@@ -34,18 +34,18 @@ static int	search_double_quote(t_traitement *traitement)
 	return (0);
 }
 
-static int	search_simple_quote(t_traitement *traitement)
+static int	search_simple_quote(t_minishell *minishell)
 {
 	int	i;
 	int	count;
 
 	i = 0;
 	count = 0;
-	while (traitement->line[i])
+	while (minishell->line[i])
 	{
-		if (traitement->line[i] == '\'' && count == 1)
+		if (minishell->line[i] == '\'' && count == 1)
 			count--;
-		if (traitement->line[i] == '\'' && count == 0)
+		if (minishell->line[i] == '\'' && count == 0)
 			count++;
 		if (count > 1 || count < 0)
 			return (1);
@@ -56,12 +56,12 @@ static int	search_simple_quote(t_traitement *traitement)
 	return (0);
 }
 
-int	search_quote(t_traitement *traitement)
+int	search_quote(t_minishell *minishell)
 {
 	char	*line;
 
-	line = traitement->line;
-	if (search_double_quote(traitement) || search_simple_quote(traitement))
+	line = minishell->line;
+	if (search_double_quote(minishell) || search_simple_quote(minishell))
 		return (1);
 	return (0);
 }

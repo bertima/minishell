@@ -6,7 +6,7 @@
 /*   By: bertrmar <bertrmar@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 15:16:39 by bertrmar          #+#    #+#             */
-/*   Updated: 2025/08/27 15:52:27 by bertrmar         ###   ########.fr       */
+/*   Updated: 2025/08/28 16:07:32 by bertrmar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,24 +45,25 @@
 
 typedef struct s_minishell	t_minishell;
 typedef struct s_cmd_pipe	t_cmd_pipe;
-typedef struct s_traitement	t_traitement;
+typedef struct s_token		t_token;
 typedef struct s_cd_memorie	t_cd_memorie;
 typedef struct s_builtin	t_builtin;
 
 /*struct de recup */
 typedef struct s_minishell
 {
+	char			*line;
 	t_cmd_pipe		*cmd_pipe;
-	t_traitement	*traitement;
+	t_token			*token;
 	t_cd_memorie	*memorie_cd;
 	t_builtin		*builtin;
 }	t_minishell;
 
 /*struct a traiter*/
-struct s_traitement
+struct s_token
 {
-	char	**cmd_tab;
-	char	*line;
+	char			*token;
+	t_token			*next;
 };
 
 /*cd memorie*/
@@ -93,25 +94,29 @@ struct	s_builtin
 	char	*doc_here_in;
 	char	*doc_here_out;
 	char	*pipe;
+	char	*echo;
 	char	dollar;
 	//signaux
 };
 
-/*=== error ===*/
-void	stop_free(t_minishell *minishell);
+/*=== error / free ===*/
+void	all_free(t_minishell *minishell);
 char	*return_null(t_minishell *minishell);
 int		return_err_int(t_minishell *minishell);
 
 /*============== exec ==============*/
-int		exec(t_minishell *minishell, t_traitement *traitement);
-void	echo(t_minishell *minishell);
+int		exec(t_minishell *minishell);
+
+/*============== builtin ==============*/
+void	echo(char **str);
 
 /*=== init_struct ===*/
 int		init_struct(t_minishell *minishell);
 int		put_prompt(char *line, t_minishell *minishell);
 
 /*============== parsing ==============*/
-int		parsing(t_minishell *minishell, t_traitement *traitement);
-int		search_quote(t_traitement *traitement);
+int		parsing(t_minishell *minishell);
+int		tokening(t_minishell *minishell);
+int		search_quote(t_minishell *minishell);
 
 #endif

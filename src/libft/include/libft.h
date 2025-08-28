@@ -6,7 +6,7 @@
 /*   By: bertrmar <bertrmar@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 11:27:36 by bertrmar          #+#    #+#             */
-/*   Updated: 2025/06/27 10:46:44 by bertrmar         ###   ########.fr       */
+/*   Updated: 2025/08/28 16:13:47 by bertrmar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef LIBFT_H
@@ -47,6 +47,7 @@ int				ft_isalpha(int c);
 int				ft_isascii(int c);
 int				ft_isdigit(int c);
 int				ft_isprint(int c);
+int				ft_isspace(char c);
 char			*ft_itoa(int n);
 int				ft_len_double_char(char **av);
 char			*ft_ltoa(long n);
@@ -86,6 +87,7 @@ char			*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 int				ft_strncmp(const char *s1, const char *s2, size_t n);
 char			*ft_strnstr(const char *big, const char *little, size_t len);
 char			*ft_strrchr(const char *s, int c);
+int				ft_strstr(char *s1, char *s2);
 char			*ft_strtrim(char const *s1, char const *set);
 char			*ft_substr(char const *s, unsigned int start, size_t len);
 int				ft_tolower(int c);

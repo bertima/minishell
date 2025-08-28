@@ -6,7 +6,7 @@
 /*   By: bertrmar <bertrmar@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/27 14:56:05 by bertrmar          #+#    #+#             */
-/*   Updated: 2025/08/27 15:42:26 by bertrmar         ###   ########.fr       */
+/*   Updated: 2025/08/28 16:08:20 by bertrmar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,30 +15,40 @@
 /*echo print ce qu'il y a derriere
 -n evite le retour a la ligne*/
 
-void	echo(t_minishell *minishell)
+static void	flag_exist(char **str, int i)
 {
-	int		i;
-	char	*str;
-
-	i = 0;
-	while (minishell->traitement->cmd_tab[i])
+	i += 1;
+	if (!str[i])
+		return ;
+	while (str[i])
 	{
-		if (ft_strcmp(minishell->traitement->cmd_tab[i], "echo") == 0)
-			break ;
+		printf("%s", str[i]);
+		if (str[i + 1])
+			printf(" ");
 		i++;
 	}
-	str = minishell->traitement->cmd_tab[i + 1];
-	if (!str)
-		printf("\n");
-	else if (ft_strcmp(str, "-n") == 0)
+}
+
+void	echo(char **str)
+{
+	int	i;
+
+	i = 1;
+	while (str && str[0] && str[i])
 	{
-		str = minishell->traitement->cmd_tab[i + 2];
-		if (!str)
+		if (ft_strcmp(str[1], "-n") == 0)
+		{
+			flag_exist(str, i);
 			return ;
-		printf("%s", minishell->traitement->cmd_tab[i + 2]);
+		}
+		else
+		{
+			printf("%s", str[i]);
+			if (str[i + 1])
+				printf(" ");
+			i++;
+		}
+		i++;
 	}
-	else if (ft_strcmp(str, "$?") == 0)
-		printf("%d\n", minishell->cmd_pipe->exit_value);
-	else
-		printf("%s\n", str);
+	printf("\n");
 }

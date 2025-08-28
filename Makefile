@@ -33,16 +33,19 @@ OBJDIR = object
 #--------------------SRC/OBJECT--------------------#
 
 FSRC = src/main.c \
-	   src/error.c \
+	   src/error_free/error.c \
+	   src/error_free/free.c \
 	   \
 	   src/init_data/prompt.c \
 	   src/init_data/init_struct.c \
 	   \
 	   src/parsing/parsing.c \
 	   src/parsing/quote.c \
+	   src/parsing/tokening.c \
 	   \
 	   src/exec/exec.c \
-	   src/exec/echo.c
+	   \
+	   src/builtin/echo.c
 
 OBJ_FILES = $(patsubst src/%.c,$(OBJDIR)/%.o,$(FSRC))
 

@@ -27,10 +27,10 @@ int	main(int ac, char **environ)
 	{
 		if (put_prompt(line, &minishell))
 			break ;
-		if (parsing(&minishell, minishell.traitement))
-			break ;
-		if (exec(&minishell, minishell.traitement))
-			break ;
+		if (parsing(&minishell))
+			break ; 
+//		if (exec(&minishell))
+//			break ;
 	}
 	rl_clear_history();
 	return (0);

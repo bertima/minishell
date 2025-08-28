@@ -1,20 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
+/*   ft_strstr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bertrmar <bertrmar@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/27 11:40:34 by bertrmar          #+#    #+#             */
-/*   Updated: 2025/08/28 16:14:48 by bertrmar         ###   ########.fr       */
+/*   Created: 2025/08/28 13:26:11 by bertrmar          #+#    #+#             */
+/*   Updated: 2025/08/28 16:13:14 by bertrmar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int	parsing(t_minishell *minishell)
+int	ft_strstr(char *s1, char *s2)
 {
-	if (tokening(minishell))
-		return (return_err_int(minishell));
-	return (0);
+	int	i;
+	int	j;
+
+	i = 0;
+	while (s1 && s1[i])
+	{
+		j = 0;
+		while (s2 && s2[j])
+		{
+			if (s1[i] == s2[j])
+				return (i);
+			j++;
+		}
+		i++;
+	}
+	return (-1);
 }

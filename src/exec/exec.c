@@ -12,9 +12,13 @@
 
 #include "minishell.h"
 
-int	exec(t_minishell *minishell, t_traitement *traitement)
+int	exec(t_minishell *minishell)
 {
-	if (ft_strcmp(traitement->cmd_tab[0], "echo") == 0)
-		echo(minishell);
+	while (minishell->token)
+	{
+		if (ft_strcmp(minishell->token->token, "echo") == 0)
+			echo(minishell->token);
+		minishell->token = minishell->token->next;
+	}
 	return (0);
 }

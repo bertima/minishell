@@ -64,8 +64,8 @@ int	put_prompt(char *line, t_minishell *minishell)
 	}
 	if (*line)
 		add_history(line);
-	minishell->traitement->line = ft_strdup(line);
-	if (!minishell->traitement->line)
+	minishell->line = ft_strdup(line);
+	if (!minishell->line)
 	{
 		free(line);
 		free(w_dir);

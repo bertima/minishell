@@ -12,26 +12,14 @@
 
 #include "minishell.h"
 
-void	stop_free(t_minishell *minishell)
-{
-	if (!minishell)
-		return ;
-	if (minishell->memorie_cd)
-		free (minishell->memorie_cd);
-	if (minishell->cmd_pipe)
-		free (minishell->cmd_pipe);
-	if (minishell->traitement)
-		free (minishell->traitement);
-}
-
 char	*return_null(t_minishell *minishell)
 {
-	stop_free(minishell);
+	all_free(minishell);
 	return (NULL);
 }
 
 int	return_err_int(t_minishell *minishell)
 {
-	stop_free(minishell);
+	all_free(minishell);
 	return (1);
 }

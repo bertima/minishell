@@ -45,6 +45,7 @@ FSRC = ft_abs.c \
        ft_isascii.c \
        ft_isdigit.c \
        ft_isprint.c \
+       ft_isspace.c \
        ft_itoa.c \
        ft_len_double_char.c \
        ft_ltoa.c \
@@ -75,6 +76,7 @@ FSRC = ft_abs.c \
        ft_strncmp.c \
        ft_strnstr.c \
        ft_strrchr.c \
+       ft_strstr.c \
        ft_strtrim.c \
        ft_substr.c \
        ft_tolower.c \
