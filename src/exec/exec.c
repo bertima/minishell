@@ -14,11 +14,12 @@
 
 int	exec(t_minishell *minishell)
 {
-	while (minishell->token)
-	{
-		if (ft_strcmp(minishell->token->token, "echo") == 0)
-			echo(minishell->token);
-		minishell->token = minishell->token->next;
-	}
+	(void)minishell;
+//	while (minishell->token)
+//	{
+//		if (ft_strcmp(minishell->token->token, "echo") == 0)
+//			echo(minishell->token);
+//		minishell->token = minishell->token->next;
+//	}
 	return (0);
 }

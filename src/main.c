@@ -18,7 +18,10 @@ int	main(int ac, char **environ)
 	t_minishell		minishell;
 
 	if (ac != 1)
+	{
+		ft_putstr_fd("No argument required for minishell !\n", 2);
 		return (1);
+	}
 	(void)environ;
 	line = NULL;
 	if (init_struct(&minishell))
@@ -28,9 +31,7 @@ int	main(int ac, char **environ)
 		if (put_prompt(line, &minishell))
 			break ;
 		if (parsing(&minishell))
-			break ; 
-//		if (exec(&minishell))
-//			break ;
+			break ;
 	}
 	rl_clear_history();
 	return (0);

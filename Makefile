@@ -45,7 +45,7 @@ FSRC = src/main.c \
 	   \
 	   src/exec/exec.c \
 	   \
-	   src/builtin/echo.c
+	   src/exec/builtin/echo.c
 
 OBJ_FILES = $(patsubst src/%.c,$(OBJDIR)/%.o,$(FSRC))
 

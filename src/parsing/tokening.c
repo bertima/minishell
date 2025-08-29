@@ -16,6 +16,8 @@ static int	add_back_token(t_minishell *minishell, int i, int j)
 {
 	t_token	*temp;
 
+	if (i + j <= 0)
+		return (1);
 	temp = minishell->token;
 	while (temp->next)
 		temp = temp->next;
@@ -23,14 +25,15 @@ static int	add_back_token(t_minishell *minishell, int i, int j)
 	if (!temp->next)
 		return (1);
 	temp->next->token = ft_substr(minishell->line, i, j);
-	if (!minishell->token->token)
+	if (!temp->next->token)
 		return (1);
-	temp->next->next = NULL;
 	return (0);
 }
 
 static int	add_token(t_minishell *minishell, int i, int j)
 {
+	if (i + j <= 0)
+		return (1);
 	if (!minishell->token)
 	{
 		minishell->token = ft_calloc(1, sizeof(t_token));
@@ -39,7 +42,6 @@ static int	add_token(t_minishell *minishell, int i, int j)
 		minishell->token->token = ft_substr(minishell->line, i, j);
 		if (!minishell->token->token)
 			return (1);
-		minishell->token->next = NULL;
 	}
 	else
 	{
@@ -49,58 +51,48 @@ static int	add_token(t_minishell *minishell, int i, int j)
 	return (0);
 }
 
-static int	find_quote(t_minishell *minishell, int *i, int *j)
+static int	divide(t_minishell *minishell, char *line, int i, int j)
 {
-	if (minishell->line[*i] == '\'')
-	{
-		while (minishell->line[*i + *j] && minishell->line[*i + *j] != '\'')
-			j++;
-		if (minishell->line[*i + *j] != '\'')
-			return (1);
-		add_token(minishell, *i, *j);
-		*i += *j;
-	}
-	else if (minishell->line[*i] == '\"')
-	{
-		while (minishell->line[*i + *j] && minishell->line[*i + *j] != '\"')
-			j++;
-		if (minishell->line[*i + *j] != '\"')
-			return (1);
-		*i += *j;
-	}
-	return (0);
-}
-
-static int	divide(t_minishell *minishell)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (minishell->line[i])
+	while (line[i])
 	{
 		j = 0;
-		while (ft_isspace(minishell->line[i]))
+		while (line[i] && ft_isspace(line[i]))
 			i++;
-		if (minishell->line[i] == '\"' || minishell->line[i] == '\'')
+		if (line[i] == '\0')
+			break ;
+		if (line[i] == '\"' || line[i] == '\'')
 		{
-			if (find_quote(minishell, &i, &j))
+			if (find_quote(minishell->line, &i, &j))
 				return (1);
 		}
-		while (minishell->line[i + j]
-			&& ft_isspace(minishell->line[i + j]) == 0)
-			j++;
-		add_token(minishell, i, j);
-		i += j;
+		else
+		{
+			while (line[i + j]
+				&& ft_isspace(line[i + j]) == 0)
+				j++;
+			add_token(minishell, i, j);
+			i += j;
+		}
 	}
 	return (0);
 }
 
 int	tokening(t_minishell *minishell)
 {
-	if (search_quote(minishell))
+	if (divide(minishell, minishell->line, 0, 0))
 		return (1);
-	if (divide(minishell))
-		return (1);
+//	permet de voir ce que stock token
+	t_token *temp = minishell->token;
+	int i = 1;
+	while (minishell->token)
+	{
+		temp = temp->next;
+		printf("%s: token %d\n", minishell->token->token, i);
+		if (minishell->token->token)
+			free(minishell->token->token);
+		free(minishell->token);
+		i++;
+		minishell->token = temp;
+	}
 	return (0);
 }

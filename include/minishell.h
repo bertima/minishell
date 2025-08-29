@@ -117,6 +117,7 @@ int		put_prompt(char *line, t_minishell *minishell);
 /*============== parsing ==============*/
 int		parsing(t_minishell *minishell);
 int		tokening(t_minishell *minishell);
+int		find_quote(char *line, int *i, int *j);
 int		search_quote(t_minishell *minishell);
 
 #endif
