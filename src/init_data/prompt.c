@@ -55,12 +55,12 @@ int	put_prompt(char *line, t_minishell *minishell)
 
 	w_dir = recup_wd(minishell);
 	if (!w_dir)
-		return (return_err_int(minishell));
+		return (return_err_int(minishell, "Error getcwd !\n"));
 	line = readline(w_dir);
 	if (!line)
 	{
 		perror(NULL);
-		return (return_err_int(minishell));
+		return (return_err_int(minishell, "Error readline !\n"));
 	}
 	if (*line)
 		add_history(line);
@@ -69,7 +69,7 @@ int	put_prompt(char *line, t_minishell *minishell)
 	{
 		free(line);
 		free(w_dir);
-		return (return_err_int(minishell));
+		return (return_err_int(minishell, "Error malloc !\n"));
 	}
 	free(line);
 	free(w_dir);

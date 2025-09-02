@@ -25,7 +25,7 @@ int	main(int ac, char **environ)
 	(void)environ;
 	line = NULL;
 	if (init_struct(&minishell))
-		return (return_err_int(&minishell));
+		return (return_err_int(&minishell, NULL));
 	while (1)
 	{
 		if (put_prompt(line, &minishell))

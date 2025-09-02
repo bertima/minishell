@@ -15,6 +15,6 @@
 int	parsing(t_minishell *minishell)
 {
 	if (tokening(minishell))
-		return (return_err_int(minishell));
+		return (return_err_int(minishell, NULL));
 	return (0);
 }

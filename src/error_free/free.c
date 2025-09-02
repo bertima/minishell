@@ -20,15 +20,14 @@ void	free_cd_cmd_token(t_cd_memorie *cd, t_token *token)
 		free(cd->before);
 	if (cd->now)
 		free(cd->now);
-	while (token->next)
+	while (token)
 	{
 		temp = token->next;
 		if (token->token)
 			free(token->token);
-		free(token->next);
+		free(token);
 		token = temp;
 	}
-	free(token->token);
 }
 
 void	free_builtin(t_builtin *builtin)

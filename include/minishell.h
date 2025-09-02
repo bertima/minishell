@@ -49,6 +49,11 @@ typedef struct s_token		t_token;
 typedef struct s_cd_memorie	t_cd_memorie;
 typedef struct s_builtin	t_builtin;
 
+enum	e_type
+{
+	BUILTIN,
+};
+
 /*struct de recup */
 typedef struct s_minishell
 {
@@ -63,6 +68,7 @@ typedef struct s_minishell
 struct s_token
 {
 	char			*token;
+	int				type;
 	t_token			*next;
 };
 
@@ -102,7 +108,7 @@ struct	s_builtin
 /*=== error / free ===*/
 void	all_free(t_minishell *minishell);
 char	*return_null(t_minishell *minishell);
-int		return_err_int(t_minishell *minishell);
+int		return_err_int(t_minishell *minishell, char *str);
 
 /*============== exec ==============*/
 int		exec(t_minishell *minishell);
@@ -117,7 +123,7 @@ int		put_prompt(char *line, t_minishell *minishell);
 /*============== parsing ==============*/
 int		parsing(t_minishell *minishell);
 int		tokening(t_minishell *minishell);
-int		find_quote(char *line, int *i, int *j);
+int		find_quote(char *line, int start, int *len, char c);
 int		search_quote(t_minishell *minishell);
 
 #endif

@@ -18,8 +18,9 @@ char	*return_null(t_minishell *minishell)
 	return (NULL);
 }
 
-int	return_err_int(t_minishell *minishell)
+int	return_err_int(t_minishell *minishell, char *str)
 {
 	all_free(minishell);
+	ft_putstr_fd(str, 2);
 	return (1);
 }

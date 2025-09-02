@@ -16,8 +16,6 @@ static int	add_back_token(t_minishell *minishell, int i, int j)
 {
 	t_token	*temp;
 
-	if (i + j <= 0)
-		return (1);
 	temp = minishell->token;
 	while (temp->next)
 		temp = temp->next;
@@ -32,8 +30,6 @@ static int	add_back_token(t_minishell *minishell, int i, int j)
 
 static int	add_token(t_minishell *minishell, int i, int j)
 {
-	if (i + j <= 0)
-		return (1);
 	if (!minishell->token)
 	{
 		minishell->token = ft_calloc(1, sizeof(t_token));
@@ -51,28 +47,28 @@ static int	add_token(t_minishell *minishell, int i, int j)
 	return (0);
 }
 
-static int	divide(t_minishell *minishell, char *line, int i, int j)
+static int	divide(t_minishell *minishell, char *line, int start, int len)
 {
-	while (line[i])
+	while (line[start])
 	{
-		j = 0;
-		while (line[i] && ft_isspace(line[i]))
-			i++;
-		if (line[i] == '\0')
+		len = 0;
+		while (line[start] && ft_isspace(line[start]))
+			start++;
+		if (!line[start])
 			break ;
-		if (line[i] == '\"' || line[i] == '\'')
+		while (line[start + len] && !ft_isspace(line[start + len]))
 		{
-			if (find_quote(minishell->line, &i, &j))
-				return (1);
+			if (line[start + len] == '\'' || line[start + len] == '\"')
+			{
+				if (find_quote(line, start + len, &len, line[start + len]))
+					return (return_err_int(minishell, "Quote no close tokening divide!"));
+			}
+			else
+				len++;
 		}
-		else
-		{
-			while (line[i + j]
-				&& ft_isspace(line[i + j]) == 0)
-				j++;
-			add_token(minishell, i, j);
-			i += j;
-		}
+		if (add_token(minishell, start, len))
+			return (return_err_int(minishell, "Error malloc divide file tokening!\n"));
+		start += len;
 	}
 	return (0);
 }
@@ -81,7 +77,8 @@ int	tokening(t_minishell *minishell)
 {
 	if (divide(minishell, minishell->line, 0, 0))
 		return (1);
-//	permet de voir ce que stock token
+	if (search_quote(minishell))
+		return (1);
 	t_token *temp = minishell->token;
 	int i = 1;
 	while (minishell->token)
@@ -90,7 +87,8 @@ int	tokening(t_minishell *minishell)
 		printf("%s: token %d\n", minishell->token->token, i);
 		if (minishell->token->token)
 			free(minishell->token->token);
-		free(minishell->token);
+		if (minishell->token)
+			free(minishell->token);
 		i++;
 		minishell->token = temp;
 	}

@@ -12,52 +12,21 @@
 
 #include "minishell.h"
 
-static int	search_simple_quote(char *str);
-
-static int	search_double_quote(char *str)
+static int	verif_quote(char *str, int i, int count_d, int count_s)
 {
-	int	i;
-	int	count;
-
-	i = 0;
-	count = 0;
-	while (str[i])
+	while (str && str[i])
 	{
-		if (str[i] == '\"' && count == 1)
-			count--;
-		if (search_simple_quote(str))
-			return (1);
-		if (str[i] == '\"' && count == 0)
-			count++;
-		if (count > 1 || count < 0)
-			return (1);
+		if (str[i] == '\'' && !count_s)
+			count_s = 1;
+		else if (str[i] == '\"' && !count_d && !count_s)
+			count_d = 1;
+		else if (str[i] == '\'' && count_s)
+			count_s = 0;
+		else if (str[i] == '\"' && count_d && !count_s)
+			count_d = 0;
 		i++;
 	}
-	if (count != 0)
-		return (1);
-	return (0);
-}
-
-static int	search_simple_quote(char *str)
-{
-	int	i;
-	int	count;
-
-	i = 0;
-	count = 0;
-	while (str[i])
-	{
-		if (str[i] == '\'' && count == 1)
-			count--;
-		if (search_double_quote(str))
-			return (1);
-		if (str[i] == '\'' && count == 0)
-			count++;
-		if (count > 1 || count < 0)
-			return (1);
-		i++;
-	}
-	if (count != 0)
+	if (count_d || count_s)
 		return (1);
 	return (0);
 }
@@ -69,48 +38,25 @@ int	search_quote(t_minishell *minishell)
 	temp = minishell->token;
 	while (temp)
 	{
-		if (search_double_quote(temp->token)
-			|| search_simple_quote(temp->token))
+		if (verif_quote(temp->token, 0, 0, 0))
+		{
+			ft_putstr_fd("Quote no close searc_quote file quote !\n", 2);
 			return (1);
+		}
 		temp = temp->next;
 	}
 	return (0);
 }
 
-// A voir si je conserve ce qu'il y a au dessus
-
-static int	line_quoted(char *line, int *i, int *j, char c)
+int	find_quote(char *line, int start, int *len, char c)
 {
-	if (line[*i] == c)
-	{
-		*j = *i + 1;
-		if (line[*j] == '\0')
-		{
-			*j = 0;
-			return (0);
-		}
-		while (line[*j] && line[*j] != c)
-		{
-			if (!line[*j])
-				return (1);
-			(*j)++;
-		}
-	}
-	return (0);
-}
+	int	j;
 
-int	find_quote(char *line, int *i, int *j)
-{
-	while (line[*i + *j])
-	{
-		if (line_quoted(line, i, j, '\''))
-			return (1);
-		else if (line_quoted(line, i, j, '\"'))
-			return (1);
-		else if (ft_isspace(line[*i + *j]))
-			break ;
-		(*j)++;
-	}
-	*i += *j;
+	j = 1;
+	while (line[start + j] && line[start + j] != c)
+		j++;
+	if (!line[start + j])
+		return (1);
+	*len += j + 1;
 	return (0);
 }
