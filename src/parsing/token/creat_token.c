@@ -47,6 +47,27 @@ static int	add_token(t_minishell *minishell, int i, int j)
 	return (0);
 }
 
+static int	find_quote(t_minishell *minishell, int *i, int len, char c)
+{
+	int		j;
+	char	*line;
+
+	j = 1;
+	line = minishell->line;
+	while (line[*i + j] && line[*i + j] != c)
+		j++;
+	while (line[*i + j] && line[*i + j] != '\''
+		&& line[*i + j] != '\"' && !ft_isspace(line[*i + j]))
+		j++;
+	if (!line[*i + j])
+		return (1);
+	len += j + 1;
+	if (add_token(minishell, *i, len))
+		return (1);
+	*i += j;
+	return (0);
+}
+
 static int	divide(t_minishell *minishell, char *line, int start, int len)
 {
 	while (line[start])
@@ -56,19 +77,22 @@ static int	divide(t_minishell *minishell, char *line, int start, int len)
 			start++;
 		if (!line[start])
 			break ;
-		while (line[start + len] && !ft_isspace(line[start + len]))
+		if (line[start] == '\'' || line[start] == '\"')
 		{
-			if (line[start + len] == '\'' || line[start + len] == '\"')
-			{
-				if (find_quote(line, start + len, &len, line[start + len]))
-					return (return_err_int(minishell, "Quote no close tokening divide!"));
-			}
-			else
-				len++;
+			if (find_quote(minishell, &start, 0, line[start]))
+				return (return_err_int(minishell, "Quote no close !"));
 		}
-		if (add_token(minishell, start, len))
-			return (return_err_int(minishell, "Error malloc divide file tokening!\n"));
-		start += len;
+		while (line[start + len] && !ft_isspace(line[start + len])
+			&& line[start + len] != '\'' && line[start + len] != '\"')
+			len++;
+		if (len > 0)
+		{
+			if (add_token(minishell, start, len))
+				return (1);
+			start += len;
+		}
+		else
+			start++;
 	}
 	return (0);
 }
@@ -77,20 +101,21 @@ int	tokening(t_minishell *minishell)
 {
 	if (divide(minishell, minishell->line, 0, 0))
 		return (1);
-	if (search_quote(minishell))
-		return (1);
-	t_token *temp = minishell->token;
-	int i = 1;
-	while (minishell->token)
-	{
-		temp = temp->next;
-		printf("%s: token %d\n", minishell->token->token, i);
-		if (minishell->token->token)
-			free(minishell->token->token);
-		if (minishell->token)
-			free(minishell->token);
-		i++;
-		minishell->token = temp;
-	}
+//peut peut etre creer des probleme test : echo "'"coucou"'"
+//	if (search_quote(minishell))
+//		return (1);
+//	t_token *temp = minishell->token;
+//	int i = 1;
+//	while (minishell->token)
+//	{
+//		temp = temp->next;
+//		printf("%s: token %d\n", minishell->token->token, i);
+//		if (minishell->token->token)
+//			free(minishell->token->token);
+//		if (minishell->token)
+//			free(minishell->token);
+//		i++;
+//		minishell->token = temp;
+//	}
 	return (0);
 }

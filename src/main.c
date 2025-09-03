@@ -18,10 +18,7 @@ int	main(int ac, char **environ)
 	t_minishell		minishell;
 
 	if (ac != 1)
-	{
-		ft_putstr_fd("No argument required for minishell !\n", 2);
-		return (1);
-	}
+		return (return_err_int(NULL, "No argument for minishell !\n"));
 	(void)environ;
 	line = NULL;
 	if (init_struct(&minishell))

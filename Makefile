@@ -33,15 +33,20 @@ OBJDIR = object
 #--------------------SRC/OBJECT--------------------#
 
 FSRC = src/main.c \
+	   \
 	   src/error_free/error.c \
 	   src/error_free/free.c \
 	   \
 	   src/init_data/prompt.c \
 	   src/init_data/init_struct.c \
 	   \
-	   src/parsing/parsing.c \
-	   src/parsing/quote.c \
-	   src/parsing/tokening.c \
+	   src/parsing/parser/parsing.c \
+	   src/parsing/parser/creat_command.c \
+	   \
+	   src/parsing/token/quote.c \
+	   src/parsing/token/creat_token.c \
+	   \
+	   src/parsing/lexeur/lexeur.c \
 	   \
 	   src/exec/exec.c \
 	   \

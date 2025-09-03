@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static int	verif_quote(char *str, int i, int count_d, int count_s)
+/*static int	verif_quote(char *str, int i, int count_d, int count_s)
 {
 	while (str && str[i])
 	{
@@ -40,23 +40,10 @@ int	search_quote(t_minishell *minishell)
 	{
 		if (verif_quote(temp->token, 0, 0, 0))
 		{
-			ft_putstr_fd("Quote no close searc_quote file quote !\n", 2);
+			ft_putstr_fd("Quote no close !\n", 2);
 			return (1);
 		}
 		temp = temp->next;
 	}
 	return (0);
-}
-
-int	find_quote(char *line, int start, int *len, char c)
-{
-	int	j;
-
-	j = 1;
-	while (line[start + j] && line[start + j] != c)
-		j++;
-	if (!line[start + j])
-		return (1);
-	*len += j + 1;
-	return (0);
-}
+}*/

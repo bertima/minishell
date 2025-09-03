@@ -44,6 +44,8 @@ void	free_builtin(t_builtin *builtin)
 
 void	all_free(t_minishell *minishell)
 {
+	if (!minishell)
+		return ;
 	free_cd_cmd_token(minishell->memorie_cd, minishell->token);
 	free_builtin(minishell->builtin);
 	if (minishell->line)

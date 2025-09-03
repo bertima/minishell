@@ -48,20 +48,28 @@ typedef struct s_cmd_pipe	t_cmd_pipe;
 typedef struct s_token		t_token;
 typedef struct s_cd_memorie	t_cd_memorie;
 typedef struct s_builtin	t_builtin;
+typedef struct s_command	t_command;
 
 enum	e_type
 {
-	BUILTIN,
+	WORD,
+	MORE,
+	LESS,
+	HERE_DOC,
+	REDIRECT_A,
+	PIPE,
 };
 
 /*struct de recup */
 typedef struct s_minishell
 {
 	char			*line;
+	char			*envir;
 	t_cmd_pipe		*cmd_pipe;
 	t_token			*token;
 	t_cd_memorie	*memorie_cd;
 	t_builtin		*builtin;
+	t_command		*command;
 }	t_minishell;
 
 /*struct a traiter*/
@@ -70,6 +78,18 @@ struct s_token
 	char			*token;
 	int				type;
 	t_token			*next;
+};
+
+/*commande*/
+struct	s_command
+{
+	t_token		**arg;
+	int			nbr_arg;
+	char		*infile;
+	char		*outfile;
+	int			here_doc;
+	int			append;
+	t_command	*next;
 };
 
 /*cd memorie*/
@@ -102,7 +122,6 @@ struct	s_builtin
 	char	*pipe;
 	char	*echo;
 	char	dollar;
-	//signaux
 };
 
 /*=== error / free ===*/
@@ -120,10 +139,16 @@ void	echo(char **str);
 int		init_struct(t_minishell *minishell);
 int		put_prompt(char *line, t_minishell *minishell);
 
-/*============== parsing ==============*/
+/*============== token ==============*/
 int		parsing(t_minishell *minishell);
 int		tokening(t_minishell *minishell);
-int		find_quote(char *line, int start, int *len, char c);
-int		search_quote(t_minishell *minishell);
+//int		search_quote(t_minishell *minishell);
+
+/*============== lexer ==============*/
+void    lexeur(t_minishell *minishell);
+
+/*============== parsing ==============*/
+int		creat_command(t_minishell *minishell);
+int		redirect(t_command *current, t_token *temp);
 
 #endif
