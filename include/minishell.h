@@ -6,7 +6,7 @@
 /*   By: bertrmar <bertrmar@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 15:16:39 by bertrmar          #+#    #+#             */
-/*   Updated: 2025/08/28 16:07:32 by bertrmar         ###   ########.fr       */
+/*   Updated: 2025/09/04 11:41:20 by bertrmar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ typedef struct s_minishell
 /*struct a traiter*/
 struct s_token
 {
-	char			*token;
+	char			*sentence;
 	int				type;
 	t_token			*next;
 };
@@ -124,10 +124,13 @@ struct	s_builtin
 	char	dollar;
 };
 
-/*=== error / free ===*/
-void	all_free(t_minishell *minishell);
+/*============== error ==============*/
 char	*return_null(t_minishell *minishell);
 int		return_err_int(t_minishell *minishell, char *str);
+
+/*============== free ==============*/
+void	all_free(t_minishell *minishell);
+void	free_command_token(t_command *command, t_token *token);
 
 /*============== exec ==============*/
 int		exec(t_minishell *minishell);
@@ -135,20 +138,20 @@ int		exec(t_minishell *minishell);
 /*============== builtin ==============*/
 void	echo(char **str);
 
-/*=== init_struct ===*/
+/*============== init_struct ==============*/
 int		init_struct(t_minishell *minishell);
 int		put_prompt(char *line, t_minishell *minishell);
 
 /*============== token ==============*/
 int		parsing(t_minishell *minishell);
 int		tokening(t_minishell *minishell);
-//int		search_quote(t_minishell *minishell);
 
 /*============== lexer ==============*/
-void    lexeur(t_minishell *minishell);
+void	lexeur(t_minishell *minishell);
 
 /*============== parsing ==============*/
 int		creat_command(t_minishell *minishell);
-int		redirect(t_command *current, t_token *temp);
+int		add_command(t_minishell *minishell, t_command **current);
+int		add_arg(t_command *current, t_token *temp, int nbr_arg);
 
 #endif

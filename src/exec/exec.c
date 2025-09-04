@@ -6,7 +6,7 @@
 /*   By: bertrmar <bertrmar@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/27 15:22:26 by bertrmar          #+#    #+#             */
-/*   Updated: 2025/08/27 15:42:57 by bertrmar         ###   ########.fr       */
+/*   Updated: 2025/09/04 11:40:24 by bertrmar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,5 @@
 int	exec(t_minishell *minishell)
 {
 	(void)minishell;
-//	while (minishell->token)
-//	{
-//		if (ft_strcmp(minishell->token->token, "echo") == 0)
-//			echo(minishell->token);
-//		minishell->token = minishell->token->next;
-//	}
 	return (0);
 }

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokening.c                                         :+:      :+:    :+:   */
+/*   creat_token.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bertrmar <bertrmar@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 13:58:20 by bertrmar          #+#    #+#             */
-/*   Updated: 2025/08/28 16:16:13 by bertrmar         ###   ########.fr       */
+/*   Updated: 2025/09/04 11:36:52 by bertrmar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ static int	add_back_token(t_minishell *minishell, int i, int j)
 	temp->next = ft_calloc(1, sizeof(t_token));
 	if (!temp->next)
 		return (1);
-	temp->next->token = ft_substr(minishell->line, i, j);
-	if (!temp->next->token)
+	temp->next->sentence = ft_substr(minishell->line, i, j);
+	if (!temp->next->sentence)
 		return (1);
 	return (0);
 }
@@ -35,8 +35,8 @@ static int	add_token(t_minishell *minishell, int i, int j)
 		minishell->token = ft_calloc(1, sizeof(t_token));
 		if (!minishell->token)
 			return (1);
-		minishell->token->token = ft_substr(minishell->line, i, j);
-		if (!minishell->token->token)
+		minishell->token->sentence = ft_substr(minishell->line, i, j);
+		if (!minishell->token->sentence)
 			return (1);
 	}
 	else
@@ -64,7 +64,7 @@ static int	find_quote(t_minishell *minishell, int *i, int len, char c)
 	len += j + 1;
 	if (add_token(minishell, *i, len))
 		return (1);
-	*i += j;
+	*i += j + 1;
 	return (0);
 }
 
@@ -81,9 +81,10 @@ static int	divide(t_minishell *minishell, char *line, int start, int len)
 		{
 			if (find_quote(minishell, &start, 0, line[start]))
 				return (return_err_int(minishell, "Quote no close !"));
+			continue ;
 		}
 		while (line[start + len] && !ft_isspace(line[start + len])
-			&& line[start + len] != '\'' && line[start + len] != '\"')
+			&& line[start + len] != '\'' && line[start + len] != '"')
 			len++;
 		if (len > 0)
 		{
@@ -91,8 +92,6 @@ static int	divide(t_minishell *minishell, char *line, int start, int len)
 				return (1);
 			start += len;
 		}
-		else
-			start++;
 	}
 	return (0);
 }
@@ -101,21 +100,5 @@ int	tokening(t_minishell *minishell)
 {
 	if (divide(minishell, minishell->line, 0, 0))
 		return (1);
-//peut peut etre creer des probleme test : echo "'"coucou"'"
-//	if (search_quote(minishell))
-//		return (1);
-//	t_token *temp = minishell->token;
-//	int i = 1;
-//	while (minishell->token)
-//	{
-//		temp = temp->next;
-//		printf("%s: token %d\n", minishell->token->token, i);
-//		if (minishell->token->token)
-//			free(minishell->token->token);
-//		if (minishell->token)
-//			free(minishell->token);
-//		i++;
-//		minishell->token = temp;
-//	}
 	return (0);
 }

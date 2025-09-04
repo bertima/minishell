@@ -42,6 +42,7 @@ FSRC = src/main.c \
 	   \
 	   src/parsing/parser/parsing.c \
 	   src/parsing/parser/creat_command.c \
+	   src/parsing/parser/add_command_argument.c \
 	   \
 	   src/parsing/token/quote.c \
 	   src/parsing/token/creat_token.c \

@@ -12,25 +12,15 @@
 
 #include "minishell.h"
 
-void	free_cd_cmd_token(t_cd_memorie *cd, t_token *token)
+static void	free_cd(t_cd_memorie *cd)
 {
-	t_token	*temp;
-
 	if (cd->before)
 		free(cd->before);
 	if (cd->now)
 		free(cd->now);
-	while (token)
-	{
-		temp = token->next;
-		if (token->token)
-			free(token->token);
-		free(token);
-		token = temp;
-	}
 }
 
-void	free_builtin(t_builtin *builtin)
+static void	free_builtin(t_builtin *builtin)
 {
 	if (builtin->doc_here_in)
 		free(builtin->doc_here_in);
@@ -42,11 +32,33 @@ void	free_builtin(t_builtin *builtin)
 		free(builtin->echo);
 }
 
+void	free_command_token(t_command *command, t_token *token)
+{
+	t_token		*temp;
+	t_command	*temp_c;
+
+	while (token)
+	{
+		temp = token->next;
+		if (token->sentence)
+			free(token->sentence);
+		free(token);
+		token = temp;
+	}
+	while (command)
+	{
+		temp_c = command->next;
+		free(command);
+		command = temp_c;
+	}
+}
+
 void	all_free(t_minishell *minishell)
 {
 	if (!minishell)
 		return ;
-	free_cd_cmd_token(minishell->memorie_cd, minishell->token);
+	free_cd(minishell->memorie_cd);
+	free_command_token(minishell->command, minishell->token);
 	free_builtin(minishell->builtin);
 	if (minishell->line)
 		free(minishell->line);
