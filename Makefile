@@ -19,7 +19,7 @@ CFLAGS = -Wall -Werror -Wextra -g
 #----------------------HEADER----------------------#
 
 INCLUDE = ./include
-LIBFT_DIR = ./src/libft
+LIBFT_DIR = ./libft
 
 #---------------------LIBRARIE---------------------#
 
@@ -39,17 +39,21 @@ FSRC = src/main.c \
 	   \
 	   src/init_data/prompt.c \
 	   src/init_data/init_struct.c \
+	   src/init_data/cp_env.c \
+	   \
 	   \
 	   src/parsing/parser/parsing.c \
 	   src/parsing/parser/creat_command.c \
 	   src/parsing/parser/add_command_argument.c \
+	   src/parsing/parser/redirect.c \
 	   \
-	   src/parsing/token/quote.c \
 	   src/parsing/token/creat_token.c \
 	   \
 	   src/parsing/lexeur/lexeur.c \
 	   \
+	   \
 	   src/exec/exec.c \
+	   src/exec/expand/expand.c \
 	   \
 	   src/exec/builtin/echo.c
 

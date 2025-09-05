@@ -7,9 +7,9 @@ static void	test_token(t_minishell *minishell)
 	while (minishell->token)
 	{
 		temp = temp->next;
-		printf("%s: token %d\n", minishell->token->token, i);
-		if (minishell->token->token)
-			free(minishell->token->token);
+		printf("%s: token %d\n", minishell->token->sentence, i);
+		if (minishell->token->sentence)
+			free(minishell->token->sentence);
 		if (minishell->token)
 			free(minishell->token);
 		i++;

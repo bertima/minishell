@@ -12,17 +12,13 @@
 
 #include "minishell.h"
 
-int	init_struct(t_minishell *minishell)
+int	init_struct(t_minishell *minishell, char **environ)
 {
 	ft_memset(minishell, 0, sizeof(t_minishell));
-	minishell->cmd_pipe = calloc(1, sizeof(t_cmd_pipe));
-	if (!minishell->cmd_pipe)
+	minishell->data = ft_calloc(1, sizeof(t_data));
+	if (!minishell->data)
 		return (1);
-	minishell->memorie_cd = calloc(1, sizeof(t_cd_memorie));
-	if (!minishell->memorie_cd)
-		return (1);
-	minishell->builtin = ft_calloc(1, sizeof(t_builtin));
-	if (!minishell->builtin)
+	if (cp_env(&minishell->data->env, environ))
 		return (1);
 	return (0);
 }

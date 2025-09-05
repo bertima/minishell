@@ -41,7 +41,6 @@ static char	*recup_wd(t_minishell *minishell)
 	w_dir = getcwd(NULL, 0);
 	if (!w_dir)
 		return (return_null(minishell));
-	minishell->memorie_cd->now = w_dir;
 	if (home(w_dir))
 		return ("/home$ ");
 	if (path(&w_dir))
@@ -64,8 +63,8 @@ int	put_prompt(char *line, t_minishell *minishell)
 	}
 	if (*line)
 		add_history(line);
-	minishell->line = ft_strdup(line);
-	if (!minishell->line)
+	minishell->data->line = ft_strdup(line);
+	if (!minishell->data->line)
 	{
 		free(line);
 		free(w_dir);

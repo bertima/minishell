@@ -22,7 +22,7 @@ static int	add_back_token(t_minishell *minishell, int i, int j)
 	temp->next = ft_calloc(1, sizeof(t_token));
 	if (!temp->next)
 		return (1);
-	temp->next->sentence = ft_substr(minishell->line, i, j);
+	temp->next->sentence = ft_substr(minishell->data->line, i, j);
 	if (!temp->next->sentence)
 		return (1);
 	return (0);
@@ -35,7 +35,7 @@ static int	add_token(t_minishell *minishell, int i, int j)
 		minishell->token = ft_calloc(1, sizeof(t_token));
 		if (!minishell->token)
 			return (1);
-		minishell->token->sentence = ft_substr(minishell->line, i, j);
+		minishell->token->sentence = ft_substr(minishell->data->line, i, j);
 		if (!minishell->token->sentence)
 			return (1);
 	}
@@ -53,7 +53,7 @@ static int	find_quote(t_minishell *minishell, int *i, int len, char c)
 	char	*line;
 
 	j = 1;
-	line = minishell->line;
+	line = minishell->data->line;
 	while (line[*i + j] && line[*i + j] != c)
 		j++;
 	while (line[*i + j] && line[*i + j] != '\''
@@ -98,7 +98,7 @@ static int	divide(t_minishell *minishell, char *line, int start, int len)
 
 int	tokening(t_minishell *minishell)
 {
-	if (divide(minishell, minishell->line, 0, 0))
+	if (divide(minishell, minishell->data->line, 0, 0))
 		return (1);
 	return (0);
 }

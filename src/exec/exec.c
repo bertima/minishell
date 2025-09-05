@@ -14,6 +14,7 @@
 
 int	exec(t_minishell *minishell)
 {
-	(void)minishell;
+	if (expand(minishell, minishell->command, 0, 0))
+		return (1);
 	return (0);
 }

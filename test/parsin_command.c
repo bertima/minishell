@@ -1,36 +1,52 @@
 A mettre dans parseur parsing
 
-static void test_commands(t_minishell *minishell)
+void	show_commands(t_command *command)
 {
-    t_command *cmd = minishell->command;
-    int i = 1;
+	int i;
+	t_redir *redir;
+	int cmd_index = 1;
 
-    while (cmd)
-    {
-        printf("=== Command %d ===\n", i);
-        if (cmd->arg && cmd->arg[0])
-            printf("Name: %s\n", cmd->arg[0]->token);
-        else
-            printf("Name: (null)\n");
+	while (command)
+	{
+		printf("=== Command %d ===\n", cmd_index);
+		if (command->arg && command->arg[0])
+			printf("Name: %s\n", command->arg[0]);
+		else
+			printf("Name: (null)\n");
 
-        printf("Args: ");
-        if (cmd->arg)
-        {
-            for (int j = 0; j < cmd->nbr_arg; j++)
-            {
-                if (cmd->arg[j])
-                    printf("%s ", cmd->arg[j]->token);
-            }
-        }
-        printf("\n");
+		// Affiche les arguments
+		i = 0;
+		if (command->arg)
+		{
+			printf("Args:");
+			while (command->arg[i])
+			{
+				printf(" %s", command->arg[i]);
+				i++;
+			}
+			printf("\n");
+		}
 
-        printf("Infile: %s\n", cmd->infile ? cmd->infile : "(null)");
-        printf("Outfile: %s\n", cmd->outfile ? cmd->outfile : "(null)");
-        printf("Append: %d\n", cmd->append);
-        printf("Here_doc: %d\n", cmd->here_doc);
-        printf("\n");
+		// Affiche les redirections
+		redir = command->redir;
+		while (redir)
+		{
+			printf("Redirection: ");
+			if (redir->type == LESS)
+				printf("<");
+			else if (redir->type == MORE)
+				printf(">");
+			else if (redir->type == REDIRECT_A)
+				printf(">>");
+			else if (redir->type == HERE_DOC)
+				printf("<<");
 
-        cmd = cmd->next;
-        i++;
-    }
+			printf(" file : %s\n", redir->file);
+			redir = redir->next;
+		}
+
+		printf("\n");
+		command = command->next;
+		cmd_index++;
+	}
 }

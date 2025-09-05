@@ -6,14 +6,14 @@
 /*   By: bertrmar <bertrmar@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 15:16:39 by bertrmar          #+#    #+#             */
-/*   Updated: 2025/09/04 11:41:20 by bertrmar         ###   ########.fr       */
+/*   Updated: 2025/09/05 15:31:19 by bertrmar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include "../src/libft/include/libft.h"
+# include "../libft/include/libft.h"
 # include <stdio.h>
 # include <errno.h>
 
@@ -46,9 +46,11 @@
 typedef struct s_minishell	t_minishell;
 typedef struct s_cmd_pipe	t_cmd_pipe;
 typedef struct s_token		t_token;
-typedef struct s_cd_memorie	t_cd_memorie;
 typedef struct s_builtin	t_builtin;
 typedef struct s_command	t_command;
+typedef struct s_redir		t_redir;
+typedef struct s_data		t_data;
+typedef struct s_local_var	t_local_var;
 
 enum	e_type
 {
@@ -63,14 +65,27 @@ enum	e_type
 /*struct de recup */
 typedef struct s_minishell
 {
-	char			*line;
-	char			*envir;
 	t_cmd_pipe		*cmd_pipe;
 	t_token			*token;
-	t_cd_memorie	*memorie_cd;
 	t_builtin		*builtin;
 	t_command		*command;
+	t_data			*data;
 }	t_minishell;
+
+/*data utile*/
+struct	s_data
+{
+	char		*line;
+	char		**env;
+	t_local_var	*local_var;
+};
+
+struct	s_local_var
+{
+	char		name;
+	char		value;
+	t_local_var	*next;
+};
 
 /*struct a traiter*/
 struct s_token
@@ -83,20 +98,18 @@ struct s_token
 /*commande*/
 struct	s_command
 {
-	t_token		**arg;
-	int			nbr_arg;
-	char		*infile;
-	char		*outfile;
-	int			here_doc;
-	int			append;
+	char		**arg;
+	t_redir		*redir;
 	t_command	*next;
 };
 
-/*cd memorie*/
-struct	s_cd_memorie
+/*redirection*/
+struct s_redir
 {
-	char	*now;
-	char	*before;
+	int		type;
+	char	*file;
+	t_redir	*next;
+
 };
 
 /*struct pipe*/
@@ -130,10 +143,11 @@ int		return_err_int(t_minishell *minishell, char *str);
 
 /*============== free ==============*/
 void	all_free(t_minishell *minishell);
-void	free_command_token(t_command *command, t_token *token);
+void	free_command_redir_token(t_minishell *minishell);
 
 /*============== exec ==============*/
 int		exec(t_minishell *minishell);
+int		expand(t_minishell *minishell, t_command *command, int i, int j);
 
 /*============== builtin ==============*/
 void	echo(char **str);
@@ -141,6 +155,7 @@ void	echo(char **str);
 /*============== init_struct ==============*/
 int		init_struct(t_minishell *minishell);
 int		put_prompt(char *line, t_minishell *minishell);
+int		cp_env(char ***env, char **environ);
 
 /*============== token ==============*/
 int		parsing(t_minishell *minishell);
@@ -152,6 +167,7 @@ void	lexeur(t_minishell *minishell);
 /*============== parsing ==============*/
 int		creat_command(t_minishell *minishell);
 int		add_command(t_minishell *minishell, t_command **current);
-int		add_arg(t_command *current, t_token *temp, int nbr_arg);
+int		add_arg(t_command *current, t_token *temp, int i);
+int		redirect(t_command *command, t_token **token);
 
 #endif
