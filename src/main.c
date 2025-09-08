@@ -20,6 +20,7 @@ static void	programme(char *line, t_minishell *minishell)
 		return ;
 	if (exec(minishell))
 		return ;
+	free_command_redir_token(minishell);
 }
 
 int	main(int ac, char **av, char **environ)
@@ -30,14 +31,10 @@ int	main(int ac, char **av, char **environ)
 	if (ac != 1 || !av[0])
 		return (return_err_int(NULL, "No argument for minishell !\n"));
 	line = NULL;
-	if (init_struct(&minishell))
+	if (init_struct(&minishell, environ))
 		return (return_err_int(&minishell, NULL));
-	if (cp_env(&minishell.data->env, environ))
-		return (1);
 	while (1)
-	{
 		programme(line, &minishell);
-	}
 	all_free(&minishell);
 	rl_clear_history();
 	return (0);

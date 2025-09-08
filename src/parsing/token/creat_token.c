@@ -80,7 +80,7 @@ static int	divide(t_minishell *minishell, char *line, int start, int len)
 		if (line[start] == '\'' || line[start] == '\"')
 		{
 			if (find_quote(minishell, &start, 0, line[start]))
-				return (return_err_int(minishell, "Quote no close !"));
+				return (return_err_int(minishell, "Quote no close !\n"));
 			continue ;
 		}
 		while (line[start + len] && !ft_isspace(line[start + len])

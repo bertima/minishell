@@ -46,7 +46,6 @@ void	echo(char **str)
 			printf("%s", str[i]);
 			if (str[i + 1])
 				printf(" ");
-			i++;
 		}
 		i++;
 	}

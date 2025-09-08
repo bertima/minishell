@@ -39,7 +39,6 @@ FSRC = src/main.c \
 	   \
 	   src/init_data/prompt.c \
 	   src/init_data/init_struct.c \
-	   src/init_data/cp_env.c \
 	   \
 	   \
 	   src/parsing/parser/parsing.c \
@@ -54,8 +53,16 @@ FSRC = src/main.c \
 	   \
 	   src/exec/exec.c \
 	   src/exec/expand/expand.c \
+	   src/exec/expand/va_exist.c \
 	   \
-	   src/exec/builtin/echo.c
+	   src/exec/builtin/echo.c \
+	   src/exec/builtin/env.c \
+	   \
+	   \
+	   \
+	   \
+	   \
+	   src/testeur/test.c
 
 OBJ_FILES = $(patsubst src/%.c,$(OBJDIR)/%.o,$(FSRC))
 

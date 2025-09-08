@@ -17,7 +17,7 @@ int	parsing(t_minishell *minishell)
 	if (tokening(minishell))
 		return (return_err_int(minishell, "Token\n"));
 	lexeur(minishell);
-	creat_command(minishell);
-	free_command_redir_token(minishell);
+	if (creat_command(minishell))
+		return (return_err_int(minishell, "Command\n"));
 	return (0);
 }

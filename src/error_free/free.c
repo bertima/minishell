@@ -18,16 +18,7 @@ static void	free_data_builtin(t_minishell *minishell)
 		ft_free_split(minishell->data->env);
 	if (minishell->data->line)
 		free(minishell->data->line);
-	if (minishell->data->local_var)
-		ft_free_split(minishell->data->local_var);
-	if (minishell->builtin->doc_here_in)
-		free(minishell->builtin->doc_here_in);
-	if (minishell->builtin->doc_here_out)
-		free(minishell->builtin->doc_here_out);
-	if (minishell->builtin->pipe)
-		free(minishell->builtin->pipe);
-	if (minishell->builtin->echo)
-		free(minishell->builtin->echo);
+	return ;
 }
 
 static void	free_redir(t_redir **redir)
