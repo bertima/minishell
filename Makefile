@@ -53,7 +53,7 @@ FSRC = src/main.c \
 	   \
 	   src/exec/exec.c \
 	   src/exec/expand/expand.c \
-	   src/exec/expand/va_exist.c \
+	   src/exec/expand/var_exist.c \
 	   \
 	   src/exec/builtin/echo.c \
 	   src/exec/builtin/env.c \

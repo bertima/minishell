@@ -12,22 +12,6 @@
 
 #include "minishell.h"
 
-static char	*search_env(char **env, char *name)
-{
-	int			i;
-	int			len;
-
-	i = 0;
-	len = ft_strlen(name);
-	while (env[i])
-	{
-		if (ft_strncmp(name, env[i], len) == 0 && env[i][len] == '=')
-			return (env[i] + len + 1);
-		i++;
-	}
-	return (NULL);
-}
-
 static char	*search_name(char *str, int start)
 {
 	int		len;
@@ -45,7 +29,7 @@ static char	*search_name(char *str, int start)
 static int	loop(t_minishell *minishell, t_command *command, int i, int j)
 {
 	char		*name;
-	char		*var;
+	int			result;
 
 	while (command->arg && command->arg[i] && command->arg[i][j])
 	{
@@ -54,15 +38,11 @@ static int	loop(t_minishell *minishell, t_command *command, int i, int j)
 			name = search_name(command->arg[i], j + 1);
 			if (name)
 			{
-				var = search_env(minishell->data->env, name);
-				if (var)
-				{
-					if (var_exist(&command->arg[i], j, var, &name))
-						return (1);
+				result = var_exist(minishell, &command->arg[i], j, &name);
+				if (result == 1)
+					return (1);
+				else if (result == 2)
 					continue ;
-				}
-				remplace(&command->arg[i], j, NULL, name);
-				free(name);
 			}
 		}
 		j++;

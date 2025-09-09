@@ -44,7 +44,6 @@
 # include <sys/types.h>
 
 typedef struct s_minishell	t_minishell;
-typedef struct s_cmd_pipe	t_cmd_pipe;
 typedef struct s_token		t_token;
 typedef struct s_command	t_command;
 typedef struct s_redir		t_redir;
@@ -60,16 +59,15 @@ enum	e_type
 	PIPE,
 };
 
-/*struct de recup */
+/*********** struct de recup ***********/
 typedef struct s_minishell
 {
-	t_cmd_pipe		*cmd_pipe;
 	t_token			*token;
 	t_command		*command;
 	t_data			*data;
 }	t_minishell;
 
-/*data utile*/
+/*********** data utile ***********/
 struct	s_data
 {
 	char		*line;
@@ -77,7 +75,7 @@ struct	s_data
 	int			exit_code;
 };
 
-/*struct a traiter*/
+/*********** struct token ***********/
 struct s_token
 {
 	char			*sentence;
@@ -85,7 +83,7 @@ struct s_token
 	t_token			*next;
 };
 
-/*commande*/
+/*********** commande ***********/
 struct	s_command
 {
 	char		**arg;
@@ -93,26 +91,11 @@ struct	s_command
 	t_command	*next;
 };
 
-/*redirection*/
 struct s_redir
 {
 	int		type;
 	char	*file;
 	t_redir	*next;
-};
-
-/*struct pipe*/
-struct	s_cmd_pipe
-{
-	int			ac;
-	int			pipefd[2];
-	pid_t		pid;
-	int			stock_fd;
-	int			status;
-	int			stop;
-	int			fd_w;
-	int			fd_r;
-	int			exit_value;
 };
 
 /*============== error ==============*/
@@ -126,7 +109,7 @@ void	free_command_redir_token(t_minishell *minishell);
 /*============== exec ==============*/
 int		exec(t_minishell *minishell);
 int		expand(t_minishell *minishell, t_command *command, int i, int j);
-int		var_exist(char **str_new, int j, char *var, char **name);
+int		var_exist(t_minishell *minishell, char **str_new, int j, char **name);
 int		remplace(char **str_new, int j, char *var, char *name);
 
 /*============== builtin ==============*/
