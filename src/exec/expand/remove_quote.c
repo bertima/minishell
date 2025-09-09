@@ -32,10 +32,9 @@ static int	delete_quote(t_command *command, int index)
 	return (0);
 }
 
-int	remove_quote(t_command *command)
+int	remove_quote(t_command *command, int i)
 {
 	t_command	*temp;
-	int			i;
 
 	temp = command;
 	while (temp)

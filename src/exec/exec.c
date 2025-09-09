@@ -18,7 +18,7 @@ int	exec(t_minishell *minishell)
 
 	if (expand(minishell, minishell->command, 0, 0))
 		return (1);
-	if (remove_quote(minishell->command))
+	if (remove_quote(minishell->command, 0))
 		return (1);
 	command = minishell->command;
 	while (command)
