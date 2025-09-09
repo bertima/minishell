@@ -48,7 +48,7 @@ static int	remplace(char **str_new, int j, char *var, int len_name)
 	pre = ft_substr(*str_new, 0, j);
 	if (!pre)
 		return (1);
-	post = ft_substr(*str_new, len_post, ft_strlen(var) - len_post);
+	post = ft_substr(*str_new, len_post, ft_strlen(*str_new) - len_post);
 	if (!post)
 	{
 		free(pre);

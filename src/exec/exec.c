@@ -14,18 +14,25 @@
 
 int	exec(t_minishell *minishell)
 {
+	t_command *command;
+
 	if (expand(minishell, minishell->command, 0, 0))
 		return (1);
-	while (minishell->command)
+	if (remove_quote(minishell->command))
+		return (1);
+	command = minishell->command;
+	while (command)
 	{
-		if (minishell->command->arg)
+		if (command->arg)
 		{
 			if (ft_strcmp(minishell->command->arg[0], "echo") == 0)
 				echo(minishell->command->arg);
 			if (ft_strcmp(minishell->command->arg[0], "env") == 0)
 				show_environ(minishell->data->env);
 		}
-		minishell->command = minishell->command->next;
+		command = command->next;
 	}
+	command = minishell->command;
+	show_commands(minishell->command, 0, 1);
 	return (0);
 }

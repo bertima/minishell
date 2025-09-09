@@ -110,6 +110,7 @@ void	free_command_redir_token(t_minishell *minishell);
 int		exec(t_minishell *minishell);
 int		expand(t_minishell *minishell, t_command *command, int i, int j);
 int		var_exist(t_minishell *minishell, char **str_new, int j, char **name);
+int		remove_quote(t_command *command);
 
 /*============== builtin ==============*/
 void	echo(char **str);
