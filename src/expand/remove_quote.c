@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+/*#include "minishell.h"
 
-/*static char	*free_quit(char **pre, char **inter, char **post)
+static char	*free_quit(char **pre, char **inter, char **post)
 {
 	if (pre && *pre)
 		free(*pre);
@@ -42,9 +42,7 @@ static char	*prepa(char *str, int end, int start)
 	join = ft_strjoin_var(3, pre, inter, post);
 	if (!join)
 		return (free_quit(&pre, &inter, &post));
-	free(pre);
-	free(inter);
-	free(post);
+	free_quit(&pre, &inter, &post);
 	return (join);
 }
 
@@ -75,7 +73,7 @@ static int	search_end(t_command *command, int i, int *end, char c)
 		return (1);
 	*end = start;
 	return (0);
-}*/
+}
 
 int	remove_quote(t_command *command, int i, int j)
 {
@@ -90,11 +88,11 @@ int	remove_quote(t_command *command, int i, int j)
 			j = 0;
 			while (temp->arg[i][j])
 			{
-//				if (temp->arg[i][j] == '\'' || temp->arg[i][j] == '\"')
-//				{
-//					if (search_end(temp, i, &j, temp->arg[i][j]))
-//						return (1);
-//				}
+	//			if (temp->arg[i][j] == '\'' || temp->arg[i][j] == '\"')
+	//			{
+	//				if (search_end(temp, i, &j, temp->arg[i][j]))
+	//					return (1);
+	//			}
 				j++;
 			}
 			i++;
@@ -102,4 +100,4 @@ int	remove_quote(t_command *command, int i, int j)
 		temp = temp->next;
 	}
 	return (0);
-}
+}*/

@@ -39,12 +39,36 @@ static int	add_redirect(t_command *command, t_token *token, int type)
 	return (0);
 }
 
+static void	here_doc_expand(t_redir *redir)
+{
+	t_redir	*temp;
+	int		i;
+
+	i = 0;
+	temp = redir;
+	while (temp->next)
+		temp = temp->next;
+	if (temp->type == HERE_DOC)
+	{
+		while(temp->file && temp->file[i])
+		{
+			if (temp->file[i] == '\'' || temp->file[i] == '\"')
+			{	
+				temp->hd_expand = 1;
+				return ;
+			}
+			i++;
+		}
+	}
+}
+
 int	redirect(t_command *command, t_token **token)
 {
 	if (!(*token) || !(*token)->next)
 		return (1);
 	if (add_redirect(command, *token, (*token)->type))
 		return (1);
+	here_doc_expand(command->redir);
 	*token = (*token)->next;
 	return (0);
 }

@@ -26,7 +26,8 @@ static void	show_redir(t_command *command, t_redir *redir)
 			printf(">>");
 		else if (redir->type == HERE_DOC)
 			printf("<<");
-		printf(" file : %s\n", redir->file);
+		printf(" file : %s", redir->file);
+		printf(" : here_doc_expand : %d\n", redir->hd_expand);
 		redir = redir->next;
 	}
 }

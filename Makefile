@@ -47,14 +47,17 @@ FSRC = src/main.c \
 	   src/parsing/parser/redirect.c \
 	   \
 	   src/parsing/token/creat_token.c \
+	   src/parsing/token/metacharactere.c \
 	   \
 	   src/parsing/lexeur/lexeur.c \
 	   \
 	   \
 	   src/exec/exec.c \
-	   src/exec/expand/expand.c \
-	   src/exec/expand/var_exist.c \
-	   src/exec/expand/remove_quote.c \
+	   \
+	   src/expand/expand.c \
+	   src/expand/expand_here_doc.c \
+	   src/expand/var_exist.c \
+	   src/expand/remove_quote.c \
 	   \
 	   src/exec/builtin/echo.c \
 	   src/exec/builtin/env.c \

@@ -62,16 +62,28 @@ static int	find_quote(t_minishell *minishell, char *line, int *len, char c)
 
 static int	loop(t_minishell *shell, char *line, int start, int *len)
 {
+	int	index;
+	int	meta;
+
 	*len = 0;
-	while (line[start + *len] && !ft_isspace(line[start + *len]))
+	index = start;
+	while (line[index] && !ft_isspace(line[index]))
 	{
-		if ((line[start + *len] == '\'' || line[start + *len] == '\"'))
+		meta = metachar(line, index);
+		if (meta > 0)
 		{
-			if (find_quote(shell, &line[start + *len], len, line[start + *len]))
+			if (*len == 0)
+				*len = meta;
+			break ;
+		}
+		if ((line[index] == '\'' || line[index] == '\"'))
+		{
+			if (find_quote(shell, &line[index], len, line[index]))
 				return (1);
 		}
 		else
 			(*len)++;
+		index = start + *len;
 	}
 	return (0);
 }

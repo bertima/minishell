@@ -94,6 +94,7 @@ struct	s_command
 struct s_redir
 {
 	int		type;
+	int		hd_expand;
 	char	*file;
 	t_redir	*next;
 };
@@ -106,6 +107,7 @@ int		put_prompt(char *line, t_minishell *minishell);
 /*===================== parsing =====================*/
 /*-------------- token -------------- */
 int		tokening(t_minishell *minishell);
+int		metachar(char *line, int index);
 
 /* -------------- lexer -------------- */
 void	lexeur(t_minishell *minishell);
