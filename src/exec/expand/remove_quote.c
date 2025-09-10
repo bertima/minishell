@@ -12,27 +12,72 @@
 
 #include "minishell.h"
 
-static int	delete_quote(t_command *command, int index)
+/*static char	*free_quit(char **pre, char **inter, char **post)
 {
-	char	*temp;
-	int		i;
-
-	temp = malloc(sizeof(char) * (ft_strlen(command->arg[index]) - 1));
-	if (!temp)
-		return (1);
-	i = 0;
-	while (i < ((int)ft_strlen(command->arg[index]) - 2))
-	{
-		temp[i] = command->arg[index][i + 1];
-		i++;
-	}
-	temp[i] = '\0';
-	free(command->arg[index]);
-	command->arg[index] = temp;
-	return (0);
+	if (pre && *pre)
+		free(*pre);
+	if (inter && *inter)
+		free(*inter);
+	if (post && *post)
+		free(*post);
+	return (NULL);
 }
 
-int	remove_quote(t_command *command, int i)
+static char	*prepa(char *str, int end, int start)
+{
+	char	*inter;
+	char	*post;
+	char	*pre;
+	char	*join;
+
+	pre = ft_substr(str, 0, start);
+	if (!pre)
+		return (NULL);
+	inter = ft_substr(str, start + 1 , end - start - 1);
+	if (!inter)
+		return (free_quit(&pre, NULL, NULL));
+	post = ft_substr(str, end + 1, ft_strlen(str) - end - 1);
+	if (!post)
+		return (free_quit(&pre, &inter, NULL));
+	join = ft_strjoin_var(3, pre, inter, post);
+	if (!join)
+		return (free_quit(&pre, &inter, &post));
+	free(pre);
+	free(inter);
+	free(post);
+	return (join);
+}
+
+static int	delete_quote(char **str, int start, int end)
+{
+	char	*new;
+
+	new = prepa(*str, start, end);
+	if (!new)
+		return (1);
+	free(*str);
+	*str = new;
+	return (0);
+	
+}
+
+static int	search_end(t_command *command, int i, int *end, char c)
+{
+	int	start;
+	
+	start = *end;
+	*end += 1;
+	while (command->arg[i][*end] && command->arg[i][*end] != c)
+		(*end)++;
+	if (!command->arg[i][*end])
+		return (1);
+	if (delete_quote(&command->arg[i], start, *end))
+		return (1);
+	*end = start;
+	return (0);
+}*/
+
+int	remove_quote(t_command *command, int i, int j)
 {
 	t_command	*temp;
 
@@ -42,10 +87,15 @@ int	remove_quote(t_command *command, int i)
 		i = 0;
 		while (temp->arg && temp->arg[i])
 		{
-			if (temp->arg[i][0] == '\'' || temp->arg[i][0] == '\"')
+			j = 0;
+			while (temp->arg[i][j])
 			{
-				if (delete_quote(temp, i))
-					return (1);
+//				if (temp->arg[i][j] == '\'' || temp->arg[i][j] == '\"')
+//				{
+//					if (search_end(temp, i, &j, temp->arg[i][j]))
+//						return (1);
+//				}
+				j++;
 			}
 			i++;
 		}

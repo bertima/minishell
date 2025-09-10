@@ -47,58 +47,56 @@ static int	add_token(t_minishell *minishell, int i, int j)
 	return (0);
 }
 
-static int	find_quote(t_minishell *minishell, int *i, int len, char c)
+static int	find_quote(t_minishell *minishell, char *line, int *len, char c)
 {
-	int		j;
-	char	*line;
+	int	j;	
 
 	j = 1;
-	line = minishell->data->line;
-	while (line[*i + j] && line[*i + j] != c)
+	while (line[j] && line[j] != c)
 		j++;
-	while (line[*i + j] && line[*i + j] != '\''
-		&& line[*i + j] != '\"' && !ft_isspace(line[*i + j]))
-		j++;
-	if (!line[*i + j])
-		return (1);
-	len += j + 1;
-	if (add_token(minishell, *i, len))
-		return (1);
-	*i += j + 1;
+	if (!line[j])
+		return (return_err_int(minishell, "Quote no close !\n"));
+	*len += j + 1;
 	return (0);
 }
 
-static int	divide(t_minishell *minishell, char *line, int start, int len)
+static int	loop(t_minishell *shell, char *line, int start, int *len)
 {
-	while (line[start])
+	*len = 0;
+	while (line[start + *len] && !ft_isspace(line[start + *len]))
 	{
-		len = 0;
-		while (line[start] && ft_isspace(line[start]))
-			start++;
-		if (!line[start])
-			break ;
-		if (line[start] == '\'' || line[start] == '\"')
+		if ((line[start + *len] == '\'' || line[start + *len] == '\"'))
 		{
-			if (find_quote(minishell, &start, 0, line[start]))
-				return (return_err_int(minishell, "Quote no close !\n"));
-			continue ;
-		}
-		while (line[start + len] && !ft_isspace(line[start + len])
-			&& line[start + len] != '\'' && line[start + len] != '"')
-			len++;
-		if (len > 0)
-		{
-			if (add_token(minishell, start, len))
+			if (find_quote(shell, &line[start + *len], len, line[start + *len]))
 				return (1);
-			start += len;
 		}
+		else
+			(*len)++;
 	}
 	return (0);
 }
 
 int	tokening(t_minishell *minishell)
 {
-	if (divide(minishell, minishell->data->line, 0, 0))
-		return (1);
+	char	*line;
+	int		start;
+	int		len;
+
+	start = 0;
+	len = 0;
+	line = minishell->data->line;
+	while (line[start])
+	{
+		while (line[start] && ft_isspace(line[start]))
+			start++;
+		if (!line[start])
+			break ;
+		if (loop(minishell, line, start, &len))
+			return (1);
+		if (add_token(minishell, start, len))
+			return (1);
+		start += len;
+		len = 0;
+	}
 	return (0);
 }

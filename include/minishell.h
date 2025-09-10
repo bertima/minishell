@@ -98,46 +98,54 @@ struct s_redir
 	t_redir	*next;
 };
 
-/*============== error ==============*/
-char	*return_null(t_minishell *minishell);
-int		return_err_int(t_minishell *minishell, char *str);
-
-/*============== free ==============*/
-void	all_free(t_minishell *minishell);
-void	free_command_redir_token(t_minishell *minishell);
-
-/*============== exec ==============*/
-int		exec(t_minishell *minishell);
-int		expand(t_minishell *minishell, t_command *command, int i, int j);
-int		var_exist(t_minishell *minishell, char **str_new, int j, char **name);
-int		remove_quote(t_command *command, int i);
-
-/*============== builtin ==============*/
-void	echo(char **str);
-
-/*============== init_struct ==============*/
+/*===================== init =====================*/
+/* -------------- init_struct -------------- */
 int		init_struct(t_minishell *minishell, char **environ);
 int		put_prompt(char *line, t_minishell *minishell);
 
-/*============== token ==============*/
-int		parsing(t_minishell *minishell);
+/*===================== parsing =====================*/
+/*-------------- token -------------- */
 int		tokening(t_minishell *minishell);
 
-/*============== lexer ==============*/
+/* -------------- lexer -------------- */
 void	lexeur(t_minishell *minishell);
 
-/*============== parsing ==============*/
+/* -------------- parsing -------------- */
+int		parsing(t_minishell *minishell);
 int		creat_command(t_minishell *minishell);
+int		redirect(t_command *command, t_token **token);
 int		add_command(t_minishell *minishell, t_command **current);
 int		add_arg(t_command *current, t_token *temp, int i);
-int		redirect(t_command *command, t_token **token);
 
-/*============== environ ==============*/
+/*===================== expand =====================*/
+/* -------------- expand -------------- */
+int		expand(t_minishell *minishell, t_command *command, int i, int j);
+int		var_exist(t_minishell *minishell, char **str_new, int j, char **name);
+
+/* -------------- del_quote -------------- */
+int		remove_quote(t_command *command, int i, int j);
+
+/*===================== exec =====================*/
+/* -------------- exec -------------- */
+int		exec(t_minishell *minishell);
+
+/*===================== builtin =====================*/
+void	echo(char **str);
 void	show_environ(char **av);
 
+/*===================== error/free =====================*/
+/* -------------- error -------------- */
+char	*return_null(t_minishell *minishell);
+int		return_err_int(t_minishell *minishell, char *str);
+
+/* -------------- free -------------- */
+void	all_free(t_minishell *minishell);
+void	free_command_redir_token(t_minishell *minishell);
+
+/*||||||||||||||||||||| test |||||||||||||||||||||*/
 /*--------------- test ----------------*/
 void	show_commands(t_command *command, int i, int cmd_index);
-void	lexer_test(t_minishell *minishell);
-void	test_token(t_minishell *minishell);
+void	show_lexeur(t_minishell *minishell);
+void	show_token(t_minishell *minishell);
 
 #endif

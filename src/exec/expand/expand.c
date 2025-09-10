@@ -26,13 +26,35 @@ static char	*search_name(char *str, int start)
 	return (name);
 }
 
+static int	skip_arg(t_minishell *minishell, char *arg, int *j)
+{
+	*j += 1;
+	while (arg[*j])
+	{
+		if (arg[*j] == '\'')
+			return (0);
+		(*j)++;
+	}
+	return (return_err_int(minishell, "Quote no close !\n"));
+}
+
 static int	loop(t_minishell *minishell, t_command *command, int i, int j)
 {
 	char		*name;
 	int			result;
+	int			stop;
 
 	while (command->arg && command->arg[i] && command->arg[i][j])
 	{
+		if (command->arg[i][j] == '\"' && stop == 0)
+			stop = 1;
+		else if (command->arg[i][j] == '\"' && stop == 1)
+			stop = 0;
+		if (command->arg[i][j] == '\'' && stop == 0)
+		{
+			if (skip_arg(minishell, command->arg[i], &j))
+				return (1);
+		}
 		if (command->arg[i][j] == '$')
 		{
 			name = search_name(command->arg[i], j + 1);
@@ -61,11 +83,8 @@ int	expand(t_minishell *minishell, t_command *command, int i, int j)
 		while (temp->arg && temp->arg[i])
 		{
 			j = 0;
-			if (temp->arg[i][0] != '\'')
-			{
-				if (loop(minishell, temp, i, j))
-					return (1);
-			}
+			if (loop(minishell, temp, i, j))
+				return (1);
 			i++;
 		}
 		temp = temp->next;

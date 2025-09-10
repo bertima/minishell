@@ -38,6 +38,7 @@ void	show_commands(t_command *command, int i, int cmd_index)
 	redir = NULL;
 	while (command)
 	{
+		i = 0;
 		printf("=== Command %d ===\n", cmd_index);
 		if (command->arg && command->arg[0])
 			printf("Name: %s\n", command->arg[0]);
@@ -45,10 +46,9 @@ void	show_commands(t_command *command, int i, int cmd_index)
 			printf("Name: (null)\n");
 		if (command->arg)
 		{
-			printf("Args:");
 			while (command->arg[i])
 			{
-				printf(" %s", command->arg[i]);
+				printf("Args %d : %s\n", i, command->arg[i]);
 				i++;
 			}
 			printf("\n");
@@ -60,7 +60,7 @@ void	show_commands(t_command *command, int i, int cmd_index)
 	}
 }
 
-void	lexer_test(t_minishell *minishell)
+void	show_lexeur(t_minishell *minishell)
 {
 	t_token	*temp;
 	int		i;
@@ -69,14 +69,14 @@ void	lexer_test(t_minishell *minishell)
 	temp = minishell->token;
 	while (temp)
 	{
-		printf("Token %d: \"%s\"\n", i, temp->sentence);
+		printf("Token %d: %s\n", i, temp->sentence);
 		printf("TYPE : %d\n", temp->type);
 		i++;
 		temp = temp->next;
 	}
 }
 
-void	test_token(t_minishell *minishell)
+void	show_token(t_minishell *minishell)
 {
 	t_token	*temp;
 	int		i;
@@ -87,10 +87,6 @@ void	test_token(t_minishell *minishell)
 	{
 		temp = temp->next;
 		printf("%s: token %d\n", minishell->token->sentence, i);
-		if (minishell->token->sentence)
-			free(minishell->token->sentence);
-		if (minishell->token)
-			free(minishell->token);
 		i++;
 		minishell->token = temp;
 	}
