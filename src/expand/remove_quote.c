@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-/*#include "minishell.h"
+#include "minishell.h"
 
 static char	*free_quit(char **pre, char **inter, char **post)
 {
@@ -23,7 +23,7 @@ static char	*free_quit(char **pre, char **inter, char **post)
 	return (NULL);
 }
 
-static char	*prepa(char *str, int end, int start)
+static char	*new_string(char *str, int start, int end)
 {
 	char	*inter;
 	char	*post;
@@ -33,7 +33,7 @@ static char	*prepa(char *str, int end, int start)
 	pre = ft_substr(str, 0, start);
 	if (!pre)
 		return (NULL);
-	inter = ft_substr(str, start + 1 , end - start - 1);
+	inter = ft_substr(str, start + 1, end - start - 1);
 	if (!inter)
 		return (free_quit(&pre, NULL, NULL));
 	post = ft_substr(str, end + 1, ft_strlen(str) - end - 1);
@@ -46,58 +46,72 @@ static char	*prepa(char *str, int end, int start)
 	return (join);
 }
 
-static int	delete_quote(char **str, int start, int end)
+static int	single_quote(t_command *command, int *start, int i)
 {
 	char	*new;
+	int		end;
+	char	*str;
 
-	new = prepa(*str, start, end);
+	str = command->arg[i];
+	end = *start + 1;
+	while (str[end] != '\'')
+		end++;
+	new = new_string(str, *start, end);
 	if (!new)
 		return (1);
-	free(*str);
-	*str = new;
-	return (0);
-	
-}
-
-static int	search_end(t_command *command, int i, int *end, char c)
-{
-	int	start;
-	
-	start = *end;
-	*end += 1;
-	while (command->arg[i][*end] && command->arg[i][*end] != c)
-		(*end)++;
-	if (!command->arg[i][*end])
-		return (1);
-	if (delete_quote(&command->arg[i], start, *end))
-		return (1);
-	*end = start;
+	free(command->arg[i]);
+	command->arg[i] = new;
+	*start = end - 2;
 	return (0);
 }
 
-int	remove_quote(t_command *command, int i, int j)
+static int	double_quote(t_shell *shell, t_command *command, int *start, int i)
 {
-	t_command	*temp;
+	int		end;
+	int		result;
+	char	*name;
+	char	*new;
 
-	temp = command;
-	while (temp)
+	end = *start + 1;
+	while (command->arg[i][end] != '\"')
 	{
-		i = 0;
-		while (temp->arg && temp->arg[i])
+		if (command->arg[i][end] == '$')
 		{
-			j = 0;
-			while (temp->arg[i][j])
+			name = search_name(command->arg[i], end + 1);
+			if (name)
 			{
-	//			if (temp->arg[i][j] == '\'' || temp->arg[i][j] == '\"')
-	//			{
-	//				if (search_end(temp, i, &j, temp->arg[i][j]))
-	//					return (1);
-	//			}
-				j++;
+				result = var_exist(shell, &command->arg[i], end, &name);
+				if (result == 1)
+					return (1);
+				else if (result == 2)
+					continue ;
 			}
-			i++;
 		}
-		temp = temp->next;
+		end++;
+	}
+	new = new_string(command->arg[i], *start, end);
+	if (!new)
+		return (1);
+	free(command->arg[i]);
+	command->arg[i] = new;
+	*start = end - 2;
+	return (0);
+}
+
+int	remove_quote(t_shell *shell, t_command *command, int i, int *start)
+{
+	char	*str;
+
+	str = command->arg[i];
+	if (str[*start] == '\'')
+	{
+		if (single_quote(command, start, i))
+			return (1);
+	}
+	else
+	{
+		if (double_quote(shell, command, start, i))
+			return (1);
 	}
 	return (0);
-}*/
+}

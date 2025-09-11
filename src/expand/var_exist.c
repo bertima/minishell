@@ -64,7 +64,7 @@ static int	remplace(char **str_new, int j, char *var, int len_name)
 	return (0);
 }
 
-int	var_exist(t_minishell *minishell, char **str_new, int j, char **name)
+int	var_exist(t_shell *shell, char **str_new, int j, char **name)
 {
 	char	*var;
 	char	*result;
@@ -72,12 +72,12 @@ int	var_exist(t_minishell *minishell, char **str_new, int j, char **name)
 	result = NULL;
 	if ((*str_new)[j + 1] == '?')
 	{
-		result = ft_itoa(minishell->data->exit_code);
+		result = ft_itoa(shell->data->exit_code);
 		if (remplace(str_new, j, result, ft_strlen(result)))
 			return (free_var_exist(name, &result, 1));
 		return (free_var_exist(name, &result, 2));
 	}
-	var = search_env(minishell->data->env, *name);
+	var = search_env(shell->data->env, *name);
 	if (var)
 	{
 		if (remplace(str_new, j, var, ft_strlen(*name)))

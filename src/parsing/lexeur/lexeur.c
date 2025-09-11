@@ -28,11 +28,11 @@ static void	attribute(t_token *token)
 		token->type = WORD;
 }
 
-void	lexeur(t_minishell *minishell)
+void	lexeur(t_shell *shell)
 {
 	t_token	*temp;
 
-	temp = minishell->token;
+	temp = shell->token;
 	while (temp)
 	{
 		attribute(temp);

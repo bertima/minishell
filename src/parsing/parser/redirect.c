@@ -50,10 +50,10 @@ static void	here_doc_expand(t_redir *redir)
 		temp = temp->next;
 	if (temp->type == HERE_DOC)
 	{
-		while(temp->file && temp->file[i])
+		while (temp->file && temp->file[i])
 		{
 			if (temp->file[i] == '\'' || temp->file[i] == '\"')
-			{	
+			{
 				temp->hd_expand = 1;
 				return ;
 			}

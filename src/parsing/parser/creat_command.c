@@ -12,17 +12,17 @@
 
 #include "minishell.h"
 
-static int	compare(t_minishell *minishell, t_command **command, t_token **temp)
+static int	compare(t_shell *shell, t_command **command, t_token **temp)
 {
 	if (!*command)
 	{
-		if (add_command(minishell, command))
+		if (add_command(shell, command))
 			return (1);
 		return (0);
 	}
 	else if ((*temp)->type == PIPE)
 	{
-		if (add_command(minishell, command))
+		if (add_command(shell, command))
 			return (1);
 	}
 	else if ((*temp)->type != WORD)
@@ -39,17 +39,17 @@ static int	compare(t_minishell *minishell, t_command **command, t_token **temp)
 	return (0);
 }
 
-int	creat_command(t_minishell *minishell)
+int	creat_command(t_shell *shell)
 {
 	t_command	*command;
 	t_token		*temp;
 
-	temp = minishell->token;
+	temp = shell->token;
 	command = NULL;
 	while (temp)
 	{
-		if (compare(minishell, &command, &temp))
-			return (return_err_int(minishell, "creat_command fail\n"));
+		if (compare(shell, &command, &temp))
+			return (return_err_int(shell, "creat_command fail\n"));
 	}
 	return (0);
 }

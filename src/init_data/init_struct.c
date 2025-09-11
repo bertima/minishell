@@ -64,13 +64,13 @@ static int	cp_env(char ***env, char **environ)
 	return (0);
 }
 
-int	init_struct(t_minishell *minishell, char **environ)
+int	init_struct(t_shell *shell, char **environ)
 {
-	ft_memset(minishell, 0, sizeof(t_minishell));
-	minishell->data = ft_calloc(1, sizeof(t_data));
-	if (!minishell->data)
+	ft_memset(shell, 0, sizeof(t_shell));
+	shell->data = ft_calloc(1, sizeof(t_data));
+	if (!shell->data)
 		return (1);
-	if (cp_env(&minishell->data->env, environ))
+	if (cp_env(&shell->data->env, environ))
 		return (1);
 	return (0);
 }

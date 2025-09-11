@@ -12,12 +12,12 @@
 
 #include "minishell.h"
 
-int	parsing(t_minishell *minishell)
+int	parsing(t_shell *shell)
 {
-	if (tokening(minishell))
-		return (return_err_int(minishell, "Token\n"));
-	lexeur(minishell);
-	if (creat_command(minishell))
-		return (return_err_int(minishell, "Command\n"));
+	if (tokening(shell))
+		return (return_err_int(shell, "Token\n"));
+	lexeur(shell);
+	if (creat_command(shell))
+		return (return_err_int(shell, "Command\n"));
 	return (0);
 }

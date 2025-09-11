@@ -12,12 +12,12 @@
 
 #include "minishell.h"
 
-static void	free_data_builtin(t_minishell *minishell)
+static void	free_data_builtin(t_shell *shell)
 {
-	if (minishell->data->env)
-		ft_free_split(minishell->data->env);
-	if (minishell->data->line)
-		free(minishell->data->line);
+	if (shell->data->env)
+		ft_free_split(shell->data->env);
+	if (shell->data->line)
+		free(shell->data->line);
 	return ;
 }
 
@@ -34,35 +34,35 @@ static void	free_redir(t_redir **redir)
 	}
 }
 
-void	free_command_redir_token(t_minishell *minishell)
+void	free_command_redir_token(t_shell *shell)
 {
 	t_token		*temp;
 	t_command	*temp_c;
 
-	while (minishell->token)
+	while (shell->token)
 	{
-		temp = minishell->token->next;
-		if (minishell->token->sentence)
-			free(minishell->token->sentence);
-		free(minishell->token);
-		minishell->token = temp;
+		temp = shell->token->next;
+		if (shell->token->sentence)
+			free(shell->token->sentence);
+		free(shell->token);
+		shell->token = temp;
 	}
-	while (minishell->command)
+	while (shell->command)
 	{
-		temp_c = minishell->command->next;
-		if (minishell->command->arg)
-			ft_free_split(minishell->command->arg);
-		if (minishell->command->redir)
-			free_redir(&minishell->command->redir);
-		free(minishell->command);
-		minishell->command = temp_c;
+		temp_c = shell->command->next;
+		if (shell->command->arg)
+			ft_free_split(shell->command->arg);
+		if (shell->command->redir)
+			free_redir(&shell->command->redir);
+		free(shell->command);
+		shell->command = temp_c;
 	}
 }
 
-void	all_free(t_minishell *minishell)
+void	all_free(t_shell *shell)
 {
-	if (!minishell)
+	if (!shell)
 		return ;
-	free_command_redir_token(minishell);
-	free_data_builtin(minishell);
+	free_command_redir_token(shell);
+	free_data_builtin(shell);
 }

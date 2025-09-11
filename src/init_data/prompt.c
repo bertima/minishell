@@ -34,41 +34,41 @@ static int	home(char *w_dir)
 	return (0);
 }
 
-static char	*recup_wd(t_minishell *minishell)
+static char	*recup_wd(t_shell *shell)
 {
 	char	*w_dir;
 
 	w_dir = getcwd(NULL, 0);
 	if (!w_dir)
-		return (return_null(minishell));
+		return (return_null(shell));
 	if (home(w_dir))
 		return ("/home$ ");
 	if (path(&w_dir))
-		return (return_null(minishell));
+		return (return_null(shell));
 	return (w_dir);
 }
 
-int	put_prompt(char *line, t_minishell *minishell)
+int	put_prompt(char *line, t_shell *shell)
 {
 	char	*w_dir;
 
-	w_dir = recup_wd(minishell);
+	w_dir = recup_wd(shell);
 	if (!w_dir)
-		return (return_err_int(minishell, "Error getcwd !\n"));
+		return (return_err_int(shell, "Error getcwd !\n"));
 	line = readline(w_dir);
 	if (!line)
 	{
 		perror(NULL);
-		return (return_err_int(minishell, "Error readline !\n"));
+		return (return_err_int(shell, "Error readline !\n"));
 	}
 	if (*line)
 		add_history(line);
-	minishell->data->line = ft_strdup(line);
-	if (!minishell->data->line)
+	shell->data->line = ft_strdup(line);
+	if (!shell->data->line)
 	{
 		free(line);
 		free(w_dir);
-		return (return_err_int(minishell, "Error malloc !\n"));
+		return (return_err_int(shell, "Error malloc !\n"));
 	}
 	free(line);
 	free(w_dir);

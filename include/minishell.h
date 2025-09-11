@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: bertrmar <bertrmar@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/11 15:16:39 by bertrmar          #+#    #+#             */
-/*   Updated: 2025/09/05 15:31:19 by bertrmar         ###   ########.fr       */
+/*   Created: 2025/09/11 11:33:49 by bertrmar          #+#    #+#             */
+/*   Updated: 2025/09/11 11:33:53 by bertrmar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@
 # include <sys/time.h>
 # include <sys/types.h>
 
-typedef struct s_minishell	t_minishell;
+typedef struct s_shell		t_shell;
 typedef struct s_token		t_token;
 typedef struct s_command	t_command;
 typedef struct s_redir		t_redir;
@@ -60,12 +60,12 @@ enum	e_type
 };
 
 /*********** struct de recup ***********/
-typedef struct s_minishell
+typedef struct s_shell
 {
 	t_token			*token;
 	t_command		*command;
 	t_data			*data;
-}	t_minishell;
+}	t_shell;
 
 /*********** data utile ***********/
 struct	s_data
@@ -101,35 +101,36 @@ struct s_redir
 
 /*===================== init =====================*/
 /* -------------- init_struct -------------- */
-int		init_struct(t_minishell *minishell, char **environ);
-int		put_prompt(char *line, t_minishell *minishell);
+int		init_struct(t_shell *shell, char **environ);
+int		put_prompt(char *line, t_shell *shell);
 
 /*===================== parsing =====================*/
 /*-------------- token -------------- */
-int		tokening(t_minishell *minishell);
+int		tokening(t_shell *shell);
 int		metachar(char *line, int index);
 
 /* -------------- lexer -------------- */
-void	lexeur(t_minishell *minishell);
+void	lexeur(t_shell *shell);
 
 /* -------------- parsing -------------- */
-int		parsing(t_minishell *minishell);
-int		creat_command(t_minishell *minishell);
+int		parsing(t_shell *shell);
+int		creat_command(t_shell *shell);
 int		redirect(t_command *command, t_token **token);
-int		add_command(t_minishell *minishell, t_command **current);
+int		add_command(t_shell *shell, t_command **current);
 int		add_arg(t_command *current, t_token *temp, int i);
 
 /*===================== expand =====================*/
 /* -------------- expand -------------- */
-int		expand(t_minishell *minishell, t_command *command, int i, int j);
-int		var_exist(t_minishell *minishell, char **str_new, int j, char **name);
+int		expand(t_shell *shell, t_command *command, int i, int j);
+int		var_exist(t_shell *shell, char **str_new, int j, char **name);
+char	*search_name(char *str, int start);
 
 /* -------------- del_quote -------------- */
-int		remove_quote(t_command *command, int i, int j);
+int		remove_quote(t_shell *shell, t_command *command, int i, int *start);
 
 /*===================== exec =====================*/
 /* -------------- exec -------------- */
-int		exec(t_minishell *minishell);
+int		exec(t_shell *shell);
 
 /*===================== builtin =====================*/
 void	echo(char **str);
@@ -137,17 +138,17 @@ void	show_environ(char **av);
 
 /*===================== error/free =====================*/
 /* -------------- error -------------- */
-char	*return_null(t_minishell *minishell);
-int		return_err_int(t_minishell *minishell, char *str);
+char	*return_null(t_shell *shell);
+int		return_err_int(t_shell *shell, char *str);
 
 /* -------------- free -------------- */
-void	all_free(t_minishell *minishell);
-void	free_command_redir_token(t_minishell *minishell);
+void	all_free(t_shell *shell);
+void	free_command_redir_token(t_shell *shell);
 
 /*||||||||||||||||||||| test |||||||||||||||||||||*/
 /*--------------- test ----------------*/
 void	show_commands(t_command *command, int i, int cmd_index);
-void	show_lexeur(t_minishell *minishell);
-void	show_token(t_minishell *minishell);
+void	show_lexeur(t_shell *shell);
+void	show_token(t_shell *shell);
 
 #endif

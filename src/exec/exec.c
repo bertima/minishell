@@ -12,26 +12,25 @@
 
 #include "minishell.h"
 
-int	exec(t_minishell *minishell)
+int	exec(t_shell *shell)
 {
 	t_command	*command;
 
-	if (expand(minishell, minishell->command, 0, 0))
+	if (expand(shell, shell->command, 0, 0))
 		return (1);
-//	if (remove_quote(minishell->command, 0, 0))
-//		return (1);
-	command = minishell->command;
+	show_commands(shell->command, 0, 1);
+	command = shell->command;
 	while (command)
 	{
 		if (command->arg)
 		{
-			if (ft_strcmp(minishell->command->arg[0], "echo") == 0)
-				echo(minishell->command->arg);
-			if (ft_strcmp(minishell->command->arg[0], "env") == 0)
-				show_environ(minishell->data->env);
+			if (ft_strcmp(shell->command->arg[0], "echo") == 0)
+				echo(shell->command->arg);
+			if (ft_strcmp(shell->command->arg[0], "env") == 0)
+				show_environ(shell->data->env);
 		}
 		command = command->next;
 	}
-	command = minishell->command;
+	command = shell->command;
 	return (0);
 }

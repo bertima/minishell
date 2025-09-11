@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static char	*search_name(char *str, int start)
+char	*search_name(char *str, int start)
 {
 	int		len;
 	char	*name;
@@ -26,33 +26,16 @@ static char	*search_name(char *str, int start)
 	return (name);
 }
 
-static int	skip_arg(t_minishell *minishell, char *arg, int *j)
+static int	loop(t_shell *shell, t_command *command, int i, int j)
 {
-	*j += 1;
-	while (arg[*j])
-	{
-		if (arg[*j] == '\'')
-			return (0);
-		(*j)++;
-	}
-	return (return_err_int(minishell, "Quote no close !\n"));
-}
-
-static int	loop(t_minishell *minishell, t_command *command, int i, int j)
-{
-	char		*name;
-	int			result;
-	int			stop;
+	int		result;
+	char	*name;
 
 	while (command->arg && command->arg[i] && command->arg[i][j])
 	{
-		if (command->arg[i][j] == '\"' && stop == 0)
-			stop = 1;
-		else if (command->arg[i][j] == '\"' && stop == 1)
-			stop = 0;
-		if (command->arg[i][j] == '\'' && stop == 0)
+		if (command->arg[i][j] == '\'' || command->arg[i][j] == '\"')
 		{
-			if (skip_arg(minishell, command->arg[i], &j))
+			if (remove_quote(shell, command, i, &j))
 				return (1);
 		}
 		if (command->arg[i][j] == '$')
@@ -60,7 +43,7 @@ static int	loop(t_minishell *minishell, t_command *command, int i, int j)
 			name = search_name(command->arg[i], j + 1);
 			if (name)
 			{
-				result = var_exist(minishell, &command->arg[i], j, &name);
+				result = var_exist(shell, &command->arg[i], j, &name);
 				if (result == 1)
 					return (1);
 				else if (result == 2)
@@ -72,7 +55,7 @@ static int	loop(t_minishell *minishell, t_command *command, int i, int j)
 	return (0);
 }
 
-int	expand(t_minishell *minishell, t_command *command, int i, int j)
+int	expand(t_shell *shell, t_command *command, int i, int j)
 {
 	t_command	*temp;
 
@@ -83,7 +66,7 @@ int	expand(t_minishell *minishell, t_command *command, int i, int j)
 		while (temp->arg && temp->arg[i])
 		{
 			j = 0;
-			if (loop(minishell, temp, i, j))
+			if (loop(shell, temp, i, j))
 				return (1);
 			i++;
 		}

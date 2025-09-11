@@ -26,16 +26,16 @@ static int	new_command(t_command **command)
 	return (0);
 }
 
-int	add_command(t_minishell *minishell, t_command **command)
+int	add_command(t_shell *shell, t_command **command)
 {
 	t_command	*temp_command;
 
-	temp_command = minishell->command;
-	if (!minishell->command)
+	temp_command = shell->command;
+	if (!shell->command)
 	{
-		if (new_command(&minishell->command))
+		if (new_command(&shell->command))
 			return (1);
-		*command = minishell->command;
+		*command = shell->command;
 		return (0);
 	}
 	while (temp_command->next)

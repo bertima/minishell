@@ -12,42 +12,42 @@
 
 #include "minishell.h"
 
-static int	add_back_token(t_minishell *minishell, int i, int j)
+static int	add_back_token(t_shell *shell, int i, int j)
 {
 	t_token	*temp;
 
-	temp = minishell->token;
+	temp = shell->token;
 	while (temp->next)
 		temp = temp->next;
 	temp->next = ft_calloc(1, sizeof(t_token));
 	if (!temp->next)
 		return (1);
-	temp->next->sentence = ft_substr(minishell->data->line, i, j);
+	temp->next->sentence = ft_substr(shell->data->line, i, j);
 	if (!temp->next->sentence)
 		return (1);
 	return (0);
 }
 
-static int	add_token(t_minishell *minishell, int i, int j)
+static int	add_token(t_shell *shell, int i, int j)
 {
-	if (!minishell->token)
+	if (!shell->token)
 	{
-		minishell->token = ft_calloc(1, sizeof(t_token));
-		if (!minishell->token)
+		shell->token = ft_calloc(1, sizeof(t_token));
+		if (!shell->token)
 			return (1);
-		minishell->token->sentence = ft_substr(minishell->data->line, i, j);
-		if (!minishell->token->sentence)
+		shell->token->sentence = ft_substr(shell->data->line, i, j);
+		if (!shell->token->sentence)
 			return (1);
 	}
 	else
 	{
-		if (add_back_token(minishell, i, j))
+		if (add_back_token(shell, i, j))
 			return (1);
 	}
 	return (0);
 }
 
-static int	find_quote(t_minishell *minishell, char *line, int *len, char c)
+static int	find_quote(t_shell *shell, char *line, int *len, char c)
 {
 	int	j;	
 
@@ -55,12 +55,12 @@ static int	find_quote(t_minishell *minishell, char *line, int *len, char c)
 	while (line[j] && line[j] != c)
 		j++;
 	if (!line[j])
-		return (return_err_int(minishell, "Quote no close !\n"));
+		return (return_err_int(shell, "Quote no close !\n"));
 	*len += j + 1;
 	return (0);
 }
 
-static int	loop(t_minishell *shell, char *line, int start, int *len)
+static int	loop(t_shell *shell, char *line, int start, int *len)
 {
 	int	index;
 	int	meta;
@@ -88,7 +88,7 @@ static int	loop(t_minishell *shell, char *line, int start, int *len)
 	return (0);
 }
 
-int	tokening(t_minishell *minishell)
+int	tokening(t_shell *shell)
 {
 	char	*line;
 	int		start;
@@ -96,16 +96,16 @@ int	tokening(t_minishell *minishell)
 
 	start = 0;
 	len = 0;
-	line = minishell->data->line;
+	line = shell->data->line;
 	while (line[start])
 	{
 		while (line[start] && ft_isspace(line[start]))
 			start++;
 		if (!line[start])
 			break ;
-		if (loop(minishell, line, start, &len))
+		if (loop(shell, line, start, &len))
 			return (1);
-		if (add_token(minishell, start, len))
+		if (add_token(shell, start, len))
 			return (1);
 		start += len;
 		len = 0;

@@ -20,8 +20,8 @@ int	metachar(char *line, int index)
 	while (line[index + i] == '<' || line[index + i] == '>'
 		|| line[index + i] == '|')
 	{
-        if (line[index + i] == '|')
-            return (1);
+		if (line[index + i] == '|')
+			return (1);
 		i++;
 	}
 	return (i);

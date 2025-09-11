@@ -61,13 +61,13 @@ void	show_commands(t_command *command, int i, int cmd_index)
 	}
 }
 
-void	show_lexeur(t_minishell *minishell)
+void	show_lexeur(t_shell *shell)
 {
 	t_token	*temp;
 	int		i;
 
 	i = 1;
-	temp = minishell->token;
+	temp = shell->token;
 	while (temp)
 	{
 		printf("Token %d: %s\n", i, temp->sentence);
@@ -77,18 +77,18 @@ void	show_lexeur(t_minishell *minishell)
 	}
 }
 
-void	show_token(t_minishell *minishell)
+void	show_token(t_shell *shell)
 {
 	t_token	*temp;
 	int		i;
 
 	i = 1;
-	temp = minishell->token;
-	while (minishell->token)
+	temp = shell->token;
+	while (shell->token)
 	{
 		temp = temp->next;
-		printf("%s: token %d\n", minishell->token->sentence, i);
+		printf("%s: token %d\n", shell->token->sentence, i);
 		i++;
-		minishell->token = temp;
+		shell->token = temp;
 	}
 }
