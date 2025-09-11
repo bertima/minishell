@@ -26,7 +26,7 @@ static int	creat_env(char ***env)
 		return (1);
 	}
 	(*env)[0] = ft_strjoin("PWD=", getcwd(NULL, 0));
-	(*env)[1] = ft_strdup("SHLVL=1");
+	(*env)[1] = ft_strdup("SHLVL=2");
 	(*env)[2] = ft_strjoin(temp, "/usr/sbin:/usr/bin:/sbin:/bin");
 	(*env)[3] = ft_strdup("_=./minishell");
 	(*env)[4] = NULL;

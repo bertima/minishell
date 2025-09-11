@@ -43,7 +43,7 @@ static int	loop(t_shell *shell, t_command *command, int i, int j)
 			name = search_name(command->arg[i], j + 1);
 			if (name)
 			{
-				result = var_exist(shell, &command->arg[i], j, &name);
+				result = dollar_quoted(shell, &command->arg[i], j, &name);
 				if (result == 1)
 					return (1);
 				else if (result == 2)

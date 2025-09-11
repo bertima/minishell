@@ -1,31 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   remove_quote.c                                     :+:      :+:    :+:   */
+/*   remplace.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bertrmar <bertrmar@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/09 10:48:59 by bertrmar          #+#    #+#             */
-/*   Updated: 2025/09/09 11:20:07 by bertrmar         ###   ########.fr       */
+/*   Created: 2025/09/11 13:28:00 by bertrmar          #+#    #+#             */
+/*   Updated: 2025/09/11 13:28:08 by bertrmar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	remove_quote(t_shell *shell, t_command *command, int i, int *start)
+int	remplace(char **str_new, int j, char *var, int len_name)
 {
-	char	*str;
+	char	*pre;
+	char	*post;
+	char	*new;
+	int		len_post;
 
-	str = command->arg[i];
-	if (str[*start] == '\'')
+	len_post = len_name + 1 + j;
+	pre = ft_substr(*str_new, 0, j);
+	if (!pre)
+		return (1);
+	post = ft_substr(*str_new, len_post, ft_strlen(*str_new) - len_post);
+	if (!post)
 	{
-		if (single_quote(command, start, i))
-			return (1);
+		free(pre);
+		return (1);
 	}
-	else
-	{
-		if (double_quote(shell, command, start, i))
-			return (1);
-	}
+	new = ft_strjoin_var(3, pre, var, post);
+	if (!new)
+		return (1);
+	free(pre);
+	free(post);
+	free(*str_new);
+	*str_new = new;
 	return (0);
 }

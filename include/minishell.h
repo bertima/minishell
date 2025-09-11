@@ -122,11 +122,14 @@ int		add_arg(t_command *current, t_token *temp, int i);
 /*===================== expand =====================*/
 /* -------------- expand -------------- */
 int		expand(t_shell *shell, t_command *command, int i, int j);
-int		var_exist(t_shell *shell, char **str_new, int j, char **name);
+int		dollar_quoted(t_shell *shell, char **str_new, int j, char **name);
+int		remplace(char **str_new, int j, char *var, int len_name);
 char	*search_name(char *str, int start);
 
 /* -------------- del_quote -------------- */
 int		remove_quote(t_shell *shell, t_command *command, int i, int *start);
+int		single_quote(t_command *command, int *start, int i);
+int		double_quote(t_shell *shell, t_command *command, int *start, int i);
 
 /*===================== exec =====================*/
 /* -------------- exec -------------- */

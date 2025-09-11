@@ -56,8 +56,10 @@ FSRC = src/main.c \
 	   \
 	   src/expand/expand.c \
 	   src/expand/expand_here_doc.c \
-	   src/expand/var_exist.c \
+	   src/expand/dollar_quoted.c \
+	   src/expand/remplace.c \
 	   src/expand/remove_quote.c \
+	   src/expand/single_double_quote.c \
 	   \
 	   src/exec/builtin/echo.c \
 	   src/exec/builtin/env.c \
