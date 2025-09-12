@@ -42,6 +42,7 @@ static int	new_arg(char ***temp, char **arg, int len_tab)
 		*temp[i] = arg[i];
 		i++;
 	}
+	*temp[i] = NULL;
 	return (0);
 }
 

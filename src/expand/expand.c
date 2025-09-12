@@ -43,8 +43,6 @@ static int	loop(t_shell *shell, t_command *command, int i, int j)
 				result = dollar_find(shell, command, i, &j);
 				if (result == 1)
 					return (1);
-				else if (result == 2)
-					continue ;
 			}
 		}
 		j++;

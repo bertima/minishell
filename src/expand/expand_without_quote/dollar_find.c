@@ -43,7 +43,8 @@ static int	join_word(char **str_expand, char **arg)
 	char	*temp;
 
 	i = 0;
-	while (arg[i] && *arg[i])
+	temp = NULL;
+	while (arg && arg[i] && *arg[i])
 	{
 		temp = ft_strjoin(*str_expand, arg[i]);
 		if (!temp)
@@ -53,7 +54,7 @@ static int	join_word(char **str_expand, char **arg)
 			return (1);
 		}
 		if (str_expand && *str_expand)
-			free(str_expand);
+			free(*str_expand);
 		*str_expand = temp;
 		i++;
 	}
@@ -93,7 +94,7 @@ static void	remove_arg(t_command *command, int i)
 	command->arg[i] = NULL;
 	while (command->arg[i + index])
 	{
-		command->arg[index] = command->arg[index + i];
+		command->arg[i] = command->arg[index + i];
 		index++;
 	}
 	command->arg[index + i] = NULL;
@@ -121,8 +122,6 @@ int	dollar_find(t_shell *shell, t_command *command, int i, int *j)
 			result = dollar_in_env(shell, &command->arg[i], *j, &name);
 			if (result == 1)
 				return (1);
-			else if (result == 2)
-				return (2);
 		}
 	}
 	if (command->arg[i][0] == '\0')
