@@ -90,8 +90,7 @@ int	double_quote(t_shell *shell, t_command *command, int *start, int i)
 				result = dollar_quoted(shell, &command->arg[i], end, &name);
 				if (result == 1)
 					return (1);
-				else if (result == 2)
-					continue ;
+				continue ;
 			}
 		}
 		end++;

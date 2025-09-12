@@ -33,17 +33,14 @@ static int	loop(t_shell *shell, t_command *command, int i, int j)
 
 	while (command->arg && command->arg[i] && command->arg[i][j])
 	{
-		if (command->arg[i][j] == '\'' || command->arg[i][j] == '\"')
-		{
-			if (remove_quote(shell, command, i, &j))
-				return (1);
-		}
+		if (remove_quote(shell, command, i, &j))
+			return (1);
 		if (command->arg[i][j] == '$')
 		{
 			name = search_name(command->arg[i], j + 1);
 			if (name)
 			{
-				result = dollar_quoted(shell, &command->arg[i], j, &name);
+				result = dollar_find(shell, command, i, &j);
 				if (result == 1)
 					return (1);
 				else if (result == 2)

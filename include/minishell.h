@@ -6,7 +6,7 @@
 /*   By: bertrmar <bertrmar@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 11:33:49 by bertrmar          #+#    #+#             */
-/*   Updated: 2025/09/11 11:33:53 by bertrmar         ###   ########.fr       */
+/*   Updated: 2025/09/11 15:26:39 by bertrmar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,11 +123,13 @@ int		add_arg(t_command *current, t_token *temp, int i);
 /* -------------- expand -------------- */
 int		expand(t_shell *shell, t_command *command, int i, int j);
 int		dollar_quoted(t_shell *shell, char **str_new, int j, char **name);
-int		remplace(char **str_new, int j, char *var, int len_name);
+int		word_splitting(char ***arg, char *str);
+int		dollar_find(t_shell *shell, t_command *command, int i, int *j);
 char	*search_name(char *str, int start);
+int		remplace(char **str_new, int j, char *var, int len_name);
 
 /* -------------- del_quote -------------- */
-int		remove_quote(t_shell *shell, t_command *command, int i, int *start);
+int		remove_quote(t_shell *shell, t_command *command, int i, int *j);
 int		single_quote(t_command *command, int *start, int i);
 int		double_quote(t_shell *shell, t_command *command, int *start, int i);
 

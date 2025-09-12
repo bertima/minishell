@@ -52,20 +52,19 @@ FSRC = src/main.c \
 	   src/parsing/lexeur/lexeur.c \
 	   \
 	   \
-	   src/exec/exec.c \
-	   \
 	   src/expand/expand.c \
+	   src/expand/expand_without_quote/dollar_find.c \
+	   src/expand/expand_without_quote/splitting_expand.c \
+	   src/expand/expand_quoted/dollar_quoted.c \
+	   src/expand/expand_quoted/single_double_quote.c \
+	   src/expand/quote_remove/remove_quote.c \
 	   src/expand/expand_here_doc.c \
-	   src/expand/dollar_quoted.c \
-	   src/expand/remplace.c \
-	   src/expand/remove_quote.c \
-	   src/expand/single_double_quote.c \
+	   \
+	   \
+	   src/exec/exec.c \
 	   \
 	   src/exec/builtin/echo.c \
 	   src/exec/builtin/env.c \
-	   \
-	   \
-	   \
 	   \
 	   \
 	   src/testeur/test.c
