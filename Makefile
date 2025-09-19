@@ -50,6 +50,7 @@ FSRC = src/main.c \
 	   src/expand/expand_without_quote/expand_without_quote.c \
 	   src/expand/expand_here_doc.c \
 	   \
+	   src/signal/signal.c\
 	   \
 	   src/exec/exec.c \
 	   \

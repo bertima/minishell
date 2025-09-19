@@ -46,8 +46,12 @@ int	put_prompt(char *line, t_shell *shell)
 	line = readline(w_dir);
 	if (!line)
 	{
-		perror(NULL);
-		return (return_err_int(shell, "Error readline !\n"));
+		all_free(shell);
+		rl_clear_history();
+		printf("exit\n");
+		exit(127);
+		//perror(NULL);
+		//return (return_err_int(shell, "Error readline !\n"));
 	}
 	if (*line)
 		add_history(line);

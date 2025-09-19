@@ -16,6 +16,10 @@ int	exec(t_shell *shell)
 				echo(shell->cmd->arg);
 			if (ft_strcmp(shell->cmd->arg[0], "env") == 0)
 				show_environ(shell->data->env);
+			if (ft_strcmp(shell->cmd->arg[0], "exit") == 0)
+				end_prog(shell);
+			if (ft_strcmp(shell->cmd->arg[0], "pwd") == 0)
+				print_emplacement();
 		}
 		cmd = cmd->next;
 	}

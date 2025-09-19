@@ -31,5 +31,5 @@ void	ignore_signal(int sig)
 	sa.sa_handler = SIG_IGN;
 	sigemptyset (&sa.sa_mask);
 	sa.sa_flags = 0;
-    sigaction (SIGQUIT, &sa, NULL);
+	sigaction (SIGQUIT, &sa, NULL);
 }

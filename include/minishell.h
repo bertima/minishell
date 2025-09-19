@@ -148,6 +148,8 @@ int		exec(t_shell *shell);
 /*===================== builtin =====================*/
 void	echo(char **str);
 void	show_environ(char **av);
+void	print_emplacement();
+void	end_prog(t_shell *shell);
 
 /*===================== error =====================*/
 /* -------------- error -------------- */
