@@ -25,5 +25,4 @@ void	ft_free_split(char **str)
 		i++;
 	}
 	free(str);
-	str = NULL;
 }

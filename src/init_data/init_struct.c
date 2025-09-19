@@ -1,22 +1,10 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   init_struct.c                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: bertrmar <bertrmar@student.s19.be>         +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/27 07:41:32 by bertrmar          #+#    #+#             */
-/*   Updated: 2025/08/27 07:52:36 by bertrmar         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
 static int	creat_env(char ***env)
 {
 	char	*temp;
 
-	*env = calloc(5, sizeof(char *));
+	*env = calloc(4, sizeof(char *));
 	if (!*env)
 		return (1);
 	temp = ft_strdup("PATH=/usr/local/sbin:/usr/local/bin:");
@@ -28,8 +16,7 @@ static int	creat_env(char ***env)
 	(*env)[0] = ft_strjoin("PWD=", getcwd(NULL, 0));
 	(*env)[1] = ft_strdup("SHLVL=2");
 	(*env)[2] = ft_strjoin(temp, "/usr/sbin:/usr/bin:/sbin:/bin");
-	(*env)[3] = ft_strdup("_=./minishell");
-	(*env)[4] = NULL;
+	(*env)[3] = NULL;
 	if (!(*env)[0] || !(*env)[1] || !(*env)[2] || !(*env)[3])
 	{
 		ft_free_split(*env);
@@ -69,6 +56,9 @@ int	init_struct(t_shell *shell, char **environ)
 	ft_memset(shell, 0, sizeof(t_shell));
 	shell->data = ft_calloc(1, sizeof(t_data));
 	if (!shell->data)
+		return (1);
+	shell->expand = ft_calloc(1, sizeof(t_expand));
+	if (!shell->expand)
 		return (1);
 	if (cp_env(&shell->data->env, environ))
 		return (1);

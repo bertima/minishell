@@ -1,18 +1,6 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   redirect.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: bertrmar <bertrmar@student.s19.be>         +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/05 09:03:38 by bertrmar          #+#    #+#             */
-/*   Updated: 2025/09/05 11:11:52 by bertrmar         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
-static int	add_redirect(t_command *command, t_token *token, int type)
+static int	add_redirect(t_cmd *cmd, t_token *token, int type)
 {
 	t_redir	*temp;
 	t_redir	*new;
@@ -27,11 +15,11 @@ static int	add_redirect(t_command *command, t_token *token, int type)
 		free(new);
 		return (1);
 	}
-	if (!command->redir)
-		command->redir = new;
+	if (!cmd->redir)
+		cmd->redir = new;
 	else
 	{
-		temp = command->redir;
+		temp = cmd->redir;
 		while (temp->next)
 			temp = temp->next;
 		temp->next = new;
@@ -62,13 +50,13 @@ static void	here_doc_expand(t_redir *redir)
 	}
 }
 
-int	redirect(t_command *command, t_token **token)
+int	redirect(t_cmd *cmd, t_token **token)
 {
 	if (!(*token) || !(*token)->next)
 		return (1);
-	if (add_redirect(command, *token, (*token)->type))
+	if (add_redirect(cmd, *token, (*token)->type))
 		return (1);
-	here_doc_expand(command->redir);
+	here_doc_expand(cmd->redir);
 	*token = (*token)->next;
 	return (0);
 }

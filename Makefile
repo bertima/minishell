@@ -1,15 +1,3 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: bertrmar <bertrmar@student.s19.be>         +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2025/08/11 15:06:45 by bertrmar          #+#    #+#              #
-#    Updated: 2025/08/11 15:06:47 by bertrmar         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
 #--------------------EXEC/FLAGS--------------------#
 
 NAME = minishell
@@ -34,8 +22,10 @@ OBJDIR = object
 
 FSRC = src/main.c \
 	   \
+	   \
 	   src/error_free/error.c \
 	   src/error_free/free.c \
+	   \
 	   \
 	   src/init_data/prompt.c \
 	   src/init_data/init_struct.c \
@@ -53,11 +43,11 @@ FSRC = src/main.c \
 	   \
 	   \
 	   src/expand/expand.c \
-	   src/expand/expand_without_quote/dollar_find.c \
-	   src/expand/expand_without_quote/splitting_expand.c \
-	   src/expand/expand_quoted/dollar_quoted.c \
-	   src/expand/expand_quoted/single_double_quote.c \
-	   src/expand/quote_remove/remove_quote.c \
+	   src/expand/expand_utils/expand_utils.c \
+	   src/expand/expand_utils/search_expand.c \
+	   src/expand/expand_quoted/quote_process.c \
+	   src/expand/expand_quoted/remove_quote.c \
+	   src/expand/expand_without_quote/expand_without_quote.c \
 	   src/expand/expand_here_doc.c \
 	   \
 	   \

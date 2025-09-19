@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: bertrmar <bertrmar@student.s19.be>         +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/11 11:33:49 by bertrmar          #+#    #+#             */
-/*   Updated: 2025/09/11 15:26:39 by bertrmar         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -45,9 +33,10 @@
 
 typedef struct s_shell		t_shell;
 typedef struct s_token		t_token;
-typedef struct s_command	t_command;
+typedef struct s_cmd		t_cmd;
 typedef struct s_redir		t_redir;
 typedef struct s_data		t_data;
+typedef struct s_expand		t_expand;
 
 enum	e_type
 {
@@ -60,12 +49,13 @@ enum	e_type
 };
 
 /*********** struct de recup ***********/
-typedef struct s_shell
+struct s_shell
 {
 	t_token			*token;
-	t_command		*command;
+	t_cmd			*cmd;
 	t_data			*data;
-}	t_shell;
+	t_expand		*expand;
+};
 
 /*********** data utile ***********/
 struct	s_data
@@ -73,6 +63,15 @@ struct	s_data
 	char		*line;
 	char		**env;
 	int			exit_code;
+};
+
+/*********** expand ***********/
+struct	s_expand
+{
+	t_cmd		*cmd;
+	char		*current_str;
+	char		*name_var;
+	char		*var_val;
 };
 
 /*********** struct token ***********/
@@ -84,11 +83,11 @@ struct s_token
 };
 
 /*********** commande ***********/
-struct	s_command
+struct	s_cmd
 {
 	char		**arg;
 	t_redir		*redir;
-	t_command	*next;
+	t_cmd		*next;
 };
 
 struct s_redir
@@ -115,23 +114,26 @@ void	lexeur(t_shell *shell);
 /* -------------- parsing -------------- */
 int		parsing(t_shell *shell);
 int		creat_command(t_shell *shell);
-int		redirect(t_command *command, t_token **token);
-int		add_command(t_shell *shell, t_command **current);
-int		add_arg(t_command *current, t_token *temp, int i);
+int		redirect(t_cmd *cmd, t_token **token);
+int		add_command(t_shell *shell, t_cmd **current);
+int		add_arg(t_cmd *current, t_token *temp, int i);
 
 /*===================== expand =====================*/
 /* -------------- expand -------------- */
-int		expand(t_shell *shell, t_command *command, int i, int j);
-int		dollar_quoted(t_shell *shell, char **str_new, int j, char **name);
-int		word_splitting(char ***arg, char *str);
-int		dollar_find(t_shell *shell, t_command *command, int i, int *j);
-char	*search_name(char *str, int start);
-int		remplace(char **str_new, int j, char *var, int len_name);
+int		expand(t_shell *shell, t_cmd *cmd, int i, int j);
+int		expand_without_quote(t_shell *shell, t_cmd *cmd, int *i, int *j);
 
 /* -------------- del_quote -------------- */
-int		remove_quote(t_shell *shell, t_command *command, int i, int *j);
-int		single_quote(t_command *command, int *start, int i);
-int		double_quote(t_shell *shell, t_command *command, int *start, int i);
+int		quote_process(t_shell *shell, t_cmd *cmd, int *i, int *j);
+int		remove_quote(char **str, int *start);
+
+/* -------------- utils -------------- */
+char	*search_var(char **env, char *name);
+char	*search_name(char *str, int start);
+int		remplace(char **str_new, int j, char *var, int len_name);
+int		expand_exit_code(t_shell *shell, int j);
+int		search_expand(t_shell *shell, t_cmd *cmd, int *i, int *j);
+int		exit_code_expand(t_shell *shell, char **arg, int *i, int *end);
 
 /*===================== exec =====================*/
 /* -------------- exec -------------- */
@@ -141,7 +143,7 @@ int		exec(t_shell *shell);
 void	echo(char **str);
 void	show_environ(char **av);
 
-/*===================== error/free =====================*/
+/*===================== error =====================*/
 /* -------------- error -------------- */
 char	*return_null(t_shell *shell);
 int		return_err_int(t_shell *shell, char *str);
@@ -149,10 +151,12 @@ int		return_err_int(t_shell *shell, char *str);
 /* -------------- free -------------- */
 void	all_free(t_shell *shell);
 void	free_command_redir_token(t_shell *shell);
+void	free_expand(t_shell *shell);
+int		free_3var(char **first, char **sec, char **third, int ex);
 
 /*||||||||||||||||||||| test |||||||||||||||||||||*/
 /*--------------- test ----------------*/
-void	show_commands(t_command *command, int i, int cmd_index);
+void	show_commands(t_cmd *cmd, int i, int cmd_index);
 void	show_lexeur(t_shell *shell);
 void	show_token(t_shell *shell);
 
