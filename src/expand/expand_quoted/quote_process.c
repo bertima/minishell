@@ -17,7 +17,7 @@ static int	double_quote(t_shell *shell, char **arg, int *i, int *j)
 				continue ;
 			if (arg[*i][end + 1] && ft_isalnum(arg[*i][end + 1]))
 			{
-				if (search_expand(shell, shell->expand->cmd, i, &end))
+				if (search_expand(shell, shell->expand->cmd, i, &end) == 1)
 					return (1);
 				continue ;
 			}

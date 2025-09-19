@@ -37,29 +37,28 @@ static int  new_arg(t_cmd *cmd, int *i, int j, char ***new)
 
 }*/
 
-int expand_without_quote(t_shell *shell, t_cmd *cmd, int *i, int *j)
+int	expand_without_quote(t_shell *shell, t_cmd *cmd, int *i, int *j)
 {
-    char    **new;
-    int     start;
-    int     result;
+	char	**new;
+	int		start;
+	int		result;
 
-    start = *j;
-    new = NULL;
-    while (cmd->arg[*i][*j])
-    {
-        if (cmd->arg[*i][*j] == '$')
-	    {
-		    result = exit_code_expand(shell, cmd->arg, i, j);
-            if (result == 1)
-			    return (1);
-//            if (result == 2)
-  //              return (0);
-            else if (search_expand(shell, cmd, i, j))
-                return (1);
-        }
-        (*j)++;
-    }
+	start = *j;
+	new = NULL;
+	while (cmd->arg[*i][*j])
+	{
+		if (cmd->arg[*i][*j] == '$')
+		{
+			result = exit_code_expand(shell, cmd->arg, i, j);
+			if (result)
+				return (result);
+			result = search_expand(shell, cmd, i, j);
+			if (result)
+				return (result);
+		}
+		(*j)++;
+	}
 //    if (new_arg(cmd, i, start, &new))
 //        return (1);
-    return (0);
+	return (0);
 }

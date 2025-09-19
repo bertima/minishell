@@ -36,7 +36,8 @@ int	search_expand(t_shell *shell, t_cmd *cmd, int *i, int *j)
 			{
 				if (remplace(&cmd->arg[*i], *j, var, ft_strlen(name)))
 					return (1);
-				return (0);
+				*j = ft_strlen(var);
+				return (2);
 			}
 		}
 		if (remplace(&cmd->arg[*i], *j, NULL, ft_strlen(name)))
