@@ -123,6 +123,12 @@ int		add_arg(t_cmd *current, t_token *temp, int i);
 int		expand(t_shell *shell, t_cmd *cmd, int i, int j);
 int		expand_without_quote(t_shell *shell, t_cmd *cmd, int *i, int *j);
 
+/*===================== signaux =====================*/
+/* -------------- signaux -------------- */
+void	signal_break(int sig, void (*gst_handler)(int));
+void	ignore_signal(int sig);
+void	gst_handler(int sig);
+
 /* -------------- del_quote -------------- */
 int		quote_process(t_shell *shell, t_cmd *cmd, int *i, int *j);
 int		remove_quote(char **str, int *start);
