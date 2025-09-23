@@ -20,6 +20,8 @@ int	exec(t_shell *shell)
 				end_prog(shell);
 			if (ft_strcmp(shell->cmd->arg[0], "pwd") == 0)
 				print_emplacement();
+			if (ft_strcmp(shell->cmd->arg[0], "cd") == 0)
+				dep_fd(shell->cmd->arg);
 		}
 		cmd = cmd->next;
 	}

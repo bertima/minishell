@@ -5,19 +5,19 @@ static int	path(char **w_dir)
 	char	**split_path;
 	int		len;
 
+	if (ft_strcmp(*w_dir, "/") == 0)
+	{
+		*w_dir = ft_strdup("/$");
+		if (!*w_dir)
+			return (1);
+		return (0);
+	}
 	split_path = ft_split(*w_dir, "/");
 	if (!split_path)
 		return (1);
 	len = ft_len_double_char(split_path);
 	*w_dir = ft_strjoin_var(3, "~/", split_path[len - 1], "$ ");
 	if (!*w_dir)
-		return (1);
-	return (0);
-}
-
-static int	home(char *w_dir)
-{
-	if (ft_strcmp(w_dir, "/home") == 0)
 		return (1);
 	return (0);
 }
@@ -29,8 +29,6 @@ static char	*recup_wd(t_shell *shell)
 	w_dir = getcwd(NULL, 0);
 	if (!w_dir)
 		return (return_null(shell));
-	if (home(w_dir))
-		return ("/home$ ");
 	if (path(&w_dir))
 		return (return_null(shell));
 	return (w_dir);

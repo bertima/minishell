@@ -150,6 +150,7 @@ void	echo(char **str);
 void	show_environ(char **av);
 void	print_emplacement();
 void	end_prog(t_shell *shell);
+void	dep_fd(char **av);
 
 /*===================== error =====================*/
 /* -------------- error -------------- */

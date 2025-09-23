@@ -58,7 +58,7 @@ FSRC = src/main.c \
 	   src/exec/builtin/env.c \
 	   src/exec/builtin/exit.c\
 	   src/exec/builtin/pwd.c\
-	   \
+	   src/exec/builtin/cd.c\
 	   \
 	   src/testeur/test.c
 
