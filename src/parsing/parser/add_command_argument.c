@@ -54,7 +54,7 @@ static int	init_data(char **new, t_cmd *c, t_token *temp, char ***new_a)
 	*new = ft_strdup(temp->sentence);
 	if (!*new)
 		return (1);
-	last = ft_len_double_char(c->arg);
+	last = ft_len_array(c->arg);
 	*new_a = ft_calloc(last + 2, sizeof(char *));
 	if (!*new_a)
 	{

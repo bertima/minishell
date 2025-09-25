@@ -14,10 +14,10 @@ static int	creat_env(char ***env)
 		return (1);
 	}
 	(*env)[0] = ft_strjoin("PWD=", getcwd(NULL, 0));
-	(*env)[1] = ft_strdup("SHLVL=2");
+	(*env)[1] = ft_strdup("SHLVL=1");
 	(*env)[2] = ft_strjoin(temp, "/usr/sbin:/usr/bin:/sbin:/bin");
 	(*env)[3] = NULL;
-	if (!(*env)[0] || !(*env)[1] || !(*env)[2] || !(*env)[3])
+	if (!(*env)[0] || !(*env)[1] || !(*env)[2])
 	{
 		ft_free_split(*env);
 		return (1);
@@ -33,7 +33,7 @@ static int	cp_env(char ***env, char **environ)
 	i = 0;
 	if (!environ || !environ[0])
 		return (creat_env(env));
-	len = ft_len_double_char(environ);
+	len = ft_len_array(environ);
 	(*env) = calloc(len + 1, sizeof(char *));
 	if (!(*env))
 		return (1);
