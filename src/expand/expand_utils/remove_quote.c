@@ -1,16 +1,5 @@
 #include "minishell.h"
 
-static char	*free_quit(char **pre, char **inter, char **post)
-{
-	if (pre && *pre)
-		free(*pre);
-	if (inter && *inter)
-		free(*inter);
-	if (post && *post)
-		free(*post);
-	return (NULL);
-}
-
 static int	len_close_quote(char *str, int start)
 {
 	char	quote;
@@ -35,15 +24,14 @@ static char	*new_string(char *str, int start, int end)
 		return (NULL);
 	inter = ft_substr(str, start + 1, end - start - 1);
 	if (!inter)
-		return (free_quit(&pre, NULL, NULL));
+		return (free(pre), NULL);
 	post = ft_substr(str, end + 1, ft_strlen(str) - end - 1);
 	if (!post)
-		return (free_quit(&pre, &inter, NULL));
+		return (free(pre), free(inter), NULL);
 	join = ft_strjoin_var(3, pre, inter, post);
 	if (!join)
-		return (free_quit(&pre, &inter, &post));
-	free_quit(&pre, &inter, &post);
-	return (join);
+		return (free(pre), free(inter), free(post), NULL);
+	return (free(pre), free(inter), free(post), join);
 }
 
 int	remove_quote(char **str, int *start)

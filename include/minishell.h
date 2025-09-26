@@ -107,6 +107,7 @@ int		put_prompt(char *line, t_shell *shell);
 /*===================== parsing =====================*/
 /*-------------- token -------------- */
 int		tokening(t_shell *shell);
+/* ............. utils ............. */
 int		metachar(char *line, int index);
 
 /* -------------- lexer -------------- */
@@ -114,6 +115,7 @@ void	lexeur(t_shell *shell);
 
 /* -------------- parsing -------------- */
 int		parsing(t_shell *shell);
+/* ............. utils ............. */
 int		creat_command(t_shell *shell);
 int		redirect(t_cmd *cmd, t_token **token);
 int		add_command(t_shell *shell, t_cmd **current);
@@ -122,7 +124,10 @@ int		add_arg(t_cmd *current, t_token *temp, int i);
 /*===================== expand =====================*/
 /* -------------- expand -------------- */
 int		expand(t_shell *shell, t_cmd *cmd, int i, int j);
+/* ............. utils ............. */
+int		insert_arg_expand(t_cmd *cmd, int *start_end, int *i, int *j);
 int		expand_without_quote(t_shell *shell, t_cmd *cmd, int *i, int *j);
+int		quote_process(t_shell *shell, t_cmd *cmd, int *i, int *j);
 
 /*===================== signaux =====================*/
 /* -------------- signaux -------------- */
@@ -131,16 +136,15 @@ void	ignore_signal(int sig);
 void	gst_handler(int sig);
 
 /* -------------- del_quote -------------- */
-int		quote_process(t_shell *shell, t_cmd *cmd, int *i, int *j);
 int		remove_quote(char **str, int *start);
 
 /* -------------- utils -------------- */
 char	*search_var(char **env, char *name);
 char	*search_name(char *str, int start);
 int		remplace(char **str_new, int j, char *var, int len_name);
-int		expand_exit_code(t_shell *shell, int j);
 int		search_expand(t_shell *shell, t_cmd *cmd, int *i, int *j);
 int		exit_code_expand(t_shell *shell, char **arg, int *i, int *end);
+int		suppress_arg(t_cmd *cmd, int *i);
 
 /*===================== exec =====================*/
 /* -------------- exec -------------- */
@@ -165,7 +169,6 @@ int		return_err_int(t_shell *shell, char *str);
 void	all_free(t_shell *shell);
 void	free_command_redir_token(t_shell *shell);
 void	free_expand(t_shell *shell);
-int		free_3var(char **first, char **sec, char **third, int ex);
 
 /*||||||||||||||||||||| test |||||||||||||||||||||*/
 /*--------------- test ----------------*/
