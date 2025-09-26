@@ -129,12 +129,6 @@ int		insert_arg_expand(t_cmd *cmd, int *start_end, int *i, int *j);
 int		expand_without_quote(t_shell *shell, t_cmd *cmd, int *i, int *j);
 int		quote_process(t_shell *shell, t_cmd *cmd, int *i, int *j);
 
-/*===================== signaux =====================*/
-/* -------------- signaux -------------- */
-void	signal_break(int sig, void (*gst_handler)(int));
-void	ignore_signal(int sig);
-void	gst_handler(int sig);
-
 /* -------------- del_quote -------------- */
 int		remove_quote(char **str, int *start);
 
@@ -145,6 +139,12 @@ int		remplace(char **str_new, int j, char *var, int len_name);
 int		search_expand(t_shell *shell, t_cmd *cmd, int *i, int *j);
 int		exit_code_expand(t_shell *shell, char **arg, int *i, int *end);
 int		suppress_arg(t_cmd *cmd, int *i);
+
+/*===================== signaux =====================*/
+/* -------------- signaux -------------- */
+void	signal_break(int sig, void (*gst_handler)(int));
+void	ignore_signal(int sig);
+void	gst_handler(int sig);
 
 /*===================== exec =====================*/
 /* -------------- exec -------------- */
