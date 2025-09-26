@@ -38,6 +38,7 @@ typedef struct s_split_exept
 int				ft_abs(int num);
 int				ft_atoi(const char *str);
 int				ft_atol(char *str, long *result);
+int				ft_atoll(char *str, long long *result);
 void			ft_bzero(void *str, size_t n);
 void			*ft_calloc(size_t number, size_t size);
 int				ft_check_base(char *base);

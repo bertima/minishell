@@ -55,11 +55,7 @@ int	put_prompt(char *line, t_shell *shell)
 		add_history(line);
 	shell->data->line = ft_strdup(line);
 	if (!shell->data->line)
-	{
-		free(line);
-		free(w_dir);
-		return (return_err_int(shell, "Error malloc !\n"));
-	}
+		return (free(line), free(w_dir), 1);
 	free(line);
 	free(w_dir);
 	line = NULL;

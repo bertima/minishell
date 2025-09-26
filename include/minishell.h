@@ -2,6 +2,7 @@
 # define MINISHELL_H
 
 # include "../libft/include/libft.h"
+# include <stdint.h>
 # include <stdio.h>
 # include <errno.h>
 
@@ -147,10 +148,13 @@ int		exec(t_shell *shell);
 
 /*===================== builtin =====================*/
 void	echo(char **str);
+int		strlen_av(char **av);
 void	show_environ(char **av);
-void	print_emplacement();
-void	end_prog(t_shell *shell);
+void	print_emplacement(void);
+void	end_prog(t_shell *shell, char **av);
 void	dep_fd(char **av);
+void	export(char **env, char **av);
+void	unset(char **env, char **av);
 
 /*===================== error =====================*/
 /* -------------- error -------------- */
