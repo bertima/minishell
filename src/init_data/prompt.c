@@ -8,7 +8,7 @@ static int	path(char **w_dir)
 	split_path = ft_split(*w_dir, "/");
 	if (!split_path)
 		return (1);
-	len = ft_len_double_char(split_path);
+	len = ft_len_array(split_path);
 	*w_dir = ft_strjoin_var(3, "~/", split_path[len - 1], "$ ");
 	if (!*w_dir)
 		return (1);

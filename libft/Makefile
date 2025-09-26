@@ -47,7 +47,7 @@ FSRC = ft_abs.c \
        ft_isprint.c \
        ft_isspace.c \
        ft_itoa.c \
-       ft_len_double_char.c \
+       ft_len_array.c \
        ft_ltoa.c \
        ft_memchr.c \
        ft_memcmp.c \

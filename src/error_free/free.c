@@ -66,23 +66,3 @@ void	all_free(t_shell *shell)
 	free_data_builtin(shell);
 	free_expand(shell);
 }
-
-int	free_3var(char **first, char **sec, char **third, int ex)
-{
-	if (first && *first)
-	{
-		free(*first);
-		*first = NULL;
-	}
-	if (sec && *sec)
-	{
-		free(*sec);
-		*sec = NULL;
-	}
-	if (third && *third)
-	{
-		free(*third);
-		*third = NULL;
-	}
-	return (ex);
-}

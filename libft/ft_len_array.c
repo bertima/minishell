@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_len_double_char.c                               :+:      :+:    :+:   */
+/*   ft_len_array.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bertrmar <bertrmar@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,7 +12,7 @@
 
 #include "libft.h"
 
-int	ft_len_double_char(char **av)
+int	ft_len_array(char **av)
 {
 	int	i;
 

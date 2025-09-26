@@ -6,7 +6,7 @@ void	show_environ(char **av)
 	int	len;
 
 	i = 0;
-	len = ft_len_double_char(av);
+	len = ft_len_array(av);
 	while (i < len)
 	{
 		printf("%s\n", av[i]);

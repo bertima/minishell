@@ -49,7 +49,7 @@ int				ft_isdigit(int c);
 int				ft_isprint(int c);
 int				ft_isspace(char c);
 char			*ft_itoa(int n);
-int				ft_len_double_char(char **av);
+int				ft_len_array(char **av);
 char			*ft_ltoa(long n);
 void			ft_lstadd_back(t_list **lst, t_list *new);
 void			ft_lstadd_front(t_list **lst, t_list *new);
