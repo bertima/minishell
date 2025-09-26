@@ -36,7 +36,7 @@ int	search_expand(t_shell *shell, t_cmd *cmd, int *i, int *j)
 			{
 				if (remplace(&cmd->arg[*i], *j, var, ft_strlen(name)))
 					return (1);
-				*j = ft_strlen(var);
+				*j += ft_strlen(var);
 				return (0);
 			}
 		}
@@ -62,10 +62,11 @@ int	suppress_arg(t_cmd *cmd, int *i)
 		if (j == *i)
 			free(cmd->arg[j]);
 		else
-			temp[k] = cmd->arg[j];
+			temp[k++] = cmd->arg[j];
 		j++;
 	}
 	temp[k] = NULL;
+	(*i)--;
 	free(cmd->arg);
 	cmd->arg = temp;
 	return (0);

@@ -49,11 +49,11 @@ int	remplace(char **str_new, int j, char *var, int len_var)
 		return (1);
 	post = ft_substr(*str_new, len_post, ft_strlen(*str_new) - len_post);
 	if (!post)
-		return (free_3var(&pre, NULL, NULL, 1));
+		return (free(pre), 1);
 	new = ft_strjoin_var(3, pre, var, post);
 	if (!new)
-		return (free_3var(&pre, &post, NULL, 1));
-	free_3var(&pre, &post, str_new, 0);
+		return (free(pre), free(post), 1);
+	free(*str_new);
 	*str_new = new;
-	return (0);
+	return (free(pre), free(post), 0);
 }

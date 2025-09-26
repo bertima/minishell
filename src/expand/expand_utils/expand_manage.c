@@ -2,10 +2,8 @@
 
 int	expand_without_quote(t_shell *shell, t_cmd *cmd, int *i, int *j)
 {
-	int		start_end[2];
 	int		result;
 
-	start_end[0] = *j;
 	if (cmd->arg[*i][*j] == '$')
 	{
 		result = exit_code_expand(shell, cmd->arg, i, j);
@@ -15,7 +13,6 @@ int	expand_without_quote(t_shell *shell, t_cmd *cmd, int *i, int *j)
 		{
 			if (search_expand(shell, cmd, i, j))
 				return (1);
-			start_end[1] = *j;
 			return (2);
 		}
 	}

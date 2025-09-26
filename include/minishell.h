@@ -156,7 +156,6 @@ int		return_err_int(t_shell *shell, char *str);
 void	all_free(t_shell *shell);
 void	free_command_redir_token(t_shell *shell);
 void	free_expand(t_shell *shell);
-int		free_3var(char **first, char **sec, char **third, int ex);
 
 /*||||||||||||||||||||| test |||||||||||||||||||||*/
 /*--------------- test ----------------*/

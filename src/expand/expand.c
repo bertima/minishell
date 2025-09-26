@@ -1,19 +1,24 @@
 #include "minishell.h"
 
-static int	loop_remove_quote(t_cmd *cmd, int i)
+static int	loop_remove_quote(t_cmd *cmd, int stock, int i)
 {
 	int	j;
 
 	j = 0;
-	while (cmd->arg[i] && cmd->arg[i][j])
+	while (cmd->arg && cmd->arg[stock] && stock <= i)
 	{
-		if (cmd->arg[i][j] == '\"' || cmd->arg[i][j] == '\'')
+		j = 0;
+		while (cmd->arg[stock] && cmd->arg[stock][j])
 		{
-			if (remove_quote(&cmd->arg[i], &j))
-				return (1);
+			if (cmd->arg[stock][j] == '\"' || cmd->arg[stock][j] == '\'')
+			{
+				if (remove_quote(&cmd->arg[stock], &j))
+					return (1);
+			}
+			else
+				j++;
 		}
-		else
-			j++;
+		stock++;
 	}
 	return (0);
 }
@@ -61,7 +66,9 @@ static int	loop_word_split(t_cmd *cmd, int *i, int j, int block)
 static int	loop_expand(t_shell *shell, t_cmd *cmd, int *i, int *j)
 {
 	int			result;
+	int			stock;
 
+	stock = *i;
 	while (cmd->arg && cmd->arg[*i] && cmd->arg[*i][*j])
 	{
 		result = quote_process(shell, cmd, i, j);
@@ -78,7 +85,7 @@ static int	loop_expand(t_shell *shell, t_cmd *cmd, int *i, int *j)
 	}
 	if (loop_word_split(cmd, i, 0, 0))
 		return (1);
-	if (loop_remove_quote(cmd, *i))
+	if (loop_remove_quote(cmd, stock, *i))
 		return (1);
 	return (0);
 }

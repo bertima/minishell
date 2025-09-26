@@ -21,18 +21,18 @@ static int	regroupe(char ***new, char *str, int *start_end, char *temp)
 	if (!temp)
 		return (free(post), 1);
 	free((*new)[ft_len_array(*new) - 1]);
-	free(pre);
+	free(post);
 	(*new)[ft_len_array(*new) - 1] = temp;
 	return (0);
 }
 
-static int	creat_new(char ***new, char *str, int *start_end, int *j)
+static int	creat_new(char ***new, char **str_arg, int *start_end, int *j)
 {
-	*new = ft_split(str, " \t\n");
+	*new = ft_split(str_arg[1], " \t\n");
 	if (!*new)
 		return (1);
 	*j = ft_strlen((*new)[ft_len_array(*new) - 1]);
-	if (regroupe(new, str, start_end, NULL))
+	if (regroupe(new, str_arg[0], start_end, NULL))
 		return (ft_free_split(*new), 1);
 	return (0);
 }
@@ -75,14 +75,15 @@ static int	copie_cmd(t_cmd *cmd, char **new, int *i, int stock)
 
 int	insert_arg_expand(t_cmd *cmd, int *start_end, int *i, int *j)
 {
-	char	*str;
+	char	*str_arg[2];
 	char	**new;
 
-	str = ft_substr(cmd->arg[*i], start_end[0], start_end[1]);
-	if (!str)
+	str_arg[1] = ft_substr(cmd->arg[*i], start_end[0], start_end[1]);
+	if (!str_arg[1])
 		return (1);
-	if (creat_new(&new, str, start_end, j))
-		return (free(str), 1);
+	str_arg[0] = cmd->arg[*i];
+	if (creat_new(&new, str_arg, start_end, j))
+		return (free(str_arg[1]), 1);
 	if (copie_cmd(cmd, new, i, 0))
 		return (1);
 	return (0);
