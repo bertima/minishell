@@ -50,7 +50,7 @@ static void	here_doc_expand(t_redir *redir)
 	}
 }
 
-int	redirect(t_cmd *cmd, t_token **token)
+int	manage_redirect_token(t_cmd *cmd, t_token **token)
 {
 	if (!(*token) || !(*token)->next)
 		return (1);

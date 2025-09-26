@@ -34,7 +34,7 @@ FSRC = src/main.c \
 	   src/parsing/parser/parsing.c \
 	   src/parsing/parser/creat_command.c \
 	   src/parsing/parser/add_command_argument.c \
-	   src/parsing/parser/redirect.c \
+	   src/parsing/parser/manage_redirect_token.c \
 	   \
 	   src/parsing/token/creat_token.c \
 	   src/parsing/token/metacharactere.c \
@@ -42,15 +42,19 @@ FSRC = src/main.c \
 	   src/parsing/lexeur/lexeur.c \
 	   \
 	   \
+	   src/signal/signal.c\
+	   \
+	   \
 	   src/expand/expand.c \
-	   src/expand/expand_utils/expand_utils.c \
-	   src/expand/expand_utils/search_expand.c \
+	   src/expand/expand_utils/search_exp_exit_code_suppress_arg.c \
 	   src/expand/expand_utils/expand_manage.c \
-	   src/expand/expand_utils/remove_quote.c \
+	   src/expand/expand_utils/remove_quote_search_name.c \
 	   src/expand/expand_utils/insert_arg_expand.c \
 	   src/expand/expand_here_doc.c \
 	   \
-	   src/signal/signal.c\
+	   \
+	   src/exec/redirection/redirection.c \
+	   \
 	   \
 	   src/exec/exec.c \
 	   \

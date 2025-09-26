@@ -25,6 +25,8 @@ int	exec(t_shell *shell)
 	if (expand(shell, shell->cmd, 0, 0))
 		return (1);
 	show_commands(shell->cmd, 0, 1);
+	if (redirection(shell))
+		return (1);
 	cmd = shell->cmd;
 	while (cmd)
 	{

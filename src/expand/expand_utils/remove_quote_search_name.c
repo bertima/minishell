@@ -52,3 +52,19 @@ int	remove_quote(char **str, int *start)
 		*start = 0;
 	return (0);
 }
+
+char	*search_name(char *str, int start)
+{
+	int		len;
+	char	*name;
+
+	len = 0;
+	while (ft_isalnum(str[start + len]))
+		len++;
+	if (len == 0)
+		return (NULL);
+	name = ft_substr(str, start, len);
+	if (!name)
+		return (NULL);
+	return (name);
+}

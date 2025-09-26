@@ -15,7 +15,7 @@ static int	compare(t_shell *shell, t_cmd **cmd, t_token **temp)
 	}
 	else if ((*temp)->type != WORD)
 	{
-		if (redirect(*cmd, temp))
+		if (manage_redirect_token(*cmd, temp))
 			return (1);
 	}
 	else

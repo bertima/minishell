@@ -117,9 +117,15 @@ void	lexeur(t_shell *shell);
 int		parsing(t_shell *shell);
 /* ............. utils ............. */
 int		creat_command(t_shell *shell);
-int		redirect(t_cmd *cmd, t_token **token);
+int		manage_redirect_token(t_cmd *cmd, t_token **token);
 int		add_command(t_shell *shell, t_cmd **current);
 int		add_arg(t_cmd *current, t_token *temp, int i);
+
+/*===================== signaux =====================*/
+/* -------------- signaux -------------- */
+void	signal_break(int sig, void (*gst_handler)(int));
+void	ignore_signal(int sig);
+void	gst_handler(int sig);
 
 /*===================== expand =====================*/
 /* -------------- expand -------------- */
@@ -133,18 +139,14 @@ int		quote_process(t_shell *shell, t_cmd *cmd, int *i, int *j);
 int		remove_quote(char **str, int *start);
 
 /* -------------- utils -------------- */
-char	*search_var(char **env, char *name);
 char	*search_name(char *str, int start);
-int		remplace(char **str_new, int j, char *var, int len_name);
 int		search_expand(t_shell *shell, t_cmd *cmd, int *i, int *j);
 int		exit_code_expand(t_shell *shell, char **arg, int *i, int *end);
 int		suppress_arg(t_cmd *cmd, int *i);
 
-/*===================== signaux =====================*/
-/* -------------- signaux -------------- */
-void	signal_break(int sig, void (*gst_handler)(int));
-void	ignore_signal(int sig);
-void	gst_handler(int sig);
+/*===================== redirection =====================*/
+/* -------------- redirection -------------- */
+int redirection(t_shell *shell);
 
 /*===================== exec =====================*/
 /* -------------- exec -------------- */
