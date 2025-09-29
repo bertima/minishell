@@ -1,7 +1,8 @@
 #include "minishell.h"
 
-static int	regroupe(char ***new, char *str, int *start_end, char *temp)
+static int	regroupe(char ***new, char *str, int *start_end, int *j)
 {
+	char	*temp;
 	char	*pre;
 	char	*post;
 
@@ -11,6 +12,7 @@ static int	regroupe(char ***new, char *str, int *start_end, char *temp)
 	temp = ft_strjoin(pre, (*new)[0]);
 	if (!temp)
 		return (free(pre), 1);
+	*j = ft_strlen(temp);
 	free((*new)[0]);
 	free(pre);
 	(*new)[0] = temp;
@@ -28,27 +30,26 @@ static int	regroupe(char ***new, char *str, int *start_end, char *temp)
 
 static int	creat_new(char ***new, char **str_arg, int *start_end, int *j)
 {
-	*new = ft_split(str_arg[1], " \t\n");
+	*new = ft_split(str_arg[0], " \t\n");
 	if (!*new)
 		return (1);
-	*j = ft_strlen((*new)[ft_len_array(*new) - 1]);
-	if (regroupe(new, str_arg[0], start_end, NULL))
+	if (regroupe(new, str_arg[1], start_end, j))
 		return (ft_free_split(*new), 1);
 	return (0);
 }
 
-static void	copie_continue(t_cmd *cmd, int *i, char ***temp, int j)
+static void	copie_continue(char ***arg, int *i, char ***temp, int j)
 {
-	while (cmd->arg[*i] && cmd->arg[*i + 1])
+	while ((*arg)[*i] && (*arg)[*i + 1])
 	{
-		(*temp)[j] = cmd->arg[1 + *i];
+		(*temp)[j] = (*arg)[1 + *i];
 		(*i)++;
 		j++;
 	}
 	(*temp)[j] = NULL;
 }
 
-static int	copie_cmd(t_cmd *cmd, char **new, int *i, int stock)
+static int	copie_cmd(char ***arg, char **new, int *i, int stock)
 {
 	int		j;
 	int		k;
@@ -57,34 +58,36 @@ static int	copie_cmd(t_cmd *cmd, char **new, int *i, int stock)
 
 	j = -1;
 	k = 0;
-	len = ft_len_array(cmd->arg) + ft_len_array(new);
+	len = ft_len_array(*arg) + ft_len_array(new);
 	temp = calloc(len + 1, sizeof(char *));
 	if (!temp)
 		return (1);
 	while (++j < *i)
-		temp[j] = cmd->arg[j];
+		temp[j] = (*arg)[j];
 	while (new[k])
 		temp[j++] = new[k++];
 	stock = j - 1;
-	copie_continue(cmd, i, &temp, j);
-	free(cmd->arg);
-	cmd->arg = temp;
+	copie_continue(arg, i, &temp, j);
+	free(*arg);
+	(*arg) = temp;
 	*i = stock;
 	return (0);
 }
 
-int	insert_arg_expand(t_cmd *cmd, int *start_end, int *i, int *j)
+int	insert_arg_expand(char ***arg, int *start_end, int *i, int *j)
 {
 	char	*str_arg[2];
 	char	**new;
 
-	str_arg[1] = ft_substr(cmd->arg[*i], start_end[0], start_end[1]);
-	if (!str_arg[1])
+	if (start_end[0] >= start_end[1])
+		return (0);
+	str_arg[0] = ft_substr((*arg)[*i], start_end[0], start_end[1]);
+	if (!str_arg[0])
 		return (1);
-	str_arg[0] = cmd->arg[*i];
+	str_arg[1] = (*arg)[*i];
 	if (creat_new(&new, str_arg, start_end, j))
-		return (free(str_arg[1]), 1);
-	if (copie_cmd(cmd, new, i, 0))
+		return (free(str_arg[0]), 1);
+	if (copie_cmd(arg, new, i, 0))
 		return (1);
 	return (0);
 }

@@ -42,6 +42,7 @@ int	exit_code_expand(t_shell *shell, char **arg, int *i, int *end)
 	}
 	return (0);
 }
+
 static char	*search_var(char **env, char *name)
 {
 	int			i;
@@ -60,34 +61,34 @@ static char	*search_var(char **env, char *name)
 	return (NULL);
 }
 
-int	search_expand(t_shell *shell, t_cmd *cmd, int *i, int *j)
+int	search_expand(t_shell *shell, char ***arg, int *i, int *j)
 {
 	char	c;
 	char	*var;
 	char	*name;
 
-	c = cmd->arg[*i][*j + 1];
-	if (cmd->arg[*i][*j] == '$' && c && ft_isalnum(c))
+	c = (*arg)[*i][*j + 1];
+	if ((*arg)[*i][*j] == '$' && c && ft_isalnum(c))
 	{
-		name = search_name(cmd->arg[*i], *j + 1);
+		name = search_name((*arg)[*i], *j + 1);
 		if (name)
 		{
 			var = search_var(shell->data->env, name);
 			if (var)
 			{
-				if (remplace(&cmd->arg[*i], *j, var, ft_strlen(name)))
+				if (remplace(&(*arg)[*i], *j, var, ft_strlen(name)))
 					return (1);
 				*j += ft_strlen(var);
 				return (0);
 			}
 		}
-		if (remplace(&cmd->arg[*i], *j, NULL, ft_strlen(name)))
+		if (remplace(&(*arg)[*i], *j, NULL, ft_strlen(name)))
 			return (1);
 	}
 	return (0);
 }
 
-int	suppress_arg(t_cmd *cmd, int *i)
+int	suppress_arg(char ***arg, int *i)
 {
 	char	**temp;
 	int		j;
@@ -95,20 +96,20 @@ int	suppress_arg(t_cmd *cmd, int *i)
 
 	j = 0;
 	k = 0;
-	temp = calloc(ft_len_array(cmd->arg), sizeof(char *));
+	temp = calloc(ft_len_array(*arg), sizeof(char *));
 	if (!temp)
 		return (1);
-	while (cmd->arg[j])
+	while ((*arg)[j])
 	{
 		if (j == *i)
-			free(cmd->arg[j]);
+			free((*arg)[j]);
 		else
-			temp[k++] = cmd->arg[j];
+			temp[k++] = (*arg)[j];
 		j++;
 	}
 	temp[k] = NULL;
 	(*i)--;
-	free(cmd->arg);
-	cmd->arg = temp;
+	free(*arg);
+	*arg = temp;
 	return (0);
 }

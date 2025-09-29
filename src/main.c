@@ -2,12 +2,9 @@
 
 static void	programme(char *line, t_shell *shell)
 {
-	if (put_prompt(line, shell))
-		return ;
-	if (parsing(shell))
-		return ;
-	if (exec(shell))
-		return ;
+	put_prompt(line, shell);
+	parsing(shell);
+	exec(shell);
 	free_command_redir_token(shell);
 }
 

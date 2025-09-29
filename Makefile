@@ -50,10 +50,10 @@ FSRC = src/main.c \
 	   src/expand/expand_utils/expand_manage.c \
 	   src/expand/expand_utils/remove_quote_search_name.c \
 	   src/expand/expand_utils/insert_arg_expand.c \
-	   src/expand/expand_here_doc.c \
 	   \
 	   \
 	   src/exec/redirection/redirection.c \
+	   src/exec/redirection/here_doc.c \
 	   \
 	   \
 	   src/exec/exec.c \

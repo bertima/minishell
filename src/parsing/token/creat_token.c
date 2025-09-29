@@ -48,22 +48,16 @@ static int	find_quote(t_shell *shell, char *line, int *len, char c)
 	return (0);
 }
 
-static int	loop(t_shell *shell, char *line, int start, int *len)
+static int	search_arg(t_shell *shell, char *line, int start, int *len)
 {
 	int	index;
-	int	meta;
 
 	*len = 0;
 	index = start;
 	while (line[index] && !ft_isspace(line[index]))
 	{
-		meta = metachar(line, index);
-		if (meta > 0)
-		{
-			if (*len == 0)
-				*len = meta;
+		if (metachar(line, index, len))
 			break ;
-		}
 		if ((line[index] == '\'' || line[index] == '\"'))
 		{
 			if (find_quote(shell, &line[index], len, line[index]))
@@ -91,7 +85,7 @@ int	tokening(t_shell *shell)
 			start++;
 		if (!line[start])
 			break ;
-		if (loop(shell, line, start, &len))
+		if (search_arg(shell, line, start, &len))
 			return (1);
 		if (add_token(shell, start, len))
 			return (1);

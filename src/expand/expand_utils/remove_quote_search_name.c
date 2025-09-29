@@ -25,7 +25,7 @@ static char	*new_string(char *str, int start, int end)
 	inter = ft_substr(str, start + 1, end - start - 1);
 	if (!inter)
 		return (free(pre), NULL);
-	post = ft_substr(str, end + 1, ft_strlen(str) - end - 1);
+	post = ft_substr(str, end + 1, ft_strlen(str) - (end + 1));
 	if (!post)
 		return (free(pre), free(inter), NULL);
 	join = ft_strjoin_var(3, pre, inter, post);

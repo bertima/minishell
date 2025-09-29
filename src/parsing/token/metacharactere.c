@@ -1,16 +1,20 @@
 #include "minishell.h"
 
-int	metachar(char *line, int index)
+int	metachar(char *line, int index, int *len)
 {
 	int	i;
 
 	i = 0;
-	while (line[index + i] == '<' || line[index + i] == '>'
+	if (line[index + i] == '<' || line[index + i] == '>'
 		|| line[index + i] == '|')
 	{
-		if (line[index + i] == '|')
-			return (1);
 		i++;
+		(*len)++;
+		if (line[index + i] == '<' || line[index + i] == '>')
+		{
+			i++;
+			(*len)++;
+		}
 	}
 	return (i);
 }

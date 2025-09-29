@@ -2,9 +2,13 @@
 
 static void	show_redir(t_cmd *cmd, t_redir *redir)
 {
+	int	i;
+
+	i = 0;
 	redir = cmd->redir;
 	while (redir)
 	{
+		i = 0;
 		printf("Redirection: ");
 		if (redir->type == LESS)
 			printf("<");
@@ -14,8 +18,12 @@ static void	show_redir(t_cmd *cmd, t_redir *redir)
 			printf(">>");
 		else if (redir->type == HERE_DOC)
 			printf("<<");
-		printf(" file : %s", redir->file);
 		printf(" : here_doc_expand : %d\n", redir->hd_expand);
+		while (redir->file[i])
+		{
+			printf("file : %d, %s\n", i, redir->file[i]);
+			i++;
+		}
 		redir = redir->next;
 	}
 }

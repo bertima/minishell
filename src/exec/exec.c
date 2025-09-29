@@ -24,18 +24,17 @@ int	exec(t_shell *shell)
 
 	if (expand(shell, shell->cmd, 0, 0))
 		return (1);
-	show_commands(shell->cmd, 0, 1);
-	if (redirection(shell))
-		return (1);
 	cmd = shell->cmd;
 	while (cmd)
 	{
+		if (redirection_verif(shell, cmd))
+			return (1);
 		if (cmd->arg)
 		{
 			bultin(shell);
 		}
 		cmd = cmd->next;
 	}
-	cmd = shell->cmd;
+	show_commands(shell->cmd, 0, 1);
 	return (0);
 }

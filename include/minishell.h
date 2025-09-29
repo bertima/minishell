@@ -66,15 +66,6 @@ struct	s_data
 	int			exit_code;
 };
 
-/*********** expand ***********/
-struct	s_expand
-{
-	t_cmd		*cmd;
-	char		*current_str;
-	char		*name_var;
-	char		*var_val;
-};
-
 /*********** struct token ***********/
 struct s_token
 {
@@ -95,7 +86,8 @@ struct s_redir
 {
 	int		type;
 	int		hd_expand;
-	char	*file;
+	char	*before_exp;
+	char	**file;
 	t_redir	*next;
 };
 
@@ -108,10 +100,10 @@ int		put_prompt(char *line, t_shell *shell);
 /*-------------- token -------------- */
 int		tokening(t_shell *shell);
 /* ............. utils ............. */
-int		metachar(char *line, int index);
+int		metachar(char *line, int index, int *len);
 
 /* -------------- lexer -------------- */
-void	lexeur(t_shell *shell);
+int		lexeur(t_shell *shell);
 
 /* -------------- parsing -------------- */
 int		parsing(t_shell *shell);
@@ -131,22 +123,25 @@ void	gst_handler(int sig);
 /* -------------- expand -------------- */
 int		expand(t_shell *shell, t_cmd *cmd, int i, int j);
 /* ............. utils ............. */
-int		insert_arg_expand(t_cmd *cmd, int *start_end, int *i, int *j);
-int		expand_without_quote(t_shell *shell, t_cmd *cmd, int *i, int *j);
-int		quote_process(t_shell *shell, t_cmd *cmd, int *i, int *j);
+int		loop_remove_quote(char ***arg, int stock, int i);
+int		loop_expand(t_shell *shell, char ***arg, int *i, int *j);
+int		insert_arg_expand(char ***arg, int *start_end, int *i, int *j);
+int		expand_without_quote(t_shell *shell, char ***arg, int *i, int *j);
+int		quote_process(t_shell *shell, char ***arg, int *i, int *j);
 
 /* -------------- del_quote -------------- */
 int		remove_quote(char **str, int *start);
 
 /* -------------- utils -------------- */
 char	*search_name(char *str, int start);
-int		search_expand(t_shell *shell, t_cmd *cmd, int *i, int *j);
+int		search_expand(t_shell *shell, char ***arg, int *i, int *j);
 int		exit_code_expand(t_shell *shell, char **arg, int *i, int *end);
-int		suppress_arg(t_cmd *cmd, int *i);
+int		suppress_arg(char ***arg, int *i);
 
 /*===================== redirection =====================*/
 /* -------------- redirection -------------- */
-int redirection(t_shell *shell);
+int		redirection_verif(t_shell *shell, t_cmd *cmd);
+int		manage_here_doc(t_redir *redir);
 
 /*===================== exec =====================*/
 /* -------------- exec -------------- */
