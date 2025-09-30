@@ -30,9 +30,7 @@ int	exec(t_shell *shell)
 		if (redirection_verif(shell, cmd))
 			return (1);
 		if (cmd->arg)
-		{
 			bultin(shell);
-		}
 		cmd = cmd->next;
 	}
 	show_commands(shell->cmd, 0, 1);

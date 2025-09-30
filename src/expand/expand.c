@@ -66,7 +66,7 @@ static int	word_split(char ***arg, int *i, int j, int result)
 	return (0);
 }
 
-int	loop_expand(t_shell *shell, char ***arg, int *i, int *j)
+int	expand_in_arg(t_shell *shell, char ***arg, int *i, int *j)
 {
 	int			result;
 	int			stock;
@@ -104,7 +104,7 @@ int	expand(t_shell *shell, t_cmd *cmd, int i, int j)
 		while (temp->arg && temp->arg[i])
 		{
 			j = 0;
-			if (loop_expand(shell, &temp->arg, &i, &j))
+			if (expand_in_arg(shell, &temp->arg, &i, &j))
 				return (1);
 			i++;
 		}

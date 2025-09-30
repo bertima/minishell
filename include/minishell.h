@@ -78,6 +78,8 @@ struct s_token
 struct	s_cmd
 {
 	char		**arg;
+	int			fd_in;
+	int			fd_out;
 	t_redir		*redir;
 	t_cmd		*next;
 };
@@ -85,6 +87,7 @@ struct	s_cmd
 struct s_redir
 {
 	int		type;
+	int		fd;
 	int		hd_expand;
 	char	*before_exp;
 	char	**file;
@@ -124,7 +127,7 @@ void	gst_handler(int sig);
 int		expand(t_shell *shell, t_cmd *cmd, int i, int j);
 /* ............. utils ............. */
 int		loop_remove_quote(char ***arg, int stock, int i);
-int		loop_expand(t_shell *shell, char ***arg, int *i, int *j);
+int		expand_in_arg(t_shell *shell, char ***arg, int *i, int *j);
 int		insert_arg_expand(char ***arg, int *start_end, int *i, int *j);
 int		expand_without_quote(t_shell *shell, char ***arg, int *i, int *j);
 int		quote_process(t_shell *shell, char ***arg, int *i, int *j);
@@ -141,7 +144,8 @@ int		suppress_arg(char ***arg, int *i);
 /*===================== redirection =====================*/
 /* -------------- redirection -------------- */
 int		redirection_verif(t_shell *shell, t_cmd *cmd);
-int		manage_here_doc(t_redir *redir);
+int		manage_here_doc(t_shell *shell, t_redir *redir);
+int		manage_delimiter_hd(t_redir *redir);
 
 /*===================== exec =====================*/
 /* -------------- exec -------------- */

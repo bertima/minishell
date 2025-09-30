@@ -11,7 +11,7 @@ int	find_meta_token(t_token *token)
 
 int	verif_metachar_redir(t_shell *shell)
 {
-	t_token *token;
+	t_token	*token;
 
 	token = shell->token;
 	while (token)
