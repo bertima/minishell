@@ -14,7 +14,7 @@ int	verif_metachar_redir(t_shell *shell)
 	t_token	*token;
 
 	token = shell->token;
-	if (token->type == PIPE)
+	if (token && token->type == PIPE)
 		return (return_err_int(shell, "syntax error metachar\n"));
 	while (token)
 	{

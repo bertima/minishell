@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-static void	free_data_builtin(t_shell *shell)
+static void	free_data(t_shell *shell)
 {
 	if (shell->data->env)
 		ft_free_split(shell->data->env);
@@ -73,5 +73,5 @@ void	all_free(t_shell *shell)
 	if (!shell)
 		return ;
 	free_command_redir_token(shell);
-	free_data_builtin(shell);
+	free_data(shell);
 }

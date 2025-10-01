@@ -88,13 +88,12 @@ static int	manage_expand_delimiter(t_shell *shell, t_cmd *cmd, int i, int j)
 	return (0);
 }
 
-int	redirection_verif(t_shell *shell, t_cmd *temp_cmd, char *file_temp)
+int	redirection_verif(t_shell *shell, t_cmd *temp_cmd)
 {
 	temp_cmd = shell->cmd;
-	file_temp = "minishell_recup_temp_here_doc_delete_after_use_";
 	while (temp_cmd)
 	{
-		if (creat_here_doc(shell, temp_cmd, file_temp, 0))
+		if (creat_here_doc(shell, temp_cmd, NULL, 0))
 			return (1);
 		temp_cmd = temp_cmd->next;
 	}

@@ -1,34 +1,46 @@
 #include "minishell.h"
 
-void	bultin(t_shell *shell)
+static int	bultin(t_shell *shell, t_cmd *cmd)
 {
-	if (ft_strcmp(shell->cmd->arg[0], "echo") == 0)
-		echo(shell->cmd->arg);
-	if (ft_strcmp(shell->cmd->arg[0], "env") == 0)
-		show_environ(shell->data->env);
-	if (ft_strcmp(shell->cmd->arg[0], "exit") == 0)
-		end_prog(shell, shell->cmd->arg);
-	if (ft_strcmp(shell->cmd->arg[0], "pwd") == 0)
-		print_emplacement();
-	if (ft_strcmp(shell->cmd->arg[0], "cd") == 0)
-		dep_fd(shell->cmd->arg);
-	if (ft_strcmp(shell->cmd->arg[0], "export") == 0)
-		export(shell->data->env, shell->cmd->arg);
-	if (ft_strcmp(shell->cmd->arg[0], "unset") == 0)
-		unset(shell->data->env, shell->cmd->arg);
+	if (ft_strcmp(cmd->arg[0], "echo") == 0)
+		return (echo(cmd->arg), 1);
+	if (ft_strcmp(cmd->arg[0], "env") == 0)
+		return (show_environ(shell->data->env), 1);
+	if (ft_strcmp(cmd->arg[0], "exit") == 0)
+		return (end_prog(shell, shell->cmd->arg), 1);
+	if (ft_strcmp(cmd->arg[0], "pwd") == 0)
+		return (print_emplacement(), 1);
+	if (ft_strcmp(cmd->arg[0], "cd") == 0)
+		return (dep_fd(shell->cmd->arg), 1);
+	if (ft_strcmp(cmd->arg[0], "export") == 0)
+		return (export(shell->data->env, shell->cmd->arg), 1);
+	if (ft_strcmp(cmd->arg[0], "unset") == 0)
+		return (unset(shell->data->env, shell->cmd->arg), 1);
+	return (0);
 }
 
 int	exec(t_shell *shell)
 {
 	t_cmd	*cmd;
+	int		i;
 
-	if (expand(shell, shell->cmd, 0, 0))
-		return (1);
+	i = 0;
 	cmd = shell->cmd;
 	while (cmd)
 	{
 		if (cmd->arg)
-			bultin(shell);
+		{
+			if (cmd->arg[0])
+			{
+				if (bultin(shell, cmd))
+				{
+					cmd = cmd->next;
+    	        	continue ;
+				}
+        		child(shell, cmd);
+			}
+		}
+		i++;
 		cmd = cmd->next;
 	}
 	show_commands(shell->cmd, 0, 1);

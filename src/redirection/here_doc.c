@@ -103,7 +103,8 @@ int	creat_here_doc(t_shell *shell, t_cmd *temp_cmd, char *file_temp, int fd)
 	{
 		if (temp_redir->type == HERE_DOC)
 		{
-			file_temp = "minishell_recup_temp_here_doc_delete_after_use_";
+			if (generator_of_file_name(&file_temp, NULL, NULL))
+				return (1);
 			unlink(file_temp);
 			fd = open(file_temp, O_WRONLY | O_CREAT, 0600);
 			if (fd < 0)
