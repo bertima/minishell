@@ -27,8 +27,6 @@ int	exec(t_shell *shell)
 	cmd = shell->cmd;
 	while (cmd)
 	{
-		if (redirection_verif(shell, cmd))
-			return (1);
 		if (cmd->arg)
 			bultin(shell);
 		cmd = cmd->next;

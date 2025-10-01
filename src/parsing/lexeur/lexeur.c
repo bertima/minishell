@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int	find_meta_token(t_token *token)
+static int	find_meta_token(t_token *token)
 {
 	if (token->type == MORE || token->type == REDIRECT_A
 		|| token->type == HERE_DOC || token->type == LESS
@@ -14,12 +14,24 @@ int	verif_metachar_redir(t_shell *shell)
 	t_token	*token;
 
 	token = shell->token;
+	if (token->type == PIPE)
+		return (return_err_int(shell, "syntax error metachar\n"));
 	while (token)
 	{
 		if (find_meta_token(token))
 		{
-			if (!token->next || find_meta_token(token->next))
-				return (return_err_int(shell, "meta redir pas ok lexeur\n"));
+			if (!token->next)
+				return (return_err_int(shell, "syntax error metachar\n"));
+			if (token->type != PIPE)
+			{
+				if (find_meta_token(token->next))
+					return (return_err_int(shell, "syntax error metachar\n"));
+			}
+			else
+			{
+				if (token->next->type == PIPE)
+					return (return_err_int(shell, "syntax error metachar\n"));
+			}
 		}
 		token = token->next;
 	}

@@ -4,6 +4,7 @@ static void	programme(char *line, t_shell *shell)
 {
 	put_prompt(line, shell);
 	parsing(shell);
+	redirection_verif(shell, NULL, NULL);
 	exec(shell);
 	free_command_redir_token(shell);
 }

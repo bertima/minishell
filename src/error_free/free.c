@@ -11,25 +11,28 @@ static void	free_data_builtin(t_shell *shell)
 	return ;
 }
 
-static void	free_redir(t_redir *redir)
+static void	free_redir(t_cmd *cmd)
 {
 	t_redir	*temp;
 
-	while (redir)
+	temp = cmd->redir;
+	while (temp)
 	{
-		temp = redir->next;
-		if (redir->file)
-			ft_free_split(redir->file);
-		redir->file = NULL;
-		if (redir->before_exp)
-			free(redir->before_exp);
-		redir->before_exp = NULL;
-		if (redir->before_exp)
-			free(redir->before_exp);
-		redir->before_exp = NULL;
-		redir = temp;
+		if (temp->before_exp)
+			free(temp->before_exp);
+		temp->before_exp = NULL;
+		if (temp->file)
+			ft_free_split(temp->file);
+		temp->file = NULL;
+		if (temp->file_temp)
+		{
+			unlink(temp->file_temp);
+			free(temp->file_temp);
+		}
+		temp->file_temp = NULL;
+		temp = temp->next;
 	}
-	redir = NULL;
+	temp = NULL;
 }
 
 static void	free_command_redir(t_shell *shell)
@@ -43,12 +46,7 @@ static void	free_command_redir(t_shell *shell)
 			ft_free_split(shell->cmd->arg);
 		shell->cmd->arg = NULL;
 		if (shell->cmd->redir)
-		{
-			free_redir(shell->cmd->redir);
-			shell->cmd->redir = NULL;
-			free(shell->cmd->redir);
-			shell->cmd->redir = NULL;
-		}
+			free_redir(shell->cmd);
 		free(shell->cmd);
 		shell->cmd = NULL;
 		shell->cmd = temp_c;

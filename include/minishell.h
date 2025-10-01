@@ -87,8 +87,8 @@ struct	s_cmd
 struct s_redir
 {
 	int		type;
-	int		fd;
 	int		hd_expand;
+	char	*file_temp;
 	char	*before_exp;
 	char	**file;
 	t_redir	*next;
@@ -143,8 +143,8 @@ int		suppress_arg(char ***arg, int *i);
 
 /*===================== redirection =====================*/
 /* -------------- redirection -------------- */
-int		redirection_verif(t_shell *shell, t_cmd *cmd);
-int		manage_here_doc(t_shell *shell, t_redir *redir);
+int		redirection_verif(t_shell *shell, t_cmd *temp_cmd, char *file_temp);
+int		creat_here_doc(t_shell *shell, t_cmd *cmd, char *temp_file, int fd);
 int		manage_delimiter_hd(t_redir *redir);
 
 /*===================== exec =====================*/

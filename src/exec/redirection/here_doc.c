@@ -94,18 +94,28 @@ static int	recup_in(t_shell *shell, t_redir *redir, char *av, int fd_temp)
 	return (0);
 }
 
-int	manage_here_doc(t_shell *shell, t_redir *redir)
+int	creat_here_doc(t_shell *shell, t_cmd *temp_cmd, char *file_temp, int fd)
 {
-	char	*file_temp;
-	int		fd;
+	t_redir	*temp_redir;
 
-	file_temp = "pipex_recup_temp_here_doc_delete_after_use";
-	unlink(file_temp);
-	fd = open(file_temp, O_WRONLY | O_CREAT, 0600);
-	if (fd < 0)
-		return (perror(""), unlink(file_temp), 1);
-	if (recup_in(shell, redir, redir->file[0], fd))
-		return (close(fd), unlink(file_temp), 1);
-	close(fd);
+	temp_redir = temp_cmd->redir;
+	while (temp_redir)
+	{
+		if (temp_redir->type == HERE_DOC)
+		{
+			file_temp = "minishell_recup_temp_here_doc_delete_after_use_";
+			unlink(file_temp);
+			fd = open(file_temp, O_WRONLY | O_CREAT, 0600);
+			if (fd < 0)
+				return (perror(""), unlink(file_temp), 1);
+			if (recup_in(shell, temp_redir, temp_redir->file[0], fd))
+				return (close(fd), unlink(file_temp), 1);
+			close(fd);
+			temp_redir->file_temp = ft_strdup(file_temp);
+			if (!temp_redir->file_temp)
+				return (1);
+		}
+		temp_redir = temp_redir->next;
+	}
 	return (0);
 }

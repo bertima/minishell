@@ -1,48 +1,62 @@
 #include "minishell.h"
 
-static int	manage_redir(t_redir *redir)
+static int	here_doc_and_less(t_cmd *temp_cmd, t_redir *redir, size_t fd)
 {
-	size_t	fd;
-
 	if (redir->type == LESS)
 	{
 		if (access(redir->file[0], F_OK | R_OK))
 			return (perror(redir->file[0]), 1);
+		close (temp_cmd->fd_in);
+		temp_cmd->fd_in = fd;
+	}
+	else if (redir->type == HERE_DOC)
+	{
+		fd = open(redir->file_temp, O_RDONLY);
+		if (fd < 0)
+			return (perror(redir->file_temp), 1);
+		close (temp_cmd->fd_in);
+		temp_cmd->fd_in = fd;
+	}
+	return (0);
+}
+
+static int	manage_redir(t_cmd *temp_cmd, t_redir *redir)
+{
+	size_t	fd;
+
+	fd = 0;
+	if (here_doc_and_less(temp_cmd, redir, fd))
+		return (1);
+	else if (redir->type == MORE)
+	{
+		fd = open(*redir->file, O_WRONLY | O_TRUNC | O_CREAT, 0644);
+		if (fd < 0)
+			return (perror(redir->file[0]), 1);
+		close (temp_cmd->fd_out);
+		temp_cmd->fd_out = fd;
 	}
 	else if (redir->type == REDIRECT_A)
 	{
 		fd = open(*redir->file, O_WRONLY | O_APPEND | O_CREAT, 0644);
 		if (fd < 0)
 			return (perror(redir->file[0]), 1);
-	}
-	else
-	{
-		fd = open(*redir->file, O_WRONLY | O_TRUNC | O_CREAT, 0644);
-		if (fd < 0)
-			return (perror(redir->file[0]), 1);
+		close (temp_cmd->fd_out);
+		temp_cmd->fd_out = fd;
 	}
 	return (0);
 }
 
-static int	creat_file_manage_fd(t_shell *shell, t_redir *redir)
+static int	creat_file_manage_fd(t_cmd *temp_cmd, t_redir *redir)
 {
 	t_redir	*temp_redir;
 
 	temp_redir = redir;
 	while (temp_redir)
 	{
-		if (temp_redir->type != HERE_DOC)
-		{
-			if (ft_len_array(temp_redir->file) != 1)
-				return (ft_putstr_fd("More than 1 arg\n", 2), 1);
-			if (manage_redir(temp_redir))
-				return (1);
-		}
-		else
-		{
-			if (manage_here_doc(shell, temp_redir))
-				return (1);
-		}
+		if (ft_len_array(temp_redir->file) != 1)
+			return (ft_putstr_fd("More than 1 arg\n", 2), 1);
+		if (manage_redir(temp_cmd, temp_redir))
+			return (1);
 		temp_redir = temp_redir->next;
 	}
 	return (0);
@@ -74,11 +88,30 @@ static int	manage_expand_delimiter(t_shell *shell, t_cmd *cmd, int i, int j)
 	return (0);
 }
 
-int	redirection_verif(t_shell *shell, t_cmd *cmd)
+int	redirection_verif(t_shell *shell, t_cmd *temp_cmd, char *file_temp)
 {
-	if (manage_expand_delimiter(shell, cmd, 0, 0))
-		return (1);
-	if (creat_file_manage_fd(shell, cmd->redir))
-		return (1);
+	temp_cmd = shell->cmd;
+	file_temp = "minishell_recup_temp_here_doc_delete_after_use_";
+	while (temp_cmd)
+	{
+		if (creat_here_doc(shell, temp_cmd, file_temp, 0))
+			return (1);
+		temp_cmd = temp_cmd->next;
+	}
+	temp_cmd = shell->cmd;
+	while (temp_cmd)
+	{
+		if (manage_expand_delimiter(shell, temp_cmd, 0, 0))
+		{
+			temp_cmd = temp_cmd->next;
+			continue ;
+		}
+		if (creat_file_manage_fd(temp_cmd, temp_cmd->redir))
+		{
+			temp_cmd = temp_cmd->next;
+			continue ;
+		}
+		temp_cmd = temp_cmd->next;
+	}
 	return (0);
 }
