@@ -153,8 +153,8 @@ void	show_environ(char **av);
 void	print_emplacement(void);
 void	end_prog(t_shell *shell, char **av);
 void	dep_fd(char **av);
-void	export(char **env, char **av);
-void	unset(char **env, char **av);
+char	**export(char **env, char **av);
+char	**unset(char **env, char **av);
 
 /*===================== error =====================*/
 /* -------------- error -------------- */
