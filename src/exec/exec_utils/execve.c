@@ -64,13 +64,11 @@ int	exec_com(t_shell *shell, char **av, char **environ)
 		path = ft_strjoin_var(3, "command not found: ", av[0], "\n");
 		write (2, path, ft_strlen(path));
 		free (path);
-		ft_free_split(av);
-        shell->data->exit_code = 127;
+		shell->data->exit_code = 127;
 		exit (127);
 	}
 	execve(path, av, environ);
 	perror(av[0]);
-	ft_free_split(av);
-    shell->data->exit_code = 126;
+	shell->data->exit_code = 126;
 	exit (126);
 }

@@ -11,6 +11,8 @@ static int	new_command(t_cmd **cmd)
 		free(*cmd);
 		return (1);
 	}
+	(*cmd)->fd_in = -2;
+	(*cmd)->fd_out = -2;
 	return (0);
 }
 

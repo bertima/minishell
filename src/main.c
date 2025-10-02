@@ -10,7 +10,7 @@ static void	programme(char *line, t_shell *shell)
 		return ;
 	if (redirection_verif(shell, NULL))
 		return ;
-	exec(shell);
+	exec(shell, 0);
 }
 
 int	main(int ac, char **av, char **environ)

@@ -38,7 +38,6 @@ typedef struct s_cmd		t_cmd;
 typedef struct s_redir		t_redir;
 typedef struct s_data		t_data;
 typedef struct s_expand		t_expand;
-typedef struct s_children	t_children;
 
 enum	e_type
 {
@@ -57,7 +56,6 @@ struct s_shell
 	t_cmd			*cmd;
 	t_data			*data;
 	t_expand		*expand;
-	t_children		*children;
 };
 
 /*********** data utile ***********/
@@ -65,15 +63,10 @@ struct	s_data
 {
 	char		*line;
 	char		**env;
-	int			exit_code;
-};
-
-/*********** fork ***********/
-struct	children
-{
+	int			fd_stock_in;
+	int			fd_stock_out;
 	int			pipefd[2];
-	int			fd_stock;
-	int			fd;
+	int			exit_code;
 };
 
 /*********** struct token ***********/
@@ -156,13 +149,15 @@ int		suppress_arg(char ***arg, int *i);
 int		redirection_verif(t_shell *shell, t_cmd *temp_cmd);
 int		creat_here_doc(t_shell *shell, t_cmd *cmd, char *temp_file, int fd);
 int		manage_delimiter_hd(t_redir *redir);
-int  	generator_of_file_name(char **str, char *nbr_count, char *nbr_pid);
+int		generator_of_file_name(char **str, char *nbr_count, char *nbr_pid);
 
 /*===================== exec =====================*/
 /* -------------- exec -------------- */
-int		exec(t_shell *shell);
+int		exec(t_shell *shell, int i);
 int		exec_com(t_shell *shell, char **av, char **environ);
-int 	child(t_shell *shell, t_cmd *cmd);
+int		execut_command(t_shell *shell, t_cmd *cmd);
+int		exec_builtin(t_shell *shell, t_cmd **cmd);
+int		redirect_command(t_shell *shell, t_cmd **cmd, int i);
 
 /*===================== builtin =====================*/
 void	echo(char **str);
