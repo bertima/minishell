@@ -6,7 +6,7 @@ void	show_ex(char **av)
 	int	len;
 
 	i = 0;
-	len = ft_len_double_char(av);
+	len = ft_len_array(av);
 	while (i < len)
 	{
 		printf("declare -x %s\n", av[i]);
@@ -21,7 +21,7 @@ void	tri_bubule(char **ex)
 	int		j;
 	char	*tmp;
 
-	len = ft_len_double_char(ex);
+	len = ft_len_array(ex);
 	i = 0;
 	while (i < len)
 	{
