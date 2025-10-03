@@ -2,7 +2,10 @@
 
 static int	multi_command(t_shell *shell, t_cmd *cmd, int result)
 {
-	while (cmd)
+	(void)shell;
+	(void)cmd;
+	result = 0;
+/*	while (cmd)
 	{
 		if (cmd->next)
 		{
@@ -24,7 +27,7 @@ static int	multi_command(t_shell *shell, t_cmd *cmd, int result)
 			return (1);
 		if (redirect_command(shell, &cmd, 1))
 			return (1);
-	}
+	}*/
 	return (0);
 }
 

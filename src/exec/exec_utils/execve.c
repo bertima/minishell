@@ -54,7 +54,7 @@ static char	*com_find(char *av, char **environ)
 	return (ft_free_split(path), NULL);
 }
 
-int	exec_com(t_shell *shell, char **av, char **environ)
+int	exec_com(char **av, char **environ)
 {
 	char	*path;
 
@@ -64,11 +64,9 @@ int	exec_com(t_shell *shell, char **av, char **environ)
 		path = ft_strjoin_var(3, "command not found: ", av[0], "\n");
 		write (2, path, ft_strlen(path));
 		free (path);
-		shell->data->exit_code = 127;
 		exit (127);
 	}
 	execve(path, av, environ);
 	perror(av[0]);
-	shell->data->exit_code = 126;
 	exit (126);
 }

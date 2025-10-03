@@ -1,8 +1,5 @@
 #include "minishell.h"
 
-/*echo print ce qu'il y a derriere
--n evite le retour a la ligne*/
-
 static void	flag_exist(char **str, int i)
 {
 	i += 1;

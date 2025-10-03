@@ -12,7 +12,7 @@ int	execut_command(t_shell *shell, t_cmd *cmd)
 	{
 		close(cmd->fd_in);
 		close(cmd->fd_out);
-		exec_com(shell, cmd->arg, shell->data->env);
+		exec_com(cmd->arg, shell->data->env);
 	}
 	wait(NULL);
 	return (0);
