@@ -12,10 +12,10 @@ static int	bultin(t_shell *shell, t_cmd *cmd)
 		return (print_emplacement(), 1);
 	if (ft_strcmp(cmd->arg[0], "cd") == 0)
 		return (dep_fd(shell->cmd->arg), 1);
-	if (ft_strcmp(cmd->arg[0], "export") == 0)
-		return (export(shell->data->env, shell->cmd->arg), 1);
-	if (ft_strcmp(cmd->arg[0], "unset") == 0)
-		return (unset(shell->data->env, shell->cmd->arg), 1);
+	if (ft_strcmp(shell->cmd->arg[0], "export") == 0)
+		shell->data->env = export(shell->data->env, shell->cmd->arg);
+	if (ft_strcmp(shell->cmd->arg[0], "unset") == 0)
+		shell->data->env = unset(shell->data->env, shell->cmd->arg);
 	return (0);
 }
 

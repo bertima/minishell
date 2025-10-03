@@ -24,7 +24,7 @@ int	check_name_variable(char *env, char *av)
 	return (0);
 }
 
-void	unset(char **env, char **av)
+char	**unset(char **env, char **av)
 {
 	int	i;
 	int	j;
@@ -47,5 +47,5 @@ void	unset(char **env, char **av)
 			j++;
 		}
 	}
-	return ;
+	return (env) ;
 }
