@@ -22,6 +22,11 @@ int	is_numerique(char **av)
 
 int	is_not_valid_av(t_shell *shell, char **av)
 {
+	if (av[1][0] == '-')
+	{
+		printf("les consigne ne demande pas de gere les option!\n");
+		return (1);
+	}
 	if (av[1] && is_numerique(av) == 1)
 	{
 		all_free(shell);

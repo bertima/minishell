@@ -13,9 +13,9 @@ void	bultin(t_shell *shell)
 	if (ft_strcmp(shell->cmd->arg[0], "cd") == 0)
 		dep_fd(shell->cmd->arg);
 	if (ft_strcmp(shell->cmd->arg[0], "export") == 0)
-		export(shell->data->env, shell->cmd->arg);
+		shell->data->env = export(shell->data->env, shell->cmd->arg);
 	if (ft_strcmp(shell->cmd->arg[0], "unset") == 0)
-		unset(shell->data->env, shell->cmd->arg);
+		shell->data->env = unset(shell->data->env, shell->cmd->arg);
 }
 
 int	exec(t_shell *shell)
