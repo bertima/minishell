@@ -1,45 +1,5 @@
 #include "minishell.h"
 
-void	show_ex(char **av)
-{
-	int	i;
-	int	len;
-
-	i = 0;
-	len = ft_len_double_char(av);
-	while (i < len)
-	{
-		printf("declare -x %s\n", av[i]);
-		i++;
-	}
-}
-
-void	tri_bubule(char **ex)
-{
-	int		len;
-	int		i;
-	int		j;
-	char	*tmp;
-
-	len = ft_len_double_char(ex);
-	i = 0;
-	while (i < len)
-	{
-		j = 0;
-		while (j < len)
-		{
-			if (ft_strcmp(ex[j], ex[j + 1]) > 0)
-			{
-				tmp = ex[j];
-				ex[j] = ex[j + 1];
-				ex[j + 1] = tmp;
-			}
-			j++;
-		}
-		i++;
-	}
-}
-
 char	**cp_ex(char **env)
 {
 	int		i;
@@ -64,11 +24,32 @@ char	**cp_ex(char **env)
 	ex[i] = NULL;
 	return (ex);
 }
-char	**add_av(char **env,char **av, int j)
+
+char	**join_av(char **ex, char **av, int i)
+{
+	int	j;
+
+	j = 1;
+	while (av[j])
+	{
+		ex[i] = ft_strdup(av[j]);
+		if (!ex[i])
+		{
+			ft_free_split(ex);
+			return (NULL);
+		}
+		j++;
+		i++;
+	}
+	ex[i] = NULL;
+	return (ex);
+}
+
+char	**add_av(char **env, char **av)
 {
 	int		i;
 	int		len;
-	int 	nbr_av;
+	int		nbr_av;
 	char	**ex;
 
 	i = 0;
@@ -87,20 +68,29 @@ char	**add_av(char **env,char **av, int j)
 		}
 		i++;
 	}
-	while(av[j])
-	{
-		ex[i] = ft_strdup(av[j]);
-		if (!ex[i])
-		{
-			ft_free_split(ex);
-			return (NULL);
-		}
-		j++;
-		i++;
-
-	}
-	ex[i] = NULL;
+	ex = join_av(ex, av, i);
 	return (ex);
+}
+
+int	error_export(char **av)
+{
+	if (av[1][0] == '-')
+	{
+		printf("les consigne ne demande pas de gere les option!\n");
+		return (1);
+	}
+	if (av[1][0] == '*' && av[1][1] == '\0')
+	{
+		printf("la gestion de * faite partie des bonus\n");
+		return (1);
+	}
+	if ((av[1][0] != '_') && (av[1][0] < 'a' || av[1][0] > 'z')
+		&& (av[1][0] < 'A' || av[1][0] > 'Z'))
+	{
+		printf("bash: export: %s : not a valid identifier\n", av[1]);
+		return (1);
+	}
+	return (0);
 }
 
 char	**export(char **env, char **av)
@@ -115,22 +105,9 @@ char	**export(char **env, char **av)
 	}
 	if (strlen_av(av) > 1)
 	{
-		if (av[1][0] == '-')
-		{
-			printf("les consigne ne demande pas de gere les option!\n");
-			return(env);
-		}
-		if (av[1][0] == '*' && av[1][1] == '\0')
-		{
-			printf("la gestion de * faite partie des bonus\n");
-			return(env);
-		}
-		if ((av[1][0] != '_') && (av[1][0] < 'a' || av[1][0] > 'z') && (av[1][0] < 'A' || av[1][0] > 'Z'))
-		{
-			printf("bash: export: %s : not a valid identifier\n", av[1]);
+		if (error_export(av) == 1)
 			return (env);
-		}
-		env = add_av(env, av, 1);
+		env = add_av(env, av);
 		return (env);
 	}
 	return (env);

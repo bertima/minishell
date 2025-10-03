@@ -147,14 +147,31 @@ int		exit_code_expand(t_shell *shell, char **arg, int *i, int *end);
 int		exec(t_shell *shell);
 
 /*===================== builtin =====================*/
+/* -------------- echo -------------- */
 void	echo(char **str);
-int		strlen_av(char **av);
+
+/* -------------- env -------------- */
 void	show_environ(char **av);
+
+/* -------------- pwd -------------- */
 void	print_emplacement(void);
+
+/* -------------- exit -------------- */
 void	end_prog(t_shell *shell, char **av);
+
+/* -------------- cd -------------- */
 void	dep_fd(char **av);
+
+/* -------------- export -------------- */
 char	**export(char **env, char **av);
+void	show_ex(char **av);
+void	tri_bubule(char **ex);
+
+/* -------------- unset -------------- */
 char	**unset(char **env, char **av);
+
+/* -------------- utility -------------- */
+int		strlen_av(char **av);
 
 /*===================== error =====================*/
 /* -------------- error -------------- */
