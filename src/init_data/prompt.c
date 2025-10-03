@@ -48,8 +48,8 @@ int	put_prompt(char *line, t_shell *shell)
 		rl_clear_history();
 		printf("exit\n");
 		exit(127);
-		//perror(NULL);
-		//return (return_err_int(shell, "Error readline !\n"));
+		perror(NULL);
+		return (return_err_int(shell, "Error readline !\n"));
 	}
 	if (*line)
 		add_history(line);

@@ -21,13 +21,7 @@ static int	bultin(t_shell *shell, t_cmd *cmd)
 
 int	exec_builtin(t_shell *shell, t_cmd **cmd)
 {
-	if (redirect_command(shell, cmd, 0))
-		return (1);
 	if (bultin(shell, (*cmd)))
-	{
-		if (redirect_command(shell, cmd, 1))
-			return (1);
-		return (2);
-	}
+		return (1);
 	return (0);
 }

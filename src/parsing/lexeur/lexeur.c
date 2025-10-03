@@ -9,28 +9,35 @@ static int	find_meta_token(t_token *token)
 	return (0);
 }
 
+static int	pb_metachar(t_shell *shell)
+{
+	ft_putstr_fd("syntax error metachar\n", 2);
+	shell->data->exit_code = 2;
+	return (1);
+}
+
 int	verif_metachar_redir(t_shell *shell)
 {
 	t_token	*token;
 
 	token = shell->token;
 	if (token && token->type == PIPE)
-		return (return_err_int(shell, "syntax error metachar\n"));
+		return (pb_metachar(shell));
 	while (token)
 	{
 		if (find_meta_token(token))
 		{
 			if (!token->next)
-				return (return_err_int(shell, "syntax error metachar\n"));
+				return (pb_metachar(shell));
 			if (token->type != PIPE)
 			{
 				if (find_meta_token(token->next))
-					return (return_err_int(shell, "syntax error metachar\n"));
+					return (pb_metachar(shell));
 			}
 			else
 			{
 				if (token->next->type == PIPE)
-					return (return_err_int(shell, "syntax error metachar\n"));
+					return (pb_metachar(shell));
 			}
 		}
 		token = token->next;

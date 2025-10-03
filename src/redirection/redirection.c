@@ -108,7 +108,7 @@ int	redirection_verif(t_shell *shell, t_cmd *temp_cmd)
 		if (creat_file_manage_fd(temp_cmd, temp_cmd->redir))
 		{
 			temp_cmd = temp_cmd->next;
-			continue ;
+			return (1);
 		}
 		temp_cmd = temp_cmd->next;
 	}
