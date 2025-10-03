@@ -1,16 +1,36 @@
 #include "minishell.h"
 
-int	metachar(char *line, int index)
+static void	append_here_doc(char *line, int index, int *len, int *i)
+{
+	if (line[index + *i - 1] == '<')
+	{
+		if (line[index + *i] == '<')
+		{
+			(*i)++;
+			(*len)++;
+		}
+	}
+	if (line[index + *i - 1] == '>')
+	{
+		if (line[index + *i] == '>')
+		{
+			(*i)++;
+			(*len)++;
+		}
+	}
+}
+
+int	metachar(char *line, int index, int *len)
 {
 	int	i;
 
 	i = 0;
-	while (line[index + i] == '<' || line[index + i] == '>'
+	if (line[index + i] == '<' || line[index + i] == '>'
 		|| line[index + i] == '|')
 	{
-		if (line[index + i] == '|')
-			return (1);
 		i++;
+		(*len)++;
+		append_here_doc(line, index, len, &i);
 	}
 	return (i);
 }

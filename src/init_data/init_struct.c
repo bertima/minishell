@@ -57,10 +57,13 @@ int	init_struct(t_shell *shell, char **environ)
 	shell->data = ft_calloc(1, sizeof(t_data));
 	if (!shell->data)
 		return (1);
-	shell->expand = ft_calloc(1, sizeof(t_expand));
-	if (!shell->expand)
-		return (1);
 	if (cp_env(&shell->data->env, environ))
 		return (1);
+	shell->data->fd_stock_in = dup(STDIN_FILENO);
+	if (shell->data->fd_stock_in < 0)
+		return (perror(""), 1);
+	shell->data->fd_stock_out = dup(STDOUT_FILENO);
+	if (shell->data->fd_stock_out < 0)
+		return (perror(""), 1);
 	return (0);
 }

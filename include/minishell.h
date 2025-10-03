@@ -63,16 +63,10 @@ struct	s_data
 {
 	char		*line;
 	char		**env;
+	int			fd_stock_in;
+	int			fd_stock_out;
+	int			pipefd[2];
 	int			exit_code;
-};
-
-/*********** expand ***********/
-struct	s_expand
-{
-	t_cmd		*cmd;
-	char		*current_str;
-	char		*name_var;
-	char		*var_val;
 };
 
 /*********** struct token ***********/
@@ -87,6 +81,8 @@ struct s_token
 struct	s_cmd
 {
 	char		**arg;
+	int			fd_in;
+	int			fd_out;
 	t_redir		*redir;
 	t_cmd		*next;
 };
@@ -95,7 +91,9 @@ struct s_redir
 {
 	int		type;
 	int		hd_expand;
-	char	*file;
+	char	*file_temp;
+	char	*before_exp;
+	char	**file;
 	t_redir	*next;
 };
 
@@ -108,37 +106,18 @@ int		put_prompt(char *line, t_shell *shell);
 /*-------------- token -------------- */
 int		tokening(t_shell *shell);
 /* ............. utils ............. */
-int		metachar(char *line, int index);
+int		metachar(char *line, int index, int *len);
 
 /* -------------- lexer -------------- */
-void	lexeur(t_shell *shell);
+int		lexeur(t_shell *shell);
 
 /* -------------- parsing -------------- */
 int		parsing(t_shell *shell);
 /* ............. utils ............. */
 int		creat_command(t_shell *shell);
-int		redirect(t_cmd *cmd, t_token **token);
+int		manage_redirect_token(t_cmd *cmd, t_token **token);
 int		add_command(t_shell *shell, t_cmd **current);
 int		add_arg(t_cmd *current, t_token *temp, int i);
-
-/*===================== expand =====================*/
-/* -------------- expand -------------- */
-int		expand(t_shell *shell, t_cmd *cmd, int i, int j);
-/* ............. utils ............. */
-int		insert_arg_expand(t_cmd *cmd, int *start_end, int *i, int *j);
-int		expand_without_quote(t_shell *shell, t_cmd *cmd, int *i, int *j);
-int		quote_process(t_shell *shell, t_cmd *cmd, int *i, int *j);
-
-/* -------------- del_quote -------------- */
-int		remove_quote(char **str, int *start);
-
-/* -------------- utils -------------- */
-char	*search_var(char **env, char *name);
-char	*search_name(char *str, int start);
-int		remplace(char **str_new, int j, char *var, int len_name);
-int		search_expand(t_shell *shell, t_cmd *cmd, int *i, int *j);
-int		exit_code_expand(t_shell *shell, char **arg, int *i, int *end);
-int		suppress_arg(t_cmd *cmd, int *i);
 
 /*===================== signaux =====================*/
 /* -------------- signaux -------------- */
@@ -146,9 +125,39 @@ void	signal_break(int sig, void (*gst_handler)(int));
 void	ignore_signal(int sig);
 void	gst_handler(int sig);
 
+/*===================== expand =====================*/
+/* -------------- expand -------------- */
+int		expand(t_shell *shell, t_cmd *cmd, int i, int j);
+/* ............. utils ............. */
+int		loop_remove_quote(char ***arg, int stock, int i);
+int		expand_in_arg(t_shell *shell, char ***arg, int *i, int *j);
+int		insert_arg_expand(char ***arg, int *start_end, int *i, int *j);
+int		expand_without_quote(t_shell *shell, char ***arg, int *i, int *j);
+int		quote_process(t_shell *shell, char ***arg, int *i, int *j);
+
+/* -------------- del_quote -------------- */
+int		remove_quote(char **str, int *start);
+
+/* -------------- utils -------------- */
+char	*search_name(char *str, int start);
+int		search_expand(t_shell *shell, char ***arg, int *i, int *j);
+int		exit_code_expand(t_shell *shell, char **arg, int *i, int *end);
+int		suppress_arg(char ***arg, int *i);
+
+/*===================== redirection =====================*/
+/* -------------- redirection -------------- */
+int		redirection_verif(t_shell *shell, t_cmd *temp_cmd);
+int		creat_here_doc(t_shell *shell, t_cmd *cmd, char *temp_file, int fd);
+int		manage_delimiter_hd(t_redir *redir);
+int		generator_of_file_name(char **str, char *nbr_count, char *nbr_pid);
+
 /*===================== exec =====================*/
 /* -------------- exec -------------- */
-int		exec(t_shell *shell);
+int		exec(t_shell *shell, int i);
+int		exec_com(char **av, char **environ);
+int		execut_command(t_shell *shell, t_cmd *cmd);
+int		exec_builtin(t_shell *shell, t_cmd **cmd);
+int		redirect_command(t_shell *shell, t_cmd **cmd, int i);
 
 /*===================== builtin =====================*/
 /* -------------- echo -------------- */

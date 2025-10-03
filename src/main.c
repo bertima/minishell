@@ -6,9 +6,11 @@ static void	programme(char *line, t_shell *shell)
 		return ;
 	if (parsing(shell))
 		return ;
-	if (exec(shell))
+	if (expand(shell, shell->cmd, 0, 0))
 		return ;
-	free_command_redir_token(shell);
+	if (redirection_verif(shell, NULL))
+		return ;
+	exec(shell, 0);
 }
 
 int	main(int ac, char **av, char **environ)
@@ -24,7 +26,10 @@ int	main(int ac, char **av, char **environ)
 	if (init_struct(&shell, environ))
 		return (return_err_int(&shell, NULL));
 	while (1)
+	{
 		programme(line, &shell);
+		free_command_redir_token(&shell);
+	}
 	all_free(&shell);
 	rl_clear_history();
 	return (0);

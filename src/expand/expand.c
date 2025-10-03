@@ -1,18 +1,18 @@
 #include "minishell.h"
 
-static int	loop_remove_quote(t_cmd *cmd, int stock, int i)
+int	loop_remove_quote(char ***arg, int stock, int i)
 {
 	int	j;
 
 	j = 0;
-	while (cmd->arg && cmd->arg[stock] && stock <= i)
+	while (*arg && (*arg)[stock] && stock <= i)
 	{
 		j = 0;
-		while (cmd->arg[stock] && cmd->arg[stock][j])
+		while ((*arg)[stock] && (*arg)[stock][j])
 		{
-			if (cmd->arg[stock][j] == '\"' || cmd->arg[stock][j] == '\'')
+			if ((*arg)[stock][j] == '\"' || (*arg)[stock][j] == '\'')
 			{
-				if (remove_quote(&cmd->arg[stock], &j))
+				if (remove_quote(&(*arg)[stock], &j))
 					return (1);
 			}
 			else
@@ -23,69 +23,72 @@ static int	loop_remove_quote(t_cmd *cmd, int stock, int i)
 	return (0);
 }
 
-static int	verfi_new_arg(t_cmd *cmd, int *i, int *start_end, int *j)
+static int	skip_quote(char **arg, int *start_end, int i, int *j)
 {
-	start_end[1] = *j;
-	if (start_end[1] > start_end[0])
+	char	quote;
+
+	if (arg[i][*j] == '\'' || arg[i][*j] == '"')
 	{
-		start_end[1] = *j;
-		if (insert_arg_expand(cmd, start_end, i, j))
-			return (1);
+		quote = arg[i][*j];
+		(*j)++;
+		while (arg[i][*j] != quote)
+			(*j)++;
+		(*j)++;
+		start_end[0] = *j;
+		return (2);
 	}
 	return (0);
 }
 
-static int	loop_word_split(t_cmd *cmd, int *i, int j, int block)
+static int	word_split(char ***arg, int *i, int j, int result)
 {
-	int	start_end[2];
+	int		start_end[2];
 
-	if (!cmd->arg[*i][0])
-		return (suppress_arg(cmd, i));
+	if (!(*arg)[*i] || !(*arg)[*i][0])
+		return (suppress_arg(arg, i));
 	start_end[0] = 0;
-	while (cmd->arg[*i] && cmd->arg[*i][j])
+	while ((*arg)[*i][j])
 	{
-		if ((cmd->arg[*i][j] == '\'' || cmd->arg[*i][j] == '\"'))
+		result = skip_quote(*arg, start_end, *i, &j);
+		if (result == 1)
+			return (1);
+		else if (result == 2)
+			continue ;
+		while ((*arg)[*i][j] && (*arg)[*i][j] != '\'' && (*arg)[*i][j] != '\"')
+			j++;
+		start_end[1] = j;
+		if (start_end[1] > start_end[0])
 		{
-			if (block == 0)
-			{
-				if (verfi_new_arg(cmd, i, start_end, &j))
-					return (1);
-				block = 1;
-			}
-			else
-			{
-				block = 0;
-				start_end[0] = j + 1;
-			}
+			if (insert_arg_expand(arg, start_end, i, &j))
+				return (1);
 		}
-		j++;
 	}
-	return (verfi_new_arg(cmd, i, start_end, &j));
+	return (0);
 }
 
-static int	loop_expand(t_shell *shell, t_cmd *cmd, int *i, int *j)
+int	expand_in_arg(t_shell *shell, char ***arg, int *i, int *j)
 {
 	int			result;
 	int			stock;
 
 	stock = *i;
-	while (cmd->arg && cmd->arg[*i] && cmd->arg[*i][*j])
+	while (*arg && (*arg)[*i] && (*arg)[*i][*j])
 	{
-		result = quote_process(shell, cmd, i, j);
+		result = quote_process(shell, arg, i, j);
 		if (result == 1)
 			return (1);
 		if (result == 2)
 			continue ;
-		result = expand_without_quote(shell, cmd, i, j);
+		result = expand_without_quote(shell, arg, i, j);
 		if (result == 1)
 			return (1);
 		if (result == 2)
 			continue ;
 		(*j)++;
 	}
-	if (loop_word_split(cmd, i, 0, 0))
+	if (word_split(arg, i, 0, 0))
 		return (1);
-	if (loop_remove_quote(cmd, stock, *i))
+	if (loop_remove_quote(arg, stock, *i))
 		return (1);
 	return (0);
 }
@@ -98,12 +101,10 @@ int	expand(t_shell *shell, t_cmd *cmd, int i, int j)
 	while (temp)
 	{
 		i = 0;
-		shell->expand->cmd = temp;
 		while (temp->arg && temp->arg[i])
 		{
 			j = 0;
-			shell->expand->current_str = temp->arg[i];
-			if (loop_expand(shell, temp, &i, &j))
+			if (expand_in_arg(shell, &temp->arg, &i, &j))
 				return (1);
 			i++;
 		}

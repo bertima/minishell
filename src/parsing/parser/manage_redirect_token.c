@@ -1,5 +1,17 @@
 #include "minishell.h"
 
+static int	add_redir_arg(t_redir *new, t_token *token)
+{
+	new->file = calloc(2, sizeof(char *));
+	if (!new->file)
+		return (1);
+	new->file[0] = ft_strdup(token->next->sentence);
+	if (!new->file[0])
+		return (free(new->file), 1);
+	new->file[1] = NULL;
+	return (0);
+}
+
 static int	add_redirect(t_cmd *cmd, t_token *token, int type)
 {
 	t_redir	*temp;
@@ -9,12 +21,8 @@ static int	add_redirect(t_cmd *cmd, t_token *token, int type)
 	if (!new)
 		return (1);
 	new->type = type;
-	new->file = ft_strdup(token->next->sentence);
-	if (!new)
-	{
-		free(new);
-		return (1);
-	}
+	if (add_redir_arg(new, token))
+		return (free(new), 1);
 	if (!cmd->redir)
 		cmd->redir = new;
 	else
@@ -27,36 +35,12 @@ static int	add_redirect(t_cmd *cmd, t_token *token, int type)
 	return (0);
 }
 
-static void	here_doc_expand(t_redir *redir)
-{
-	t_redir	*temp;
-	int		i;
-
-	i = 0;
-	temp = redir;
-	while (temp->next)
-		temp = temp->next;
-	if (temp->type == HERE_DOC)
-	{
-		while (temp->file && temp->file[i])
-		{
-			if (temp->file[i] == '\'' || temp->file[i] == '\"')
-			{
-				temp->hd_expand = 1;
-				return ;
-			}
-			i++;
-		}
-	}
-}
-
-int	redirect(t_cmd *cmd, t_token **token)
+int	manage_redirect_token(t_cmd *cmd, t_token **token)
 {
 	if (!(*token) || !(*token)->next)
 		return (1);
 	if (add_redirect(cmd, *token, (*token)->type))
 		return (1);
-	here_doc_expand(cmd->redir);
 	*token = (*token)->next;
 	return (0);
 }

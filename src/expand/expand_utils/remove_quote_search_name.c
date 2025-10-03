@@ -25,7 +25,7 @@ static char	*new_string(char *str, int start, int end)
 	inter = ft_substr(str, start + 1, end - start - 1);
 	if (!inter)
 		return (free(pre), NULL);
-	post = ft_substr(str, end + 1, ft_strlen(str) - end - 1);
+	post = ft_substr(str, end + 1, ft_strlen(str) - (end + 1));
 	if (!post)
 		return (free(pre), free(inter), NULL);
 	join = ft_strjoin_var(3, pre, inter, post);
@@ -51,4 +51,20 @@ int	remove_quote(char **str, int *start)
 	if (*start < 0)
 		*start = 0;
 	return (0);
+}
+
+char	*search_name(char *str, int start)
+{
+	int		len;
+	char	*name;
+
+	len = 0;
+	while (ft_isalnum(str[start + len]))
+		len++;
+	if (len == 0)
+		return (NULL);
+	name = ft_substr(str, start, len);
+	if (!name)
+		return (NULL);
+	return (name);
 }

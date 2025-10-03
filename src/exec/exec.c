@@ -1,39 +1,70 @@
 #include "minishell.h"
 
-void	bultin(t_shell *shell)
+static int	multi_command(t_shell *shell, t_cmd *cmd, int result)
 {
-	if (ft_strcmp(shell->cmd->arg[0], "echo") == 0)
-		echo(shell->cmd->arg);
-	if (ft_strcmp(shell->cmd->arg[0], "env") == 0)
-		show_environ(shell->data->env);
-	if (ft_strcmp(shell->cmd->arg[0], "exit") == 0)
-		end_prog(shell, shell->cmd->arg);
-	if (ft_strcmp(shell->cmd->arg[0], "pwd") == 0)
-		print_emplacement();
-	if (ft_strcmp(shell->cmd->arg[0], "cd") == 0)
-		dep_fd(shell->cmd->arg);
-	if (ft_strcmp(shell->cmd->arg[0], "export") == 0)
-		shell->data->env = export(shell->data->env, shell->cmd->arg);
-	if (ft_strcmp(shell->cmd->arg[0], "unset") == 0)
-		shell->data->env = unset(shell->data->env, shell->cmd->arg);
+	(void)shell;
+	(void)cmd;
+	result = 0;
+/*	while (cmd)
+	{
+		if (cmd->next)
+		{
+			if (pipe(shell->data->pipefd))
+				return (perror(""), 1);
+			if (i >= 1)
+			{
+				if (dup2(shell->data->pipefd[0], STDIN_FILENO))
+					return (1);
+				close (cmd->fd_in);
+			}
+		}
+		result = exec_builtin(shell, &cmd);
+		if (result == 1)
+			return (1);
+		else if (result == 2)
+			continue ;
+		if (execut_command(shell, cmd))
+			return (1);
+		if (redirect_command(shell, &cmd, 1))
+			return (1);
+	}*/
+	return (0);
 }
 
-int	exec(t_shell *shell)
+static int	one_cmd(t_shell *shell, t_cmd *cmd, int result)
+{
+	if (cmd->arg)
+	{
+		result = exec_builtin(shell, &cmd);
+		if (result == 1)
+			return (1);
+		else if (result == 2)
+			return (0);
+		execut_command(shell, cmd);
+		if (redirect_command(shell, &cmd, 1))
+			return (1);
+	}
+	return (0);
+}
+
+int	exec(t_shell *shell, int i)
 {
 	t_cmd	*cmd;
 
-	if (expand(shell, shell->cmd, 0, 0))
-		return (1);
-	show_commands(shell->cmd, 0, 1);
 	cmd = shell->cmd;
 	while (cmd)
 	{
-		if (cmd->arg)
-		{
-			bultin(shell);
-		}
+		i++;
 		cmd = cmd->next;
 	}
 	cmd = shell->cmd;
+	if (i == 1)
+	{
+		one_cmd(shell, cmd, 0);
+		return (0);
+	}
+	else if (i > 1)
+		multi_command(shell, cmd, 0);
+	show_commands(shell->cmd, 0, 1);
 	return (0);
 }
