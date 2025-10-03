@@ -24,6 +24,16 @@ int	check_name_variable(char *env, char *av)
 	return (0);
 }
 
+int	check_option(char **av)
+{
+	if (av[1][0] == '-')
+	{
+		printf("les consigne ne demande pas de gere les option!\n");
+		return (1);
+	}
+	return (0);
+}
+
 char	**unset(char **env, char **av)
 {
 	int	i;
@@ -31,6 +41,8 @@ char	**unset(char **env, char **av)
 
 	if (strlen_av(av) >= 2)
 	{
+		if (check_option(av) == 1)
+			return (env);
 		j = 1;
 		while (av[j])
 		{
@@ -47,5 +59,5 @@ char	**unset(char **env, char **av)
 			j++;
 		}
 	}
-	return (env) ;
+	return (env);
 }

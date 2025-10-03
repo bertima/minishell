@@ -160,14 +160,31 @@ int		exec_builtin(t_shell *shell, t_cmd **cmd);
 int		redirect_command(t_shell *shell, t_cmd **cmd, int i);
 
 /*===================== builtin =====================*/
+/* -------------- echo -------------- */
 void	echo(char **str);
-int		strlen_av(char **av);
+
+/* -------------- env -------------- */
 void	show_environ(char **av);
+
+/* -------------- pwd -------------- */
 void	print_emplacement(void);
+
+/* -------------- exit -------------- */
 void	end_prog(t_shell *shell, char **av);
+
+/* -------------- cd -------------- */
 void	dep_fd(char **av);
+
+/* -------------- export -------------- */
 char	**export(char **env, char **av);
+void	show_ex(char **av);
+void	tri_bubule(char **ex);
+
+/* -------------- unset -------------- */
 char	**unset(char **env, char **av);
+
+/* -------------- utility -------------- */
+int		strlen_av(char **av);
 
 /*===================== error =====================*/
 /* -------------- error -------------- */
