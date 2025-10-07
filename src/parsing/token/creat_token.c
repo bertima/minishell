@@ -56,6 +56,9 @@ static int	search_arg(t_shell *shell, char *line, int start, int *len)
 	index = start;
 	while (line[index] && !ft_isspace(line[index]))
 	{
+		if ((*len) > 0 && (line[index] == '|' || line[index] == '>'
+				|| line[index] == '<'))
+			break ;
 		if (metachar(line, index, len))
 			break ;
 		if ((line[index] == '\'' || line[index] == '\"'))

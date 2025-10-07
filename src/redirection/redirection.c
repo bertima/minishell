@@ -4,17 +4,22 @@ static int	here_doc_and_less(t_cmd *temp_cmd, t_redir *redir, size_t fd)
 {
 	if (redir->type == LESS)
 	{
+		if (temp_cmd->fd_in >= 0)
+			close (temp_cmd->fd_in);
 		if (access(redir->file[0], F_OK | R_OK))
 			return (perror(redir->file[0]), 1);
-		close (temp_cmd->fd_in);
+		fd = open(redir->file[0], O_RDONLY);
+		if (fd < 0)
+			return (perror(""), 1);
 		temp_cmd->fd_in = fd;
 	}
 	else if (redir->type == HERE_DOC)
 	{
+		if (temp_cmd->fd_in >= 0)
+			close (temp_cmd->fd_in);
 		fd = open(redir->file_temp, O_RDONLY);
 		if (fd < 0)
 			return (perror(redir->file_temp), 1);
-		close (temp_cmd->fd_in);
 		temp_cmd->fd_in = fd;
 	}
 	return (0);
@@ -29,18 +34,20 @@ static int	manage_redir(t_cmd *temp_cmd, t_redir *redir)
 		return (1);
 	else if (redir->type == MORE)
 	{
+		if (temp_cmd->fd_out >= 0)
+			close (temp_cmd->fd_out);
 		fd = open(*redir->file, O_WRONLY | O_TRUNC | O_CREAT, 0644);
 		if (fd < 0)
 			return (perror(redir->file[0]), 1);
-		close (temp_cmd->fd_out);
 		temp_cmd->fd_out = fd;
 	}
 	else if (redir->type == REDIRECT_A)
 	{
+		if (temp_cmd->fd_out >= 0)
+			close (temp_cmd->fd_out);
 		fd = open(*redir->file, O_WRONLY | O_APPEND | O_CREAT, 0644);
 		if (fd < 0)
 			return (perror(redir->file[0]), 1);
-		close (temp_cmd->fd_out);
 		temp_cmd->fd_out = fd;
 	}
 	return (0);

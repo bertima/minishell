@@ -65,6 +65,8 @@ struct	s_data
 {
 	char		*line;
 	char		**env;
+	int			fd_stock_in;
+	int			fd_stock_out;
 	int			exit_code;
 };
 
@@ -167,6 +169,10 @@ int		exec_com(char **av, char **environ);
 int		execut_command(t_shell *shell, t_cmd *cmd);
 int		exec_builtin(t_shell *shell, t_cmd **cmd);
 int		redirect_command(t_shell *shell, t_cmd **cmd, int i);
+
+/* -------------- child -------------- */
+void	creat_child(t_shell *shell, t_cmd *cmd, int pid);
+int		parent(t_shell *shell, t_cmd *cmd, int pid);
 void	wait_parent(t_shell *shell);
 
 /*===================== builtin =====================*/
@@ -203,7 +209,7 @@ int		return_err_int(t_shell *shell, char *str);
 
 /* -------------- free -------------- */
 void	all_free(t_shell *shell);
-void	free_command_redir_token(t_shell *shell);
+void	free_command_redir_token_children(t_shell *shell);
 void	free_expand(t_shell *shell);
 
 /*||||||||||||||||||||| test |||||||||||||||||||||*/
