@@ -19,6 +19,7 @@ static int	path(char **w_dir)
 	*w_dir = ft_strjoin_var(3, "~/", split_path[len - 1], "$ ");
 	if (!*w_dir)
 		return (1);
+	ft_free_split(split_path);
 	return (0);
 }
 
@@ -45,11 +46,10 @@ int	put_prompt(char *line, t_shell *shell)
 	if (!line)
 	{
 		all_free(shell);
-		rl_clear_history();
 		printf("exit\n");
 		exit(127);
-		//perror(NULL);
-		//return (return_err_int(shell, "Error readline !\n"));
+		perror(NULL);
+		return (return_err_int(shell, "Error readline !\n"));
 	}
 	if (*line)
 		add_history(line);

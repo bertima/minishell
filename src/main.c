@@ -10,7 +10,7 @@ static void	programme(char *line, t_shell *shell)
 		return ;
 	if (redirection_verif(shell, NULL))
 		return ;
-	exec(shell, 0);
+	exec(shell);
 }
 
 int	main(int ac, char **av, char **environ)
@@ -28,9 +28,8 @@ int	main(int ac, char **av, char **environ)
 	while (1)
 	{
 		programme(line, &shell);
-		free_command_redir_token(&shell);
+		free_command_redir_token_children(&shell);
 	}
 	all_free(&shell);
-	rl_clear_history();
 	return (0);
 }

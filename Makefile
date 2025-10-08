@@ -63,6 +63,7 @@ FSRC = src/main.c \
 	   \
 	   src/exec/exec_utils/execve.c \
 	   src/exec/exec_utils/redirect_command.c \
+	   src/exec/exec_utils/children.c \
 	   \
 	   src/exec/builtin/echo.c \
 	   src/exec/builtin/env.c \

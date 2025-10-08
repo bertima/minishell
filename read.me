@@ -1,6 +1,5 @@
-<<<<<<< HEAD
-voir ce qui ne va pas avec les quotes car pb de temps en temps (expand)
-continuer pour implementer les pipes
-=======
-verifier le signaux ctrl+\ : il doit interrompe le procesus actuelle avec un core dump
->>>>>>> 9fc4047 (vendredi 3 octombre)
+regarder pour expand (voir si pas un controle sur word split)
+finir pipes(voir pour les fd + voir pourquoi en pipe mode pas de redire sur fichier en more ou append)
+voir cette histoire de invalid fd (= -1) un truc me renvoie plein de success a voir (cmd)
+
+make && valgrind --leak-check=full --track-fds=yes --show-leak-kinds=all ./minishell
