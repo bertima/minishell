@@ -48,6 +48,6 @@ int	execut_command(t_shell *shell, t_cmd *cmd)
 	if (WIFEXITED(status))
 		shell->data->exit_code = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))
-		shell->data->exit_code = WEXITSTATUS(status);
+		shell->data->exit_code = 128 + WTERMSIG(status);
 	return (0);
 }

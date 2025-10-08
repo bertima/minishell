@@ -6,7 +6,7 @@ static int	here_doc_and_less(t_cmd *temp_cmd, t_redir *redir, size_t fd)
 	{
 		if (temp_cmd->fd_in >= 0)
 			close (temp_cmd->fd_in);
-		if (access(redir->file[0], F_OK | R_OK))
+		if (access(redir->file[0], F_OK | R_OK) < 0)
 			return (perror(redir->file[0]), 1);
 		fd = open(redir->file[0], O_RDONLY);
 		if (fd < 0)

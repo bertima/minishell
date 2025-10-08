@@ -54,8 +54,9 @@ static int	child_manage(t_shell *shell, t_cmd *cmd)
 	}
 	if (exec_builtin(shell, &cmd))
 		return (close_fd(shell, cmd, 1), shell->data->exit_code);
-	execut_command(shell, cmd);
-	return (perror(""), 1);
+	if (execut_command(shell, cmd))
+		return (1);
+	return (0);
 }
 
 void	creat_child(t_shell *shell, t_cmd *cmd, int pid)
@@ -85,7 +86,8 @@ int	parent(t_shell *shell, t_cmd *cmd, int pid)
 	if (cmd->fd_out >= 0)
 		close(cmd->fd_out);
 	cmd->fd_out = -1;
-	shell->children->last_pid = pid;
+	if (!cmd->next)
+		shell->children->last_pid = pid;
 	if (shell->children->fd_transi >= 0)
 	{
 		close (shell->children->fd_transi);
@@ -98,16 +100,20 @@ int	parent(t_shell *shell, t_cmd *cmd, int pid)
 
 void	wait_parent(t_shell *shell)
 {
-	int		now;
+	int		status;
 	pid_t	pid;
 
-	now = 0;
 	close_fd(shell, NULL, 0);
 	while (shell->children->nbr_cmd > 0)
 	{
-		pid = wait(&now);
+		pid = wait(&status);
 		if (pid == shell->children->last_pid)
-			shell->children->status = now;
+		{
+			if (WIFEXITED(status))
+				shell->data->exit_code = WEXITSTATUS(status);
+			else if (WIFSIGNALED(status))
+				shell->data->exit_code = 128 + WTERMSIG(status);
+		}
 		shell->children->nbr_cmd--;
 	}
 }
