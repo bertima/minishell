@@ -125,7 +125,7 @@ void	signal_break(int sig, void (*gst_handler)(int));
 void	restore_default_signals(void);
 void	ignore_signal(int sig);
 void	gst_handler(int sig);
-int		ft_sig(void);
+int		ft_sig(t_shell *shell);
 
 /*===================== expand =====================*/
 /* -------------- expand -------------- */
@@ -191,7 +191,6 @@ char	**unset(char **env, char **av);
 
 /* -------------- utility -------------- */
 int		strlen_av(char **av);
-char	*recup_wd(t_shell *shell, char *w_dir, char *fallback);
 
 /*===================== error =====================*/
 /* -------------- error -------------- */

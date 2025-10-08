@@ -34,7 +34,7 @@ void	ignore_signal(int sig)
 	sigaction (SIGQUIT, &sa, NULL);
 }
 
-int	ft_sig(void)
+int	ft_sig(t_shell *shell)
 {
 	pid_t	pid;
 	int		sig;
@@ -46,9 +46,15 @@ int	ft_sig(void)
 	{
 		sig = WTERMSIG(status);
 		if (sig == SIGQUIT)
+		{
 			write(2, "\nQuit (core dumped)\n", 20);
+			shell->data->exit_code = 131;
+		}
 		else if (sig == SIGINT)
+		{
 			write(2, "\n", 1);
+			shell->data->exit_code = 130;
+		}
 	}
 	signal_break(SIGINT, gst_handler);
 	ignore_signal(SIGQUIT);

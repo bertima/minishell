@@ -17,7 +17,7 @@ int	execut_command(t_shell *shell, t_cmd *cmd)
 	}
 	else
 	{
-		ft_sig();
+		return (ft_sig(shell));
 	}
 	wait(NULL);
 	return (0);

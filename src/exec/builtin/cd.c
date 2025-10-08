@@ -75,6 +75,7 @@ char	*def_dir(char *av, char **env)
 		{
 			tmp = return_home(NULL);
 			str = join_home(tmp, av, 0, 1);
+			free (tmp);
 		}
 		else
 			str = av;
@@ -116,6 +117,7 @@ char	**dep_fd(char **av, char **env)
 		return (env);
 	}
 	env = update_pwd_env(env, prev_dir, 0, NULL);
-	free(prev_dir);
+	if (prev_dir)
+		free(prev_dir);
 	return (env);
 }

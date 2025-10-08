@@ -38,7 +38,7 @@ static int	one_cmd(t_shell *shell, t_cmd *cmd)
 		if (redirect_command(shell, &cmd, 0))
 			return (1);
 		if (!exec_builtin(shell, &cmd))
-			execut_command(shell, cmd);
+			return (execut_command(shell, cmd));
 		if (redirect_command(shell, &cmd, 1))
 			return (1);
 	}
@@ -58,8 +58,7 @@ int	exec(t_shell *shell, int i)
 	cmd = shell->cmd;
 	if (i == 1)
 	{
-		one_cmd(shell, cmd);
-		return (0);
+		return (one_cmd(shell, cmd));
 	}
 	else if (i > 1)
 		multi_command(shell, cmd, 0);
