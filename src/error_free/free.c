@@ -8,10 +8,8 @@ static void	free_data(t_shell *shell)
 	if (shell->data->line)
 		free(shell->data->line);
 	shell->data->line = NULL;
-	if (shell->data->fd_stock_in >= 0)
-		close (shell->data->fd_stock_in);
-	if (shell->data->fd_stock_out >= 0)
-		close (shell->data->fd_stock_out);
+	close_fd(&shell->data->fd_stock_in);
+	close_fd(&shell->data->fd_stock_out);
 	return ;
 }
 

@@ -58,11 +58,10 @@ FSRC = src/main.c \
 	   \
 	   \
 	   src/exec/exec.c \
-	   src/exec/execve/execut_command.c \
-	   src/exec/execve/exec_builtin.c \
 	   \
+	    src/exec/exec_utils/execut_builtin_command.c \
 	   src/exec/exec_utils/execve.c \
-	   src/exec/exec_utils/redirect_command.c \
+	   src/exec/exec_utils/redirect_command_close_fd.c \
 	   src/exec/exec_utils/children.c \
 	   \
 	   src/exec/builtin/echo.c \

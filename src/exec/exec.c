@@ -15,14 +15,7 @@ static int	multi_command(t_shell *shell, t_cmd *cmd)
 			if (pipe(shell->children->pipefd))
 				return (1);
 		}
-		if (shell->children->nbr_cmd > 1)
-		{
-			if (dup2(shell->children->pipefd[0], STDIN_FILENO) < 0)
-				return (1);
-		}
 		creat_child(shell, temp_cmd, pid);
-		if (parent(shell, cmd, pid))
-			return (1);
 		temp_cmd = temp_cmd->next;
 	}
 	wait_parent(shell);

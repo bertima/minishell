@@ -34,14 +34,11 @@ void	ignore_signal(int sig)
 	sigaction (SIGQUIT, &sa, NULL);
 }
 
-int	ft_sig(t_shell *shell)
+int	ft_sig(t_shell *shell, int pid, int status)
 {
-	pid_t	pid;
 	int		sig;
-	int		status;
 
 	pid = 0;
-	waitpid(pid, &status, 0);
 	if (WIFSIGNALED(status))
 	{
 		sig = WTERMSIG(status);
@@ -49,11 +46,13 @@ int	ft_sig(t_shell *shell)
 		{
 			write(2, "\nQuit (core dumped)\n", 20);
 			shell->data->exit_code = 131;
+			return (1);
 		}
 		else if (sig == SIGINT)
 		{
 			write(2, "\n", 1);
 			shell->data->exit_code = 130;
+			return (1);
 		}
 	}
 	signal_break(SIGINT, gst_handler);

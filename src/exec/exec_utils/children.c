@@ -1,101 +1,77 @@
 #include "minishell.h"
 
-static void	close_fd(t_shell *shell, t_cmd *cmd, int i)
+static void	close_fd_cmd_shell(t_shell *shell, t_cmd *cmd)
 {
-	if (cmd)
+	if (shell)
 	{
-		if (cmd->fd_in >= 0)
-			close (cmd->fd_in);
-		cmd->fd_in = -1;
-		if (cmd->fd_out >= 0)
-			close (cmd->fd_out);
-		cmd->fd_out = -1;
+		if (cmd)
+		{
+			close_fd(&cmd->fd_in);
+			close_fd(&cmd->fd_out);
+		}
+		if (shell->children)
+		{
+			close_fd(&shell->children->fd_transi);
+			close_fd(&shell->children->pipefd[0]);
+			close_fd(&shell->children->pipefd[1]);
+		}
 	}
-	if (shell->children)
+}
+
+static void	parent(t_shell *shell, t_cmd *cmd, int pid)
+{
+	close_fd(&cmd->fd_in);
+	close_fd(&cmd->fd_out);
+	if (!cmd->next)
+		shell->children->last_pid = pid;
+	close_fd(&shell->children->fd_transi);
+	if (cmd->next)
 	{
-		if (shell->children->fd_transi >= 0)
-			close (shell->children->fd_transi);
-		shell->children->fd_transi = -1;
-		if (shell->children->pipefd[0] >= 0)
-			close (shell->children->pipefd[0]);
-		shell->children->pipefd[0] = -1;
-		if (shell->children->pipefd[1] >= 0)
-			close (shell->children->pipefd[1]);
-		shell->children->pipefd[1] = -1;
+		shell->children->fd_transi = shell->children->pipefd[0];
+		close_fd(&shell->children->pipefd[1]);
 	}
-	if (i > 0)
-	{
-		close(shell->data->fd_stock_in);
-		close (shell->data->fd_stock_out);
-	}
+	else
+		close_fd(&shell->children->pipefd[0]);
 }
 
 static int	child_manage(t_shell *shell, t_cmd *cmd)
 {
-	if (shell->children->nbr_cmd > 1)
+	if (shell->children->nbr_cmd > 1 && cmd->fd_in == -2)
 	{
 		if (dup2(shell->children->fd_transi, STDIN_FILENO) < 0)
 			return (1);
-		if (cmd->fd_in >= 0)
-		{
-			close(cmd->fd_in);
-			cmd->fd_in = -1;
-		}
+		close_fd(&cmd->fd_in);
 	}
-	if (cmd->next)
+	if (cmd->next && cmd->fd_out == -2)
 	{
 		if (dup2(shell->children->pipefd[1], STDOUT_FILENO) < 0)
 			return (perror(""), 1);
-		if (cmd->fd_out >= 0)
-		{
-			close(cmd->fd_out);
-			cmd->fd_out = -1;
-		}
+		close_fd(&cmd->fd_out);
 	}
+	close_fd(&shell->children->pipefd[0]);
+	close_fd(&shell->children->pipefd[1]);
 	if (exec_builtin(shell, &cmd))
-		return (close_fd(shell, cmd, 1), shell->data->exit_code);
-	if (execut_command(shell, cmd))
-		return (1);
+		return (close_fd_cmd_shell(shell, cmd), shell->data->exit_code);
+	exec_com(cmd->arg, shell->data->env);
+	close_fd_cmd_shell(shell, cmd);
 	return (0);
 }
 
 void	creat_child(t_shell *shell, t_cmd *cmd, int pid)
 {
-	if (redirect_command(shell, &cmd, 0))
-		return ;
 	pid = fork();
 	if (pid < 0)
 		return (perror(""));
 	else if (pid == 0)
 	{
+		if (redirect_command(shell, &cmd, 0))
+			return ;
+		close_fd(&shell->data->fd_stock_in);
+		close_fd(&shell->data->fd_stock_out);
 		child_manage(shell, cmd);
 		exit (shell->data->exit_code);
 	}
-}
-
-int	parent(t_shell *shell, t_cmd *cmd, int pid)
-{
-	if (cmd->next)
-	{
-		close(shell->children->pipefd[1]);
-		shell->children->pipefd[1] = -1;
-	}
-	if (cmd->fd_in >= 0)
-		close(cmd->fd_in);
-	cmd->fd_in = -1;
-	if (cmd->fd_out >= 0)
-		close(cmd->fd_out);
-	cmd->fd_out = -1;
-	if (!cmd->next)
-		shell->children->last_pid = pid;
-	if (shell->children->fd_transi >= 0)
-	{
-		close (shell->children->fd_transi);
-		shell->children->fd_transi = -1;
-	}
-	if (cmd->next)
-		shell->children->fd_transi = shell->children->pipefd[0];
-	return (0);
+	parent(shell, cmd, pid);
 }
 
 void	wait_parent(t_shell *shell)
@@ -103,7 +79,7 @@ void	wait_parent(t_shell *shell)
 	int		status;
 	pid_t	pid;
 
-	close_fd(shell, NULL, 0);
+	close_fd_cmd_shell(shell, NULL);
 	while (shell->children->nbr_cmd > 0)
 	{
 		pid = wait(&status);

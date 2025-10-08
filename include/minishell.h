@@ -136,7 +136,7 @@ void	signal_break(int sig, void (*gst_handler)(int));
 void	restore_default_signals(void);
 void	ignore_signal(int sig);
 void	gst_handler(int sig);
-int		ft_sig(t_shell *shell);
+int		ft_sig(t_shell *shell, int pid, int status);
 
 /*===================== expand =====================*/
 /* -------------- expand -------------- */
@@ -174,8 +174,8 @@ int		redirect_command(t_shell *shell, t_cmd **cmd, int i);
 
 /* -------------- child -------------- */
 void	creat_child(t_shell *shell, t_cmd *cmd, int pid);
-int		parent(t_shell *shell, t_cmd *cmd, int pid);
 void	wait_parent(t_shell *shell);
+void	close_fd(int *fd);
 
 /*===================== builtin =====================*/
 /* -------------- echo -------------- */
