@@ -1,12 +1,8 @@
-<<<<<<< HEAD
-voir ce qui ne va pas avec les quotes car pb de temps en temps (expand)
-continuer pour implementer les pipes
-=======
 verifier le signaux ctrl+\ : il doit interrompe le procesus actuelle avec un core dump
->>>>>>> 9fc4047 (vendredi 3 octombre)
-
-Ctrl+D	❌	❌ (à toi de définir)	Envoie EOF à stdin
-Ctrl+C	✅ SIGINT (2)	130 (128 + 2)	Interrompt le programme
-Ctrl+\	✅ SIGQUIT (3)	131 (128 + 3)	Interrompt + core dump
-verifier le CTRL C.
 valgrind  --track-fds=yes --leak-check=full ./minishell
+
+regarder pour expand (voir si pas un controle sur word split)
+finir pipes(voir pour les fd + voir pourquoi en pipe mode pas de redire sur fichier en more ou append)
+voir cette histoire de invalid fd (= -1) un truc me renvoie plein de success a voir (cmd)
+
+make && valgrind --leak-check=full --track-fds=yes --show-leak-kinds=all ./minishell

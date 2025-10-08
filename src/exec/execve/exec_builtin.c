@@ -23,5 +23,6 @@ int	exec_builtin(t_shell *shell, t_cmd **cmd)
 {
 	if (bultin(shell, (*cmd)))
 		return (1);
+	shell->data->exit_code = 0;
 	return (0);
 }

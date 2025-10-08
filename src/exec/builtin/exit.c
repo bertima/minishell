@@ -22,18 +22,18 @@ int	is_numerique(char **av)
 
 int	is_not_valid_av(t_shell *shell, char **av)
 {
-	if (av[1][0] == '-')
+	if (av && av[0] && av[1] && av[1][0] == '-')
 	{
 		printf("les consigne ne demande pas de gere les option!\n");
 		return (1);
 	}
-	if (av[1] && is_numerique(av) == 1)
+	else if (av && av[0] && av[1] && is_numerique(av) == 1)
 	{
 		all_free(shell);
 		rl_clear_history();
 		return (1);
 	}
-	if (strlen_av(av) > 1)
+	else if (strlen_av(av) > 1)
 	{
 		printf("exit\n");
 		printf("bash: exit: too many arguments%s: \n", av[1]);

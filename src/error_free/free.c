@@ -8,6 +8,10 @@ static void	free_data(t_shell *shell)
 	if (shell->data->line)
 		free(shell->data->line);
 	shell->data->line = NULL;
+	if (shell->data->fd_stock_in >= 0)
+		close (shell->data->fd_stock_in);
+	if (shell->data->fd_stock_out >= 0)
+		close (shell->data->fd_stock_out);
 	return ;
 }
 
@@ -53,7 +57,7 @@ static void	free_command_redir(t_shell *shell)
 	}
 }
 
-void	free_command_redir_token(t_shell *shell)
+void	free_command_redir_token_children(t_shell *shell)
 {
 	t_token		*temp_token;
 
@@ -65,6 +69,9 @@ void	free_command_redir_token(t_shell *shell)
 		free(shell->token);
 		shell->token = temp_token;
 	}
+	if (shell->children)
+		free(shell->children);
+	shell->children = NULL;
 	free_command_redir(shell);
 }
 
@@ -72,6 +79,7 @@ void	all_free(t_shell *shell)
 {
 	if (!shell)
 		return ;
-	free_command_redir_token(shell);
+	free_command_redir_token_children(shell);
 	free_data(shell);
+	rl_clear_history();
 }
