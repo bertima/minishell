@@ -33,3 +33,41 @@ void	ignore_signal(int sig)
 	sa.sa_flags = 0;
 	sigaction (SIGQUIT, &sa, NULL);
 }
+
+int	ft_sig(t_shell *shell)
+{
+	pid_t	pid;
+	int		sig;
+	int		status;
+
+	pid = 0;
+	waitpid(pid, &status, 0);
+	if (WIFSIGNALED(status))
+	{
+		sig = WTERMSIG(status);
+		if (sig == SIGQUIT)
+		{
+			write(2, "\nQuit (core dumped)\n", 20);
+			shell->data->exit_code = 131;
+		}
+		else if (sig == SIGINT)
+		{
+			write(2, "\n", 1);
+			shell->data->exit_code = 130;
+		}
+	}
+	signal_break(SIGINT, gst_handler);
+	ignore_signal(SIGQUIT);
+	return (0);
+}
+
+void	restore_default_signals(void)
+{
+	struct sigaction	sa;
+
+	sa.sa_handler = SIG_DFL;
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = 0;
+	sigaction(SIGINT, &sa, NULL);
+	sigaction(SIGQUIT, &sa, NULL);
+}
