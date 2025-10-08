@@ -31,7 +31,6 @@ static void	close_fd_cmd(t_shell *shell, t_cmd *cmd, int *temp_pipe)
 int	execut_command(t_shell *shell, t_cmd *cmd)
 {
 	int	pid;
-	int	status;
 
 	(void)cmd;
 	pid = fork();
@@ -46,6 +45,7 @@ int	execut_command(t_shell *shell, t_cmd *cmd)
 	}
 	else
 	{
+		close_fd_cmd(shell, cmd, shell->children->pipefd);
 		return (ft_sig(shell));
 	}
 	wait(NULL);
