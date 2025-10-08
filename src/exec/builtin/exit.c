@@ -46,8 +46,11 @@ void	end_prog(t_shell *shell, char **av)
 {
 	long long	ret;
 
-	if (is_not_valid_av(shell, av) == 1)
-		exit (2);
+	if (strlen_av(av) > 1)
+	{
+		if (is_not_valid_av(shell, av) == 1)
+			exit (2);
+	}
 	if (strlen_av(av) == 1)
 	{
 		all_free(shell);

@@ -69,6 +69,7 @@ FSRC = src/main.c \
 	   src/exec/builtin/exit.c\
 	   src/exec/builtin/pwd.c\
 	   src/exec/builtin/cd.c\
+	   src/exec/builtin/cd_utils.c\
 	   src/exec/builtin/export.c\
 	   src/exec/builtin/export_utils.c\
 	   src/exec/builtin/unset.c\

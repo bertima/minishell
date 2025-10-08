@@ -31,16 +31,14 @@ static int	multi_command(t_shell *shell, t_cmd *cmd, int result)
 	return (0);
 }
 
-static int	one_cmd(t_shell *shell, t_cmd *cmd, int result)
+static int	one_cmd(t_shell *shell, t_cmd *cmd)
 {
 	if (cmd->arg)
 	{
-		result = exec_builtin(shell, &cmd);
-		if (result == 1)
+		if (redirect_command(shell, &cmd, 0))
 			return (1);
-		else if (result == 2)
-			return (0);
-		execut_command(shell, cmd);
+		if (!exec_builtin(shell, &cmd))
+			execut_command(shell, cmd);
 		if (redirect_command(shell, &cmd, 1))
 			return (1);
 	}
@@ -60,7 +58,7 @@ int	exec(t_shell *shell, int i)
 	cmd = shell->cmd;
 	if (i == 1)
 	{
-		one_cmd(shell, cmd, 0);
+		one_cmd(shell, cmd);
 		return (0);
 	}
 	else if (i > 1)

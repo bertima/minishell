@@ -1,0 +1,76 @@
+#include "minishell.h"
+
+int	strlen_av(char **av)
+{
+	int	i;
+
+	i = 0;
+	if (!av)
+		return (0);
+	while (av[i])
+		i++;
+	return (i);
+}
+
+char	*return_home(char *str)
+{
+	str = getenv("HOME");
+	if (!str)
+	{
+		printf("bash: cd: HOME not set\n");
+		return (NULL);
+	}
+	return (str);
+}
+
+char	*get_env_value(char **env, const char *key)
+{
+	int	i;
+	int	len;
+
+	i = 0;
+	len = ft_strlen(key);
+	while (env[i])
+	{
+		if (ft_strncmp(env[i], key, len) == 0 && env[i][len] == '=')
+			return (env[i] + len + 1);
+		i++;
+	}
+	return (NULL);
+}
+
+char	*return_oldpwd(char **env)
+{
+	char	*str;
+
+	str = get_env_value(env, "OLDPWD");
+	if (!str)
+	{
+		printf("bash: cd: OLDPWD not set\n");
+		return (NULL);
+	}
+	return (str);
+}
+
+char	*stock_pwd(const char *s, int i)
+{
+	int		len;
+	int		j;
+	char	*str;
+
+	len = i;
+	while (s[len])
+		len++;
+	str = (char *)malloc(sizeof(char) * len + 1);
+	if (!str)
+		return (NULL);
+	j = 0;
+	while (s[i])
+	{
+		str[j] = s[i];
+		i++;
+		j++;
+	}
+	str[j] = '\0';
+	return (str);
+}

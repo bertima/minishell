@@ -22,13 +22,30 @@ static int	path(char **w_dir)
 	return (0);
 }
 
-static char	*recup_wd(t_shell *shell)
+char	*recup_wd(t_shell *shell, char *w_dir, char *fallback)
 {
-	char	*w_dir;
-
 	w_dir = getcwd(NULL, 0);
 	if (!w_dir)
-		return (return_null(shell));
+	{
+		perror("minishell: getcwd");
+		fallback = getenv("PWD");
+		if (!fallback)
+		{
+			fprintf(stderr, "minishell: cd : fallback to /\n");
+			fallback = "/";
+		}
+		if (chdir(fallback) != 0)
+		{
+			perror("minishell: chdir fallback failed");
+			return (return_null(shell));
+		}
+		w_dir = getcwd(NULL, 0);
+		if (!w_dir)
+		{
+			perror("minishell: getcwd after chdir");
+			return (return_null(shell));
+		}
+	}
 	if (path(&w_dir))
 		return (return_null(shell));
 	return (w_dir);
@@ -38,7 +55,7 @@ int	put_prompt(char *line, t_shell *shell)
 {
 	char	*w_dir;
 
-	w_dir = recup_wd(shell);
+	w_dir = recup_wd(shell, NULL, NULL);
 	if (!w_dir)
 		return (return_err_int(shell, "Error getcwd !\n"));
 	line = readline(w_dir);
@@ -48,8 +65,6 @@ int	put_prompt(char *line, t_shell *shell)
 		rl_clear_history();
 		printf("exit\n");
 		exit(127);
-		//perror(NULL);
-		//return (return_err_int(shell, "Error readline !\n"));
 	}
 	if (*line)
 		add_history(line);
