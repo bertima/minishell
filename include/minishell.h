@@ -133,8 +133,10 @@ int		add_arg(t_cmd *current, t_token *temp, int i);
 /*===================== signaux =====================*/
 /* -------------- signaux -------------- */
 void	signal_break(int sig, void (*gst_handler)(int));
+void	restore_default_signals(void);
 void	ignore_signal(int sig);
 void	gst_handler(int sig);
+int		ft_sig(t_shell *shell);
 
 /*===================== expand =====================*/
 /* -------------- expand -------------- */
@@ -189,7 +191,11 @@ void	print_emplacement(void);
 void	end_prog(t_shell *shell, char **av);
 
 /* -------------- cd -------------- */
-void	dep_fd(char **av);
+char	**dep_fd(char **av, char **env);
+char	*return_oldpwd(char **env);
+char	*stock_pwd(const char *s, int i);
+char	*get_env_value(char **env, const char *key);
+char	*return_home(char *str);
 
 /* -------------- export -------------- */
 char	**export(char **env, char **av);
