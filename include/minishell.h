@@ -136,7 +136,7 @@ void	signal_break(int sig, void (*gst_handler)(int));
 void	restore_default_signals(void);
 void	ignore_signal(int sig);
 void	gst_handler(int sig);
-int		ft_sig(t_shell *shell, int pid, int status);
+int		ft_sig(int status);
 
 /*===================== expand =====================*/
 /* -------------- expand -------------- */
@@ -168,7 +168,7 @@ int		generator_of_file_name(char **str, char *nbr_count, char *nbr_pid);
 /* -------------- exec -------------- */
 int		exec(t_shell *shell);
 int		exec_com(char **av, char **environ);
-int		execut_command(t_shell *shell, t_cmd *cmd);
+int		execut_command(t_shell *shell, t_cmd *cmd, int status);
 int		exec_builtin(t_shell *shell, t_cmd **cmd);
 int		redirect_command(t_shell *shell, t_cmd **cmd, int i);
 
@@ -176,6 +176,7 @@ int		redirect_command(t_shell *shell, t_cmd **cmd, int i);
 void	creat_child(t_shell *shell, t_cmd *cmd, int pid);
 void	wait_parent(t_shell *shell);
 void	close_fd(int *fd);
+void	close_fd_cmd_shell(t_shell *shell, t_cmd *cmd);
 
 /*===================== builtin =====================*/
 /* -------------- echo -------------- */

@@ -31,7 +31,7 @@ static int	one_cmd(t_shell *shell, t_cmd *cmd)
 		if (cmd->arg && cmd->arg[0] && cmd->arg[0][0] != '\0')
 		{
 			if (!exec_builtin(shell, &cmd))
-				execut_command(shell, cmd);
+				execut_command(shell, cmd, 0);
 		}
 	}
 	return (0);

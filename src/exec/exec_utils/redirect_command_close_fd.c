@@ -1,5 +1,22 @@
 #include "minishell.h"
 
+void	close_fd_cmd_shell(t_shell *shell, t_cmd *cmd)
+{
+	if (!shell)
+		return ;
+	if (cmd)
+	{
+		close_fd(&cmd->fd_in);
+		close_fd(&cmd->fd_out);
+	}
+	if (shell->children)
+	{
+		close_fd(&shell->children->fd_transi);
+		close_fd(&shell->children->pipefd[0]);
+		close_fd(&shell->children->pipefd[1]);
+	}
+}
+
 void	close_fd(int *fd)
 {
 	if (*fd >= 0)
@@ -9,13 +26,13 @@ void	close_fd(int *fd)
 
 static int	redir_cmd(t_cmd **cmd)
 {
-	if ((*cmd)->fd_in != -2 && (*cmd)->fd_in != STDIN_FILENO)
+	if ((*cmd)->fd_in >= 0)
 	{
 		if (dup2((*cmd)->fd_in, STDIN_FILENO) < 0)
 			return (perror(""), 1);
 		close_fd(&(*cmd)->fd_in);
 	}
-	if ((*cmd)->fd_out != -2 && (*cmd)->fd_out != STDOUT_FILENO)
+	if ((*cmd)->fd_out >= 0)
 	{
 		if (dup2((*cmd)->fd_out, STDOUT_FILENO) < 0)
 			return (perror(""), 1);

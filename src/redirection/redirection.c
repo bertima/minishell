@@ -1,50 +1,43 @@
 #include "minishell.h"
 
-static int	here_doc_and_less(t_cmd *temp_cmd, t_redir *redir, size_t fd)
+static int	here_doc_and_less(t_cmd *temp_cmd, t_redir *redir)
 {
 	if (redir->type == LESS)
 	{
 		close_fd(&temp_cmd->fd_in);
 		if (access(redir->file[0], F_OK | R_OK) < 0)
 			return (perror(redir->file[0]), 1);
-		fd = open(redir->file[0], O_RDONLY);
-		if (fd < 0)
+		temp_cmd->fd_in = open(redir->file[0], O_RDONLY);
+		if (temp_cmd->fd_in < 0)
 			return (perror(""), 1);
-		temp_cmd->fd_in = fd;
 	}
 	else if (redir->type == HERE_DOC)
 	{
 		close_fd(&temp_cmd->fd_in);
-		fd = open(redir->file_temp, O_RDONLY);
-		if (fd < 0)
+		temp_cmd->fd_in = open(redir->file_temp, O_RDONLY);
+		if (temp_cmd->fd_in < 0)
 			return (perror(redir->file_temp), 1);
-		temp_cmd->fd_in = fd;
 	}
 	return (0);
 }
 
 static int	manage_redir(t_cmd *temp_cmd, t_redir *redir)
 {
-	size_t	fd;
-
-	fd = 0;
-	if (here_doc_and_less(temp_cmd, redir, fd))
+	if (here_doc_and_less(temp_cmd, redir))
 		return (1);
 	else if (redir->type == MORE)
 	{
 		close_fd(&temp_cmd->fd_out);
-		fd = open(*redir->file, O_WRONLY | O_TRUNC | O_CREAT, 0644);
-		if (fd < 0)
+		temp_cmd->fd_out = open(*redir->file, O_WRONLY | O_TRUNC | O_CREAT, 0644);
+		if (temp_cmd->fd_out < 0)
 			return (perror(redir->file[0]), 1);
-		temp_cmd->fd_out = fd;
 	}
 	else if (redir->type == REDIRECT_A)
 	{
 		close_fd(&temp_cmd->fd_out);
-		fd = open(*redir->file, O_WRONLY | O_APPEND | O_CREAT, 0644);
-		if (fd < 0)
+		temp_cmd->fd_out = open(*redir->file, O_WRONLY | O_APPEND | O_CREAT, 0644);
+		if (temp_cmd->fd_out < 0)
 			return (perror(redir->file[0]), 1);
-		temp_cmd->fd_out = fd;
 	}
 	return (0);
 }
@@ -57,7 +50,7 @@ static int	creat_file_manage_fd(t_cmd *temp_cmd, t_redir *redir)
 	while (temp_redir)
 	{
 		if (ft_len_array(temp_redir->file) != 1)
-			return (ft_putstr_fd("More than 1 arg\n", 2), 1);
+			return (ft_putstr_fd("More than 1 arg fail creat file\n", 2), 1);
 		if (manage_redir(temp_cmd, temp_redir))
 			return (1);
 		temp_redir = temp_redir->next;

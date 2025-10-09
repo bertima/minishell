@@ -54,10 +54,29 @@ static char	*com_find(char *av, char **environ)
 	return (ft_free_split(path), NULL);
 }
 
+static void	exec_binaire(char **av, char **environ)
+{
+	if (access(av[0], F_OK))
+	{
+		perror(av[0]);
+		exit(127);
+	}
+	if (access(av[0], X_OK))
+	{
+		perror(av[0]);
+		exit(126);
+	}
+	execve(av[0], av, environ);
+	perror(av[0]);
+	exit(126);
+}
+
 int	exec_com(char **av, char **environ)
 {
 	char	*path;
 
+	if (ft_strchr(av[0], '/'))
+		exec_binaire(av, environ);
 	path = com_find(av[0], environ);
 	if (!path)
 	{

@@ -1,9 +1,8 @@
 #include "minishell.h"
 
-int	execut_command(t_shell *shell, t_cmd *cmd)
+int	execut_command(t_shell *shell, t_cmd *cmd, int status)
 {
 	int	pid;
-	int	status;
 
 	pid = fork();
 	if (pid < 0)
@@ -11,17 +10,21 @@ int	execut_command(t_shell *shell, t_cmd *cmd)
 	else if (pid == 0)
 	{
 		restore_default_signals();
+		close_fd_cmd_shell(shell, cmd);
 		close_fd(&shell->data->fd_stock_in);
 		close_fd(&shell->data->fd_stock_out);
 		exec_com(cmd->arg, shell->data->env);
 	}
 	else
 	{
+		close_fd_cmd_shell(shell, cmd);
+		signal(SIGINT, SIG_IGN);
 		waitpid(pid, &status, 0);
+		signal_break(SIGINT, gst_handler);
 		if (WIFEXITED(status))
 			shell->data->exit_code = WEXITSTATUS(status);
 		else if (WIFSIGNALED(status))
-			shell->data->exit_code = 128 + WTERMSIG(status);
+			shell->data->exit_code = ft_sig(status);
 	}
 	return (0);
 }
@@ -48,7 +51,10 @@ static int	bultin(t_shell *shell, t_cmd *cmd)
 int	exec_builtin(t_shell *shell, t_cmd **cmd)
 {
 	if (bultin(shell, (*cmd)))
+	{
+		shell->data->exit_code = 0;
 		return (1);
+	}
 	shell->data->exit_code = 0;
 	return (0);
 }
