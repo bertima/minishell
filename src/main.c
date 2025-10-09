@@ -20,11 +20,11 @@ int	main(int ac, char **av, char **environ)
 
 	if (ac != 1 || !av[0])
 		return (return_err_int(NULL, "No argument for shell !\n"));
-	signal_break(SIGINT, gst_handler);
-	ignore_signal(SIGQUIT);
 	line = NULL;
 	if (init_struct(&shell, environ))
 		return (return_err_int(&shell, NULL));
+	shell.data->exit_code = signal_break(SIGINT, gst_handler);
+	ignore_signal(SIGQUIT);
 	while (1)
 	{
 		programme(line, &shell);

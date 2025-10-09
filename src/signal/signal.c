@@ -12,7 +12,7 @@ void	gst_handler(int sig)
 	}
 }
 
-void	signal_break(int sig, void (*gst_handler)(int))
+int	signal_break(int sig, void (*gst_handler)(int))
 {
 	struct sigaction	sa;
 
@@ -21,6 +21,7 @@ void	signal_break(int sig, void (*gst_handler)(int))
 	sigemptyset (&sa.sa_mask);
 	sa.sa_flags = 0;
 	sigaction (SIGINT, &sa, NULL);
+	return (130);
 }
 
 void	ignore_signal(int sig)
@@ -34,26 +35,22 @@ void	ignore_signal(int sig)
 	sigaction (SIGQUIT, &sa, NULL);
 }
 
-int	ft_sig(t_shell *shell)
+int	ft_sig(int status)
 {
-	pid_t	pid;
 	int		sig;
-	int		status;
 
-	pid = 0;
-	waitpid(pid, &status, 0);
 	if (WIFSIGNALED(status))
 	{
 		sig = WTERMSIG(status);
 		if (sig == SIGQUIT)
 		{
-			write(2, "\nQuit (core dumped)\n", 20);
-			shell->data->exit_code = 131;
+			write(2, "Quit (core dumped)\n", 20);
+			return (131);
 		}
 		else if (sig == SIGINT)
 		{
-			write(2, "\n", 1);
-			shell->data->exit_code = 130;
+			write(1, "\n", 1);
+			return (130);
 		}
 	}
 	signal_break(SIGINT, gst_handler);

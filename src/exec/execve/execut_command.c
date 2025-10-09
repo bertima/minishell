@@ -33,7 +33,6 @@ int	execut_command(t_shell *shell, t_cmd *cmd)
 	int	pid;
 	int	status;
 
-	(void)cmd;
 	pid = fork();
 	if (pid < 0)
 		return (perror(""), 1);
@@ -46,8 +45,14 @@ int	execut_command(t_shell *shell, t_cmd *cmd)
 	}
 	else
 	{
-		return (ft_sig(shell));
+		signal(SIGINT, SIG_IGN);
+		waitpid(pid, &status, 0);
+		signal_break(SIGINT, gst_handler);
+		if (WIFEXITED(status))
+			shell->data->exit_code = WEXITSTATUS(status);
+		else if (WIFSIGNALED(status))
+			shell->data->exit_code = ft_sig(status);
+		close_fd_cmd(shell, cmd, shell->children->pipefd);
 	}
-	wait(NULL);
 	return (0);
 }
