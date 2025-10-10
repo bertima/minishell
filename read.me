@@ -5,4 +5,4 @@ regarder pour expand (voir si pas un controle sur word split)
 finir pipes(voir pour les fd + voir pourquoi en pipe mode pas de redire sur fichier en more ou append)
 voir cette histoire de invalid fd (= -1) un truc me renvoie plein de success a voir (cmd)
 
-make && valgrind --leak-check=full --track-fds=yes --show-leak-kinds=all ./minishell
+make && valgrind --leak-check=full --track-fds=yes --suppressions=RL.supp --show-leak-kinds=all ./minishell
