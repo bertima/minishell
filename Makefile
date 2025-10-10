@@ -52,16 +52,17 @@ FSRC = src/main.c \
 	   src/expand/expand_utils/insert_arg_expand.c \
 	   \
 	   \
-	   src/redirection/redirection.c \
-	   src/redirection/here_doc.c \
-	   src/redirection/generator_of_file_name.c \
+	   src/here_doc/creat_file_generator.c \
+	   src/here_doc/here_doc.c \
 	   \
 	   \
 	   src/exec/exec.c \
 	   \
-	    src/exec/exec_utils/execut_builtin_command.c \
+	   src/exec/exec_utils/redirection/redirect_std_close.c \
+	   src/exec/exec_utils/redirection/redirection.c \
+	   \
+	   src/exec/exec_utils/execut_builtin_command.c \
 	   src/exec/exec_utils/execve.c \
-	   src/exec/exec_utils/redirect_command_close_fd.c \
 	   src/exec/exec_utils/children.c \
 	   \
 	   src/exec/builtin/echo.c \

@@ -8,7 +8,7 @@ static void	programme(char *line, t_shell *shell)
 		return ;
 	if (expand(shell, shell->cmd, 0, 0))
 		return ;
-	if (redirection_verif(shell, NULL))
+	if (here_doc(shell, NULL))
 		return ;
 	exec(shell);
 }

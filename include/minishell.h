@@ -159,7 +159,7 @@ int		suppress_arg(char ***arg, int *i);
 
 /*===================== redirection =====================*/
 /* -------------- redirection -------------- */
-int		redirection_verif(t_shell *shell, t_cmd *temp_cmd);
+int		here_doc(t_shell *shell, t_cmd *temp_cmd);
 int		creat_here_doc(t_shell *shell, t_cmd *cmd, char *temp_file, int fd);
 int		manage_delimiter_hd(t_redir *redir);
 int		generator_of_file_name(char **str, char *nbr_count, char *nbr_pid);
@@ -169,14 +169,20 @@ int		generator_of_file_name(char **str, char *nbr_count, char *nbr_pid);
 int		exec(t_shell *shell);
 int		exec_com(char **av, char **environ);
 int		execut_command(t_shell *shell, t_cmd *cmd, int status);
-int		exec_builtin(t_shell *shell, t_cmd **cmd);
-int		redirect_command(t_shell *shell, t_cmd **cmd, int i);
+int		verif_builtin(t_cmd *cmd);
+int		exec_builtin(t_shell *shell, t_cmd *cmd);
+int		bultin(t_shell *shell, t_cmd *cmd);
+
+/* -------------- redir -------------- */
+int		redirect_std(t_shell *shell);
+int		redirect_cmd(t_shell *shell, t_cmd *temp_cmd);
+void	close_fd(int *fd);
+void	close_stock(t_shell *shell);
+void	close_fd_cmd_shell(t_shell *shell, t_cmd *cmd);
 
 /* -------------- child -------------- */
 void	creat_child(t_shell *shell, t_cmd *cmd, int pid);
 void	wait_parent(t_shell *shell);
-void	close_fd(int *fd);
-void	close_fd_cmd_shell(t_shell *shell, t_cmd *cmd);
 
 /*===================== builtin =====================*/
 /* -------------- echo -------------- */

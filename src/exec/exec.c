@@ -6,6 +6,10 @@ static int	multi_command(t_shell *shell, t_cmd *cmd)
 	int		pid;
 
 	temp_cmd = cmd;
+	shell->data->fd_stock_in = dup(STDIN_FILENO);
+	shell->data->fd_stock_out = dup(STDOUT_FILENO);
+	if (shell->data->fd_stock_in < 0 || shell->data->fd_stock_out < 0)
+		return (perror(""), 1);
 	while (temp_cmd)
 	{
 		pid = 0;
@@ -19,6 +23,8 @@ static int	multi_command(t_shell *shell, t_cmd *cmd)
 		temp_cmd = temp_cmd->next;
 	}
 	wait_parent(shell);
+	redirect_std(shell);
+	close_stock(shell);
 	return (0);
 }
 
@@ -26,11 +32,18 @@ static int	one_cmd(t_shell *shell, t_cmd *cmd)
 {
 	if (cmd->arg)
 	{
-		if (redirect_command(shell, &cmd, 0))
-			return (1);
 		if (cmd->arg && cmd->arg[0] && cmd->arg[0][0] != '\0')
 		{
-			if (!exec_builtin(shell, &cmd))
+			shell->data->fd_stock_in = dup(STDIN_FILENO);
+			shell->data->fd_stock_out = dup(STDOUT_FILENO);
+			if (shell->data->fd_stock_in < 0 || shell->data->fd_stock_out < 0)
+				return (perror(""), 1);
+			if (verif_builtin(cmd))
+			{
+				if (exec_builtin(shell, cmd))
+					return (1);
+			}
+			else
 				execut_command(shell, cmd, 0);
 		}
 	}
@@ -71,7 +84,5 @@ int	exec(t_shell *shell)
 		shell->children->nbr_cmd = 0;
 		multi_command(shell, cmd);
 	}
-	if (redirect_command(shell, NULL, 1))
-		return (1);
 	return (0);
 }

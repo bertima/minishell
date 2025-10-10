@@ -1,5 +1,26 @@
 #include "minishell.h"
 
+static int	join_dir(char **w_dir, char **split_path, int len)
+{
+	char	*first;
+	char	*last;
+
+	first = ft_strdup("~/");
+	if (!first)
+		return (free(*w_dir), 1);
+	last = ft_strdup("$ ");
+	if (!last)
+		return (free(w_dir), free(first), 1);
+	*w_dir = ft_strjoin_var(3, first, split_path[len - 1], last);
+	if (!*w_dir)
+		return (1);
+	free(first);
+	free(last);
+	first = NULL;
+	last = NULL;
+	return (0);
+}
+
 static int	path(char **w_dir)
 {
 	char	**split_path;
@@ -16,9 +37,8 @@ static int	path(char **w_dir)
 	if (!split_path)
 		return (1);
 	len = ft_len_array(split_path);
-	*w_dir = ft_strjoin_var(3, "~/", split_path[len - 1], "$ ");
-	if (!*w_dir)
-		return (1);
+	if (join_dir(w_dir, split_path, len))
+		return ((ft_free_split(split_path), 1));
 	ft_free_split(split_path);
 	return (0);
 }

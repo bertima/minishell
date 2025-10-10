@@ -9,27 +9,26 @@ int	execut_command(t_shell *shell, t_cmd *cmd, int status)
 		return (perror(""), 1);
 	else if (pid == 0)
 	{
+		close_stock(shell);
 		restore_default_signals();
+		if (redirect_cmd(shell, cmd))
+			return (1);
 		close_fd_cmd_shell(shell, cmd);
-		close_fd(&shell->data->fd_stock_in);
-		close_fd(&shell->data->fd_stock_out);
 		exec_com(cmd->arg, shell->data->env);
 	}
-	else
-	{
-		close_fd_cmd_shell(shell, cmd);
-		signal(SIGINT, SIG_IGN);
-		waitpid(pid, &status, 0);
-		signal_break(SIGINT, gst_handler);
-		if (WIFEXITED(status))
-			shell->data->exit_code = WEXITSTATUS(status);
-		else if (WIFSIGNALED(status))
-			shell->data->exit_code = ft_sig(status);
-	}
+	close_stock(shell);
+	close_fd_cmd_shell(shell, cmd);
+	signal(SIGINT, SIG_IGN);
+	waitpid(pid, &status, 0);
+	signal_break(SIGINT, gst_handler);
+	if (WIFEXITED(status))
+		shell->data->exit_code = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+		shell->data->exit_code = ft_sig(status);
 	return (0);
 }
 
-static int	bultin(t_shell *shell, t_cmd *cmd)
+int	bultin(t_shell *shell, t_cmd *cmd)
 {
 	if (ft_strcmp(cmd->arg[0], "echo") == 0)
 		return (echo(cmd->arg), 1);
@@ -41,20 +40,39 @@ static int	bultin(t_shell *shell, t_cmd *cmd)
 		return (print_emplacement(), 1);
 	if (ft_strcmp(cmd->arg[0], "cd") == 0)
 		return (shell->data->env = dep_fd(cmd->arg, shell->data->env), 1);
-	if (ft_strcmp(shell->cmd->arg[0], "export") == 0)
+	if (ft_strcmp(cmd->arg[0], "export") == 0)
 		return (shell->data->env = export(shell->data->env, cmd->arg), 1);
-	if (ft_strcmp(shell->cmd->arg[0], "unset") == 0)
+	if (ft_strcmp(cmd->arg[0], "unset") == 0)
 		return (shell->data->env = unset(shell->data->env, shell->cmd->arg), 1);
 	return (0);
 }
 
-int	exec_builtin(t_shell *shell, t_cmd **cmd)
+int	exec_builtin(t_shell *shell, t_cmd *cmd)
 {
-	if (bultin(shell, (*cmd)))
+	if (shell->data->fd_stock_in < 0 || shell->data->fd_stock_out < 0)
+		return (perror(""), 0);
+	if (redirect_cmd(shell, cmd))
 	{
-		shell->data->exit_code = 0;
+		redirect_std(shell);
 		return (1);
 	}
+	bultin(shell, cmd);
 	shell->data->exit_code = 0;
+	redirect_std(shell);
+	close_fd_cmd_shell(shell, cmd);
+	close_stock(shell);
+	return (0);
+}
+
+int	verif_builtin(t_cmd *cmd)
+{
+	if (ft_strcmp(cmd->arg[0], "echo") == 0
+		|| ft_strcmp(cmd->arg[0], "env") == 0
+		|| ft_strcmp(cmd->arg[0], "exit") == 0
+		|| ft_strcmp(cmd->arg[0], "pwd") == 0
+		|| ft_strcmp(cmd->arg[0], "cd") == 0
+		|| ft_strcmp(cmd->arg[0], "export") == 0
+		|| ft_strcmp(cmd->arg[0], "unset") == 0)
+		return (1);
 	return (0);
 }
