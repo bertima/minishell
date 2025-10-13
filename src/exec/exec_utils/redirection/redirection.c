@@ -52,10 +52,10 @@ int	creat_dup(t_cmd *cmd, t_redir *redir)
 	return (0);
 }
 
-static int	creat_dup_file(t_cmd *cmd, t_redir *redir)
+static int	creat_dup_file(t_shell *shell, t_cmd *cmd, t_redir *redir)
 {
 	if (ft_len_array(redir->file) != 1)
-		return (ft_putstr_fd("More than 1 arg fail creat file\n", 2), 1);
+		return (error_find_int(shell, AMBIGUOUS, 1, redir->file_temp));
 	if (creat_dup(cmd, redir))
 		return (1);
 	return (0);
@@ -82,7 +82,7 @@ int	redirect_cmd(t_shell *shell, t_cmd *cmd)
 	while (temp_redir)
 	{
 		manage_expand(shell, temp_redir, 0, 0);
-		if (creat_dup_file(cmd, temp_redir))
+		if (creat_dup_file(shell, cmd, temp_redir))
 			return (1);
 		temp_redir = temp_redir->next;
 	}

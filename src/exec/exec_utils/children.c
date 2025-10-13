@@ -49,7 +49,12 @@ void	creat_child(t_shell *shell, t_cmd *cmd, int pid)
 	else if (pid == 0)
 	{
 		if (redirect_cmd(shell, cmd))
-			return ;
+		{
+			close_fd_cmd_shell(shell, cmd);
+			close_stock(shell);
+			all_free(shell);
+			exit(1);
+		}
 		child_manage(shell, cmd);
 	}
 	parent(shell, cmd, pid);

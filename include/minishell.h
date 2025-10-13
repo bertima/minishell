@@ -40,6 +40,7 @@ typedef struct s_data		t_data;
 typedef struct s_expand		t_expand;
 typedef struct s_children	t_children;
 
+/*********** metachar ***********/
 enum	e_type
 {
 	WORD,
@@ -48,6 +49,16 @@ enum	e_type
 	HERE_DOC,
 	REDIRECT_A,
 	PIPE,
+};
+
+/*********** error ***********/
+enum	e_error
+{
+	ARG_MINISHELL,
+	META,
+	MALLOC,
+	QUOTE,
+	AMBIGUOUS,
 };
 
 /*********** struct de recup ***********/
@@ -64,6 +75,7 @@ struct s_shell
 struct	s_data
 {
 	char		*line;
+	char		*w_dir_prompt;
 	char		**env;
 	int			fd_stock_in;
 	int			fd_stock_out;
@@ -217,8 +229,8 @@ int		strlen_av(char **av);
 
 /*===================== error =====================*/
 /* -------------- error -------------- */
-char	*return_null(t_shell *shell);
-int		return_err_int(t_shell *shell, char *str);
+char	*error_find_char(t_shell *shell, int e_code, int code_err, char *str);
+int		error_find_int(t_shell *shell, int e_code, int code_err, char *str);
 
 /* -------------- free -------------- */
 void	all_free(t_shell *shell);

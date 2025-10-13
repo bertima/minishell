@@ -43,7 +43,7 @@ static int	find_quote(t_shell *shell, char *line, int *len, char c)
 	while (line[j] && line[j] != c)
 		j++;
 	if (!line[j])
-		return (return_err_int(shell, "Quote no close !\n"));
+		return (error_find_int(shell, QUOTE, 1, NULL));
 	*len += j + 1;
 	return (0);
 }

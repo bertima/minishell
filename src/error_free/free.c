@@ -2,12 +2,15 @@
 
 static void	free_data(t_shell *shell)
 {
-	if (shell->data->env)
+	if (shell->data->env && *shell->data->env)
 		ft_free_split(shell->data->env);
 	shell->data->env = NULL;
 	if (shell->data->line)
 		free(shell->data->line);
 	shell->data->line = NULL;
+	if (shell->data->w_dir_prompt)
+		free(shell->data->w_dir_prompt);
+	shell->data->w_dir_prompt = NULL;
 	close_fd(&shell->data->fd_stock_in);
 	close_fd(&shell->data->fd_stock_out);
 	return ;
@@ -64,11 +67,17 @@ void	free_command_redir_token_children(t_shell *shell)
 		temp_token = shell->token->next;
 		if (shell->token->sentence)
 			free(shell->token->sentence);
+		shell->token->sentence = NULL;
 		free(shell->token);
 		shell->token = temp_token;
 	}
 	if (shell->children)
+	{
+		close_fd(&shell->children->pipefd[0]);
+		close_fd(&shell->children->pipefd[1]);
+		close_fd(&shell->children->fd_transi);
 		free(shell->children);
+	}
 	shell->children = NULL;
 	free_command_redir(shell);
 }

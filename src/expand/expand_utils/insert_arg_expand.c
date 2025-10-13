@@ -30,11 +30,12 @@ static int	regroupe(char ***new, char *str, int *start_end, int *j)
 
 static int	creat_new(char ***new, char **str_arg, int *start_end, int *j)
 {
-	*new = ft_split(str_arg[0], " \t\n");
+	*new = ft_split(str_arg[0], " \t\n\v\f\r");
 	if (!*new)
 		return (1);
 	if (regroupe(new, str_arg[1], start_end, j))
-		return (ft_free_split(*new), 1);
+		return (ft_free_split(*new), free(str_arg[0]), 1);
+	free(str_arg[0]);
 	return (0);
 }
 
@@ -76,12 +77,14 @@ static int	copie_cmd(char ***arg, char **new, int *i, int stock)
 
 int	insert_arg_expand(char ***arg, int *start_end, int *i, int *j)
 {
+	int		len;
 	char	*str_arg[2];
 	char	**new;
 
+	len = start_end[1] - start_end[0];
 	if (start_end[0] >= start_end[1])
 		return (0);
-	str_arg[0] = ft_substr((*arg)[*i], start_end[0], start_end[1]);
+	str_arg[0] = ft_substr((*arg)[*i], start_end[0], len);
 	if (!str_arg[0])
 		return (1);
 	str_arg[1] = (*arg)[*i];

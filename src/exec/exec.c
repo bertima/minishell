@@ -45,6 +45,7 @@ static int	one_cmd(t_shell *shell, t_cmd *cmd)
 			}
 			else
 				execut_command(shell, cmd, 0);
+			close_stock(shell);
 		}
 	}
 	return (0);

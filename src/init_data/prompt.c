@@ -58,44 +58,42 @@ char	*recup_wd(t_shell *shell, char *w_dir, char *fallback)
 		if (chdir(fallback) != 0)
 		{
 			perror("minishell: chdir fallback failed");
-			return (return_null(shell));
+			return (free(w_dir), error_find_char(shell, -1, 1, NULL));
 		}
 		w_dir = getcwd(NULL, 0);
 		if (!w_dir)
 		{
 			perror("minishell: getcwd after chdir");
-			return (return_null(shell));
+			return (error_find_char(shell, -1, 1, NULL));
 		}
 	}
 	if (path(&w_dir))
-		return (return_null(shell));
+		return (free(w_dir), error_find_char(shell, -1, 1, NULL));
 	return (w_dir);
 }
 
 int	put_prompt(char *line, t_shell *shell)
 {
-	char	*w_dir;
-
-	w_dir = recup_wd(shell, NULL, NULL);
-	if (!w_dir)
-		return (return_err_int(shell, "Error getcwd !\n"));
-	line = readline(w_dir);
+	shell->data->w_dir_prompt = recup_wd(shell, NULL, NULL);
+	if (!shell->data->w_dir_prompt)
+		return (error_find_int(shell, MALLOC, 1, NULL));
+	line = readline(shell->data->w_dir_prompt);
 	if (!line)
 	{
 		all_free(shell);
 		printf("exit\n");
 		exit(127);
 		perror(NULL);
-		return (return_err_int(shell, "Error readline !\n"));
+		return (error_find_int(shell, -1, 1, NULL));
 	}
 	if (*line)
 		add_history(line);
 	shell->data->line = ft_strdup(line);
 	if (!shell->data->line)
-		return (free(line), free(w_dir), 1);
+		return (free(line), free(shell->data->w_dir_prompt), 1);
 	free(line);
-	free(w_dir);
+	free(shell->data->w_dir_prompt);
 	line = NULL;
-	w_dir = NULL;
+	shell->data->w_dir_prompt = NULL;
 	return (0);
 }

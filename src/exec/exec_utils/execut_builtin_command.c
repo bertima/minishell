@@ -12,12 +12,13 @@ int	execut_command(t_shell *shell, t_cmd *cmd, int status)
 		close_stock(shell);
 		restore_default_signals();
 		if (redirect_cmd(shell, cmd))
-			return (1);
+			return (all_free(shell), exit(1), 1);
 		close_fd_cmd_shell(shell, cmd);
 		exec_com(cmd->arg, shell->data->env);
 	}
-	close_stock(shell);
 	close_fd_cmd_shell(shell, cmd);
+	redirect_std(shell);
+	close_stock(shell);
 	signal(SIGINT, SIG_IGN);
 	waitpid(pid, &status, 0);
 	signal_break(SIGINT, gst_handler);
