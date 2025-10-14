@@ -219,7 +219,7 @@ char	*return_home(char *str);
 
 /* -------------- export -------------- */
 void	export(t_shell *shell);
-int check_sign(char *av);
+int 	check_sign(char *av);
 void	show_ex(char **av);
 void	tri_bubule(char **ex);
 

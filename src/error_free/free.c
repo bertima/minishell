@@ -5,6 +5,9 @@ static void	free_data(t_shell *shell)
 	if (shell->data->env && *shell->data->env)
 		ft_free_split(shell->data->env);
 	shell->data->env = NULL;
+	if (shell->data->env && *shell->data->exp)
+		ft_free_split(shell->data->exp);
+	shell->data->exp = NULL;
 	if (shell->data->line)
 		free(shell->data->line);
 	shell->data->line = NULL;

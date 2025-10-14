@@ -37,7 +37,11 @@ int	creat_command(t_shell *shell)
 	while (temp)
 	{
 		if (compare(shell, &cmd, &temp))
+		{
+			if (cmd && cmd->arg)
+				ft_free_split(cmd->arg);
 			return (error_find_int(shell, MALLOC, 1, NULL));
+		}
 	}
 	return (0);
 }

@@ -79,7 +79,7 @@ int	add_arg(t_cmd *cmd, t_token *temp, int i)
 	{
 		new_a[i] = ft_strdup(cmd->arg[i]);
 		if (!new_a[i])
-			return (1);
+			return (ft_free_split(new_a), free(new), 1);
 		i++;
 	}
 	ft_free_split(cmd->arg);
