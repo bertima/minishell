@@ -40,15 +40,12 @@ static int	creat_first(t_cmd *cmd, char *new)
 {
 	cmd->arg = ft_calloc(1, sizeof(char *));
 	if (!cmd->arg)
-	{
-		free(cmd);
-		return (1);
-	}
+		return (free(cmd), 1);
 	cmd->arg[0] = new;
 	return (0);
 }
 
-static int	init_data(char **new, t_cmd *c, t_token *temp, char ***new_a)
+static int	init_data(char **new, t_cmd *cmd, t_token *temp, char ***new_a)
 {
 	int	last;
 
@@ -56,13 +53,10 @@ static int	init_data(char **new, t_cmd *c, t_token *temp, char ***new_a)
 	*new = ft_strdup(temp->sentence);
 	if (!*new)
 		return (1);
-	last = ft_len_array(c->arg);
+	last = ft_len_array(cmd->arg);
 	*new_a = ft_calloc(last + 2, sizeof(char *));
 	if (!*new_a)
-	{
-		free(*new);
-		return (1);
-	}
+		return (free(*new), 1);
 	return (0);
 }
 

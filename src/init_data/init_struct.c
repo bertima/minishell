@@ -61,11 +61,7 @@ int	init_struct(t_shell *shell, char **environ)
 		return (1);
 	if (cp_env(&shell->data->exp, environ))
 		return (1);
-	shell->data->fd_stock_in = dup(STDIN_FILENO);
-	if (shell->data->fd_stock_in < 0)
-		return (perror(""), 1);
-	shell->data->fd_stock_out = dup(STDOUT_FILENO);
-	if (shell->data->fd_stock_out < 0)
-		return (perror(""), 1);
+	shell->data->fd_stock_in = -1;
+	shell->data->fd_stock_out = -1;
 	return (0);
 }

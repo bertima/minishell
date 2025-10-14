@@ -37,7 +37,7 @@ int	creat_command(t_shell *shell)
 	while (temp)
 	{
 		if (compare(shell, &cmd, &temp))
-			return (return_err_int(shell, "creat_command fail\n"));
+			return (error_find_int(shell, MALLOC, 1, NULL));
 	}
 	return (0);
 }

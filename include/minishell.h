@@ -40,6 +40,7 @@ typedef struct s_data		t_data;
 typedef struct s_expand		t_expand;
 typedef struct s_children	t_children;
 
+/*********** metachar ***********/
 enum	e_type
 {
 	WORD,
@@ -48,6 +49,16 @@ enum	e_type
 	HERE_DOC,
 	REDIRECT_A,
 	PIPE,
+};
+
+/*********** error ***********/
+enum	e_error
+{
+	ARG_MINISHELL,
+	META,
+	MALLOC,
+	QUOTE,
+	AMBIGUOUS,
 };
 
 /*********** struct de recup ***********/
@@ -64,6 +75,7 @@ struct s_shell
 struct	s_data
 {
 	char		*line;
+	char		*w_dir_prompt;
 	char		**env;
 	char		**exp;
 	int			fd_stock_in;
@@ -160,7 +172,7 @@ int		suppress_arg(char ***arg, int *i);
 
 /*===================== redirection =====================*/
 /* -------------- redirection -------------- */
-int		redirection_verif(t_shell *shell, t_cmd *temp_cmd);
+int		here_doc(t_shell *shell, t_cmd *temp_cmd);
 int		creat_here_doc(t_shell *shell, t_cmd *cmd, char *temp_file, int fd);
 int		manage_delimiter_hd(t_redir *redir);
 int		generator_of_file_name(char **str, char *nbr_count, char *nbr_pid);
@@ -169,13 +181,20 @@ int		generator_of_file_name(char **str, char *nbr_count, char *nbr_pid);
 /* -------------- exec -------------- */
 int		exec(t_shell *shell);
 int		exec_com(char **av, char **environ);
-int		execut_command(t_shell *shell, t_cmd *cmd);
-int		exec_builtin(t_shell *shell, t_cmd **cmd);
-int		redirect_command(t_shell *shell, t_cmd **cmd, int i);
+int		execut_command(t_shell *shell, t_cmd *cmd, int status);
+int		verif_builtin(t_cmd *cmd);
+int		exec_builtin(t_shell *shell, t_cmd *cmd);
+int		bultin(t_shell *shell, t_cmd *cmd);
+
+/* -------------- redir -------------- */
+int		redirect_std(t_shell *shell);
+int		redirect_cmd(t_shell *shell, t_cmd *temp_cmd);
+void	close_fd(int *fd);
+void	close_stock(t_shell *shell);
+void	close_fd_cmd_shell(t_shell *shell, t_cmd *cmd);
 
 /* -------------- child -------------- */
 void	creat_child(t_shell *shell, t_cmd *cmd, int pid);
-int		parent(t_shell *shell, t_cmd *cmd, int pid);
 void	wait_parent(t_shell *shell);
 
 /*===================== builtin =====================*/
@@ -212,8 +231,8 @@ int		strlen_av(char **av);
 
 /*===================== error =====================*/
 /* -------------- error -------------- */
-char	*return_null(t_shell *shell);
-int		return_err_int(t_shell *shell, char *str);
+char	*error_find_char(t_shell *shell, int e_code, int code_err, char *str);
+int		error_find_int(t_shell *shell, int e_code, int code_err, char *str);
 
 /* -------------- free -------------- */
 void	all_free(t_shell *shell);

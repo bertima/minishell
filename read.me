@@ -1,8 +1,11 @@
-verifier le signaux ctrl+\ : il doit interrompe le procesus actuelle avec un core dump
-valgrind  --track-fds=yes --leak-check=full ./minishell
+code retour
+leak
 
 regarder pour expand (voir si pas un controle sur word split)
 finir pipes(voir pour les fd + voir pourquoi en pipe mode pas de redire sur fichier en more ou append)
 voir cette histoire de invalid fd (= -1) un truc me renvoie plein de success a voir (cmd)
 
 make && valgrind --leak-check=full --track-fds=yes --suppressions=RL.supp --show-leak-kinds=all ./minishell
+make && valgrind --track-fds=yes ./minishell
+make && valgrind --leak-check=full --show-leak-kinds=definite ./minishell
+make && valgrind --leak-check=full --track-fds=yes --show-leak-kinds=all ./minishell

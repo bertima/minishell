@@ -31,28 +31,27 @@ static int	skip_quote(char **arg, int *start_end, int i, int *j)
 	{
 		quote = arg[i][*j];
 		(*j)++;
-		while (arg[i][*j] != quote)
+		while (arg[i][*j] && arg[i][*j] != quote)
 			(*j)++;
 		(*j)++;
 		start_end[0] = *j;
-		return (2);
+		return (1);
 	}
 	return (0);
 }
 
-static int	word_split(char ***arg, int *i, int j, int result)
+static int	word_split(char ***arg, int *i, int j)
 {
 	int		start_end[2];
 
+	start_end[0] = 0;
+	start_end[1] = 0;
 	if (!(*arg)[*i] || !(*arg)[*i][0])
 		return (suppress_arg(arg, i));
 	start_end[0] = 0;
 	while ((*arg)[*i][j])
 	{
-		result = skip_quote(*arg, start_end, *i, &j);
-		if (result == 1)
-			return (1);
-		else if (result == 2)
+		if (skip_quote(*arg, start_end, *i, &j))
 			continue ;
 		while ((*arg)[*i][j] && (*arg)[*i][j] != '\'' && (*arg)[*i][j] != '\"')
 			j++;
@@ -86,7 +85,7 @@ int	expand_in_arg(t_shell *shell, char ***arg, int *i, int *j)
 			continue ;
 		(*j)++;
 	}
-	if (word_split(arg, i, 0, 0))
+	if (word_split(arg, i, 0))
 		return (1);
 	if (loop_remove_quote(arg, stock, *i))
 		return (1);

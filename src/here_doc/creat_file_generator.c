@@ -34,3 +34,17 @@ int	generator_of_file_name(char **str, char *nbr_count, char *nbr_sec)
 		return (free(nbr_count), free(nbr_sec), 1);
 	return (free(nbr_count), free(nbr_sec), 0);
 }
+
+int	here_doc(t_shell *shell, t_cmd *temp_cmd)
+{
+	temp_cmd = shell->cmd;
+	while (temp_cmd)
+	{
+		if (manage_delimiter_hd(temp_cmd->redir))
+			return (1);
+		if (creat_here_doc(shell, temp_cmd, NULL, 0))
+			return (1);
+		temp_cmd = temp_cmd->next;
+	}
+	return (0);
+}

@@ -54,7 +54,6 @@ void	end_prog(t_shell *shell, char **av)
 	if (strlen_av(av) == 1)
 	{
 		all_free(shell);
-		rl_clear_history();
 		printf("exit\n");
 		exit(127);
 	}
@@ -67,7 +66,6 @@ void	end_prog(t_shell *shell, char **av)
 		if (ret > 255 || ret < -255)
 			ret = (ret % 256);
 		all_free(shell);
-		rl_clear_history();
 		printf("exit\n");
 		exit(ret);
 	}

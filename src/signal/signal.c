@@ -7,7 +7,6 @@ void	gst_handler(int sig)
 		write(1, "\n", 1);
 		rl_replace_line("", 0);
 		rl_on_new_line();
-		rl_redisplay();
 		return ;
 	}
 }
@@ -44,12 +43,12 @@ int	ft_sig(int status)
 		sig = WTERMSIG(status);
 		if (sig == SIGQUIT)
 		{
-			write(2, "Quit (core dumped)\n", 20);
+			write(2, "Quit (core dumped)\n", 19);
 			return (131);
 		}
 		else if (sig == SIGINT)
 		{
-			write(1, "\n", 1);
+			write(2, "\n", 1);
 			return (130);
 		}
 	}

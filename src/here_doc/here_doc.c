@@ -5,6 +5,8 @@ int	manage_delimiter_hd(t_redir *redir)
 	int		i;
 	char	**arg;
 
+	if (!redir)
+		return (0);
 	i = 0;
 	arg = redir->file;
 	while (arg[0] && arg[0][i])
@@ -77,7 +79,7 @@ static int	recup_in(t_shell *shell, t_redir *redir, char *av, int fd_temp)
 	if (!word_stop)
 		return (1);
 	write(1, "> ", 2);
-	str = get_next_line(0);
+	str = get_next_line(STDIN_FILENO);
 	while (str)
 	{
 		if (ft_strcmp(str, word_stop) == 0)
@@ -88,7 +90,7 @@ static int	recup_in(t_shell *shell, t_redir *redir, char *av, int fd_temp)
 		}
 		if (read_input(shell, redir, str, fd_temp))
 			return (1);
-		str = get_next_line(0);
+		str = get_next_line(STDIN_FILENO);
 	}
 	free(word_stop);
 	return (0);
