@@ -69,9 +69,7 @@ char	*recup_wd(t_shell *shell, char *w_dir, char *fallback)
 		if (chdir(fallback) != 0)
 		{
 			perror("minishell: chdir fallback failed");
-			if (w_dir)
-				free(w_dir);
-			return (free(w_dir), error_find_char(shell, -1, 1, NULL));
+			return (error_find_char(shell, -1, 1, NULL));
 		}
 		w_dir = getcwd(NULL, 0);
 		if (!w_dir)
