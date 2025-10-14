@@ -14,7 +14,7 @@ int	execut_command(t_shell *shell, t_cmd *cmd, int status)
 		if (redirect_cmd(shell, cmd))
 			return (all_free(shell), exit(1), 1);
 		close_fd_cmd_shell(shell, cmd);
-		exec_com(cmd->arg, shell->data->env);
+		exec_com(shell, cmd->arg, shell->data->env);
 	}
 	close_fd_cmd_shell(shell, cmd);
 	redirect_std(shell);
@@ -38,7 +38,7 @@ int	bultin(t_shell *shell, t_cmd *cmd)
 	if (ft_strcmp(cmd->arg[0], "exit") == 0)
 		return (end_prog(shell, shell->cmd->arg), 1);
 	if (ft_strcmp(cmd->arg[0], "pwd") == 0)
-		return (print_emplacement(), 1);
+		return (print_emplacement(shell), 1);
 	if (ft_strcmp(cmd->arg[0], "cd") == 0)
 		return (shell->data->env = dep_fd(cmd->arg, shell->data->env), 1);
 	if (ft_strcmp(cmd->arg[0], "export") == 0)

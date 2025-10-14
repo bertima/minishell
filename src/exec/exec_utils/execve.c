@@ -71,7 +71,7 @@ static void	exec_binaire(char **av, char **environ)
 	exit(126);
 }
 
-int	exec_com(char **av, char **environ)
+int	exec_com(t_shell *shell, char **av, char **environ)
 {
 	char	*path;
 
@@ -83,9 +83,11 @@ int	exec_com(char **av, char **environ)
 		path = ft_strjoin_var(3, "command not found: ", av[0], "\n");
 		write (2, path, ft_strlen(path));
 		free (path);
+		all_free(shell);
 		exit (127);
 	}
 	execve(path, av, environ);
 	perror(av[0]);
+	all_free(shell);
 	exit (126);
 }

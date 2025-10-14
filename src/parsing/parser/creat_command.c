@@ -27,10 +27,25 @@ static int	compare(t_shell *shell, t_cmd **cmd, t_token **temp)
 	return (0);
 }
 
+static void	clear_redir(t_redir *redir)
+{
+	while (redir)
+	{
+		if (redir->before_exp)
+			free(redir->before_exp);
+		if (redir->file)
+			ft_free_split(redir->file);
+		if (redir->file_temp)
+			free(redir->file_temp);
+		redir = redir->next;
+	}
+}
+
 int	creat_command(t_shell *shell)
 {
 	t_cmd		*cmd;
 	t_token		*temp;
+	t_redir		*redir;
 
 	temp = shell->token;
 	cmd = NULL;
@@ -38,6 +53,8 @@ int	creat_command(t_shell *shell)
 	{
 		if (compare(shell, &cmd, &temp))
 		{
+			redir = cmd->redir;
+			clear_redir(redir);
 			if (cmd && cmd->arg)
 				ft_free_split(cmd->arg);
 			return (error_find_int(shell, MALLOC, 1, NULL));

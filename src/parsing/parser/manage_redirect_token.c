@@ -7,7 +7,7 @@ static int	add_redir_arg(t_redir *new, t_token *token)
 		return (1);
 	new->file[0] = ft_strdup(token->next->sentence);
 	if (!new->file[0])
-		return (free(new->file), 1);
+		return (ft_free_split(new->file), 1);
 	new->file[1] = NULL;
 	return (0);
 }
@@ -22,7 +22,11 @@ static int	add_redirect(t_cmd *cmd, t_token *token, int type)
 		return (1);
 	new->type = type;
 	if (add_redir_arg(new, token))
+	{
+		if (new->file)
+			ft_free_split(new->file);
 		return (free(new), 1);
+	}
 	if (!cmd->redir)
 		cmd->redir = new;
 	else
