@@ -65,6 +65,7 @@ struct	s_data
 {
 	char		*line;
 	char		**env;
+	char		**exp;
 	int			fd_stock_in;
 	int			fd_stock_out;
 	int			exit_code;
@@ -198,7 +199,8 @@ char	*get_env_value(char **env, const char *key);
 char	*return_home(char *str);
 
 /* -------------- export -------------- */
-char	**export(char **env, char **av);
+void	export(t_shell *shell);
+int check_sign(char *av);
 void	show_ex(char **av);
 void	tri_bubule(char **ex);
 
