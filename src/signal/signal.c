@@ -11,7 +11,7 @@ void	gst_handler(int sig)
 	}
 }
 
-int	signal_break(int sig, void (*gst_handler)(int))
+void	signal_break(int sig, void (*gst_handler)(int))
 {
 	struct sigaction	sa;
 
@@ -20,7 +20,6 @@ int	signal_break(int sig, void (*gst_handler)(int))
 	sigemptyset (&sa.sa_mask);
 	sa.sa_flags = 0;
 	sigaction (SIGINT, &sa, NULL);
-	return (130);
 }
 
 void	ignore_signal(int sig)
