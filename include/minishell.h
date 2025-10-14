@@ -77,6 +77,7 @@ struct	s_data
 	char		*line;
 	char		*w_dir_prompt;
 	char		**env;
+	char		**exp;
 	int			fd_stock_in;
 	int			fd_stock_out;
 	int			exit_code;
@@ -144,7 +145,7 @@ int		add_arg(t_cmd *current, t_token *temp, int i);
 
 /*===================== signaux =====================*/
 /* -------------- signaux -------------- */
-void	signal_break(int sig, void (*gst_handler)(int));
+int		signal_break(int sig, void (*gst_handler)(int));
 void	restore_default_signals(void);
 void	ignore_signal(int sig);
 void	gst_handler(int sig);
@@ -217,7 +218,8 @@ char	*get_env_value(char **env, const char *key);
 char	*return_home(char *str);
 
 /* -------------- export -------------- */
-char	**export(char **env, char **av);
+void	export(t_shell *shell);
+int check_sign(char *av);
 void	show_ex(char **av);
 void	tri_bubule(char **ex);
 

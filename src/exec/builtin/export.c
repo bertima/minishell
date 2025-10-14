@@ -25,7 +25,7 @@ char	**cp_ex(char **env)
 	return (ex);
 }
 
-char	**join_av(char **ex, char **av, int i)
+char	**join_av_exp(char **ex, char **av, int i)
 {
 	int	j;
 
@@ -45,7 +45,7 @@ char	**join_av(char **ex, char **av, int i)
 	return (ex);
 }
 
-char	**add_av(char **env, char **av)
+char	**add_av_exp(char **env, char **av)
 {
 	int		i;
 	int		len;
@@ -68,9 +68,83 @@ char	**add_av(char **env, char **av)
 		}
 		i++;
 	}
-	ex = join_av(ex, av, i);
+	ex = join_av_exp(ex, av, i);
 	return (ex);
 }
+
+int inv_av(char **av)
+{
+	int	i;
+	int j;
+	int av_val;
+
+	i = 0;
+	av_val = 0;
+	while(av[i])
+	{
+		j = 0;
+		while(av[i][j])
+		{
+			if (av[i][j] == '=')
+				av_val++;
+			j++;
+		}
+		i++;
+	}
+	if (av_val > 0)
+		return (av_val);
+	return (0);
+}
+char	**join_av_env(char **ex, char **av, int i)
+{
+	int	j;
+
+	j = 1;
+	while (av[j])
+	{
+		if(check_sign(av[j]) == 1)
+		{ 
+			ex[i] = ft_strdup(av[j]);
+			if (!ex[i])
+			{
+				ft_free_split(ex);
+				return (NULL);
+			}
+		}
+		j++;
+		i++;
+	}
+	ex[i] = NULL;
+	return (ex);
+}
+
+char	**add_av_env(char **env, char **av)
+{
+	int		i;
+	int		len;
+	int		nbr_av;
+	char	**ex;
+
+	i = 0;
+	len = ft_len_array(env);
+	nbr_av = inv_av(av);
+	ex = calloc(len + nbr_av + 1, sizeof(char *));
+	if (!ex)
+		return (NULL);
+	while (i < len)
+	{
+		ex[i] = ft_strdup(env[i]);
+		if (!ex[i])
+		{
+			ft_free_split(ex);
+			return (NULL);
+		}
+		i++;
+	}
+	ex = join_av_env(ex, av, i);
+	return (ex);
+}
+
 
 int	error_export(char **av)
 {
@@ -93,22 +167,20 @@ int	error_export(char **av)
 	return (0);
 }
 
-char	**export(char **env, char **av)
+void	export(t_shell *shell)
 {
-	char	**tmp;
-
-	if (strlen_av(av) == 1)
+	if (strlen_av(shell->cmd->arg) == 1)
 	{
-		tmp = cp_ex(env);
-		tri_bubule(tmp);
-		show_ex(tmp);
+		shell->data->exp = cp_ex(shell->data->exp);
+		tri_bubule(shell->data->exp);
+		show_ex(shell->data->exp);
 	}
-	if (strlen_av(av) > 1)
+	if (strlen_av(shell->cmd->arg) > 1)
 	{
-		if (error_export(av) == 1)
-			return (env);
-		env = add_av(env, av);
-		return (env);
+		if (error_export(shell->cmd->arg) == 1)
+			return ;
+		shell->data->exp = add_av_exp(shell->data->exp, shell->cmd->arg);
+		shell->data->env = add_av_env(shell->data->env, shell->cmd->arg);
 	}
-	return (env);
+	return ;
 }
