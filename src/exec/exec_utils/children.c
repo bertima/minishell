@@ -37,7 +37,7 @@ static int	child_manage(t_shell *shell, t_cmd *cmd)
 		bultin(shell, cmd);
 		exit (shell->data->exit_code);
 	}
-	exec_com(cmd->arg, shell->data->env);
+	exec_com(shell, cmd->arg, shell->data->env);
 	return (0);
 }
 

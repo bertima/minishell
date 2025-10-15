@@ -28,18 +28,7 @@ static int	regroupe(char ***new, char *str, int *start_end, int *j)
 	return (0);
 }
 
-static int	creat_new(char ***new, char **str_arg, int *start_end, int *j)
-{
-	*new = ft_split(str_arg[0], " \t\n\v\f\r");
-	if (!*new)
-		return (1);
-	if (regroupe(new, str_arg[1], start_end, j))
-		return (ft_free_split(*new), free(str_arg[0]), 1);
-	free(str_arg[0]);
-	return (0);
-}
-
-static void	copie_continue(char ***arg, int *i, char ***temp, int j)
+static void	copie_post_new(char ***arg, int *i, char ***temp, int j)
 {
 	while ((*arg)[*i] && (*arg)[*i + 1])
 	{
@@ -48,6 +37,24 @@ static void	copie_continue(char ***arg, int *i, char ***temp, int j)
 		j++;
 	}
 	(*temp)[j] = NULL;
+}
+
+static int	copie_new(char **new, int *j, char ***temp)
+{
+	int	k;
+
+	k = 0;
+	while (new[k])
+	{
+		(*temp)[*j] = ft_strdup(new[k]);
+		if (!(*temp)[*j])
+			return (ft_free_split(new), 1);
+		free(new[k]);
+		(*j)++;
+		k++;
+	}
+	free(new);
+	return (0);
 }
 
 static int	copie_cmd(char ***arg, char **new, int *i, int stock)
@@ -65,10 +72,10 @@ static int	copie_cmd(char ***arg, char **new, int *i, int stock)
 		return (1);
 	while (++j < *i)
 		temp[j] = (*arg)[j];
-	while (new[k])
-		temp[j++] = new[k++];
+	if (copie_new(new, &j, &temp))
+		return (1);
 	stock = j - 1;
-	copie_continue(arg, i, &temp, j);
+	copie_post_new(arg, i, &temp, j);
 	free(*arg);
 	(*arg) = temp;
 	*i = stock;
@@ -88,9 +95,13 @@ int	insert_arg_expand(char ***arg, int *start_end, int *i, int *j)
 	if (!str_arg[0])
 		return (1);
 	str_arg[1] = (*arg)[*i];
-	if (creat_new(&new, str_arg, start_end, j))
-		return (free(str_arg[0]), 1);
+	new = ft_split(str_arg[0], " \t\n\v\f\r");
+	if (!new)
+		return (1);
+	if (regroupe(&new, str_arg[1], start_end, j))
+		return (ft_free_split(new), free(str_arg[0]), 1);
 	if (copie_cmd(arg, new, i, 0))
 		return (1);
+	free(str_arg[0]);
 	return (0);
 }

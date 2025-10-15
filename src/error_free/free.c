@@ -5,7 +5,7 @@ static void	free_data(t_shell *shell)
 	if (shell->data->env && *shell->data->env)
 		ft_free_split(shell->data->env);
 	shell->data->env = NULL;
-	if (shell->data->env && *shell->data->exp)
+	if (shell->data->exp && *shell->data->exp)
 		ft_free_split(shell->data->exp);
 	shell->data->exp = NULL;
 	if (shell->data->line)
@@ -16,16 +16,19 @@ static void	free_data(t_shell *shell)
 	shell->data->w_dir_prompt = NULL;
 	close_fd(&shell->data->fd_stock_in);
 	close_fd(&shell->data->fd_stock_out);
+	free(shell->data);
 	return ;
 }
 
 static void	free_redir(t_cmd *cmd)
 {
 	t_redir	*temp;
+	t_redir	*next;
 
 	temp = cmd->redir;
 	while (temp)
 	{
+		next = temp->next;
 		if (temp->before_exp)
 			free(temp->before_exp);
 		temp->before_exp = NULL;
@@ -38,7 +41,8 @@ static void	free_redir(t_cmd *cmd)
 			free(temp->file_temp);
 		}
 		temp->file_temp = NULL;
-		temp = temp->next;
+		free(temp);
+		temp = next;
 	}
 	temp = NULL;
 }

@@ -23,7 +23,7 @@ int	main(int ac, char **av, char **environ)
 	line = NULL;
 	if (init_struct(&shell, environ))
 		return (1);
-	shell.data->exit_code = signal_break(SIGINT, gst_handler);
+	signal_break(SIGINT, gst_handler);
 	ignore_signal(SIGQUIT);
 	while (1)
 	{

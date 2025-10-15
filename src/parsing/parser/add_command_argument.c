@@ -50,13 +50,11 @@ static int	init_data(char **new, t_cmd *cmd, t_token *temp, char ***new_a)
 	int	last;
 
 	last = 0;
-	*new = ft_strdup(temp->sentence);
-	if (!*new)
-		return (1);
+	*new = temp->sentence;
 	last = ft_len_array(cmd->arg);
 	*new_a = ft_calloc(last + 2, sizeof(char *));
 	if (!*new_a)
-		return (free(*new), 1);
+		return (1);
 	return (0);
 }
 
@@ -77,12 +75,11 @@ int	add_arg(t_cmd *cmd, t_token *temp, int i)
 	}
 	while (cmd->arg[i])
 	{
-		new_a[i] = ft_strdup(cmd->arg[i]);
-		if (!new_a[i])
-			return (ft_free_split(new_a), free(new), 1);
+		new_a[i] = cmd->arg[i];
 		i++;
 	}
-	ft_free_split(cmd->arg);
+	free(cmd->arg);
+	cmd->arg = NULL;
 	new_a[i] = new;
 	new_a[i + 1] = NULL;
 	cmd->arg = new_a;
