@@ -43,22 +43,33 @@ static int	path(char **w_dir)
 	return (0);
 }
 
+static char	*recup_pwd(char **env)
+{
+	int	i;
+
+	i = 0;
+	while (env[i])
+	{
+		if (ft_strncmp(env[i], "PWD=", 4) == 0)
+			return (env[i] + 4);
+		i++;
+	}
+	return (NULL);
+}
+
 char	*recup_wd(t_shell *shell, char *w_dir, char *fallback)
 {
-	w_dir = getcwd(NULL, 0);
-	if (!w_dir)
+	w_dir = recup_pwd(shell->data->env);
+	while (!w_dir)
 	{
 		perror("minishell: getcwd");
 		fallback = getenv("PWD");
 		if (!fallback)
-		{
-			fprintf(stderr, "minishell: cd : fallback to /\n");
 			fallback = "/";
-		}
 		if (chdir(fallback) != 0)
 		{
 			perror("minishell: chdir fallback failed");
-			return (free(w_dir), error_find_char(shell, -1, 1, NULL));
+			return (error_find_char(shell, -1, 1, NULL));
 		}
 		w_dir = getcwd(NULL, 0);
 		if (!w_dir)
@@ -76,7 +87,7 @@ int	put_prompt(char *line, t_shell *shell)
 {
 	shell->data->w_dir_prompt = recup_wd(shell, NULL, NULL);
 	if (!shell->data->w_dir_prompt)
-		return (error_find_int(shell, MALLOC, 1, NULL));
+		return (1);
 	line = readline(shell->data->w_dir_prompt);
 	if (!line)
 	{
@@ -88,6 +99,8 @@ int	put_prompt(char *line, t_shell *shell)
 	}
 	if (*line)
 		add_history(line);
+	if (shell->data->line)
+		free(shell->data->line);
 	shell->data->line = ft_strdup(line);
 	if (!shell->data->line)
 		return (free(line), free(shell->data->w_dir_prompt), 1);

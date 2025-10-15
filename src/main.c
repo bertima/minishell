@@ -50,7 +50,6 @@ int	main(int ac, char **av, char **environ)
 	line = NULL;
 	if (init_struct(&shell, environ))
 		return (1);
-
 	get_shell_ptr(&shell);
 	signal_break(SIGINT, gst_handler);
 	ignore_signal(SIGQUIT);

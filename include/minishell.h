@@ -180,7 +180,7 @@ int		generator_of_file_name(char **str, char *nbr_count, char *nbr_pid);
 /*===================== exec =====================*/
 /* -------------- exec -------------- */
 int		exec(t_shell *shell);
-int		exec_com(char **av, char **environ);
+int		exec_com(t_shell *shell, char **av, char **environ);
 int		execut_command(t_shell *shell, t_cmd *cmd, int status);
 int		verif_builtin(t_cmd *cmd);
 int		exec_builtin(t_shell *shell, t_cmd *cmd);
@@ -205,7 +205,7 @@ void	echo(char **str);
 void	show_environ(char **av);
 
 /* -------------- pwd -------------- */
-void	print_emplacement(void);
+void	print_emplacement(t_shell *shell);
 
 /* -------------- exit -------------- */
 void	end_prog(t_shell *shell, char **av);
