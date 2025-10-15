@@ -145,7 +145,7 @@ int		add_arg(t_cmd *current, t_token *temp, int i);
 
 /*===================== signaux =====================*/
 /* -------------- signaux -------------- */
-int		signal_break(int sig, void (*gst_handler)(int));
+void	signal_break(int sig, void (*gst_handler)(int));
 void	restore_default_signals(void);
 void	ignore_signal(int sig);
 void	gst_handler(int sig);
@@ -219,9 +219,12 @@ char	*return_home(char *str);
 
 /* -------------- export -------------- */
 void	export(t_shell *shell);
-int check_sign(char *av);
+int		check_sign(char *av);
 void	show_ex(char **av);
 void	tri_bubule(char **ex);
+int		error_export(char **av);
+int		inv_av(char **av);
+char	**cp_ex(char **env);
 
 /* -------------- unset -------------- */
 char	**unset(char **env, char **av);

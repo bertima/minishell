@@ -1,16 +1,5 @@
 #include "minishell.h"
 
-void	gst_handler(int sig)
-{
-	if (sig == SIGINT)
-	{
-		write(1, "\n", 1);
-		rl_replace_line("", 0);
-		rl_on_new_line();
-		return ;
-	}
-}
-
 void	signal_break(int sig, void (*gst_handler)(int))
 {
 	struct sigaction	sa;
