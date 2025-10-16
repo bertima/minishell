@@ -16,6 +16,7 @@ void	gst_handler(int sig)
 	t_shell	*shell;
 
 	shell = get_shell_ptr(NULL);
+
 	if (sig == SIGINT)
 	{
 		g_signal = SIGINT;

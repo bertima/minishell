@@ -78,6 +78,7 @@ struct	s_data
 	char		*w_dir_prompt;
 	char		**env;
 	char		**exp;
+	char		*home;
 	int			fd_stock_in;
 	int			fd_stock_out;
 	int			exit_code;
