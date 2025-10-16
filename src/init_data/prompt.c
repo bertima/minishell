@@ -59,7 +59,7 @@ static int	path(char **w_dir)
 	return (NULL);
 }*/
 
-char *recup_wd(t_shell *shell, char *fallback)
+char *recup_wd(t_shell *shell)
 {
 	char *w_dir;
 
@@ -68,20 +68,24 @@ char *recup_wd(t_shell *shell, char *fallback)
 	{
 		perror("minishell: répertoire courant inaccessible ou supprimé");
 
-		fallback = shell->data->home;
-		if (!fallback)
+		// On change vers la racine "/" au lieu de $HOME
+		if (chdir("/") == -1)
 		{
-			perror("minishell: variable HOME non définie");
+			perror("minishell: impossible de changer vers la racine /");
 			return error_find_char(shell, -1, 1, NULL);
 		}
-		if (chdir(fallback) == -1)
+
+		// Nouvelle tentative pour récupérer le chemin après chdir("/")
+		w_dir = getcwd(NULL, 0);
+		if (!w_dir)
 		{
-			perror("minishell: impossible de changer vers $HOME");
+			perror("minishell: getcwd après chdir / a échoué");
 			return error_find_char(shell, -1, 1, NULL);
 		}
 	}
 	if (path(&w_dir))
 	{
+		free(w_dir);  // Pense à libérer si path échoue
 		return error_find_char(shell, -1, 1, NULL);
 	}
 	return w_dir;
@@ -89,7 +93,7 @@ char *recup_wd(t_shell *shell, char *fallback)
 
 int	put_prompt(char *line, t_shell *shell)
 {
-	shell->data->w_dir_prompt = recup_wd(shell, NULL);
+	shell->data->w_dir_prompt = recup_wd(shell);
 	if (!shell->data->w_dir_prompt)
 		return (1);
 	line = readline(shell->data->w_dir_prompt);
