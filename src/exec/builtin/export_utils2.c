@@ -74,6 +74,7 @@ int	var_exists(char **env, char *var)
 	}
 	return (-1);
 }
+
 char	*remove_quotes_value(char *var)
 {
 	char	*eq_pos;

@@ -42,7 +42,7 @@ int	bultin(t_shell *shell, t_cmd *cmd)
 	if (ft_strcmp(cmd->arg[0], "cd") == 0)
 		return (shell->data->env = dep_fd(cmd->arg, shell->data->env), 1);
 	if (ft_strcmp(cmd->arg[0], "export") == 0)
-		return (export(shell), 1);
+		return (export(shell, NULL, NULL), 1);
 	if (ft_strcmp(cmd->arg[0], "unset") == 0)
 		return (shell->data->env = unset(shell->data->env, shell->cmd->arg), 1);
 	return (0);

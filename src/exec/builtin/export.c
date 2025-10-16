@@ -54,7 +54,7 @@ char	**update_or_add_env(char **env, char *var)
 	return (new_env);
 }
 
-char	**update_or_add_export(char **exp, char *var, char *new_var, int i)
+char	**update_exp(char **exp, char *var, char *new_var, int i)
 {
 	char	**new_exp;
 
@@ -82,40 +82,28 @@ char	**update_or_add_export(char **exp, char *var, char *new_var, int i)
 	return (new_exp);
 }
 
-char	**normalize_export(char **exp)
+void	update_all(t_shell *shell, char **args)
 {
-	char	**new_exp;
-	char	*quoted_var;
 	int		i;
-	int		len;
 
-	len = ft_len_array(exp);
-	new_exp = ft_calloc(len + 1, sizeof(char *));
-	if (!new_exp)
-		return (NULL);
-	i = 0;
-	while (i < len)
+	i = 1;
+	while (args[i])
 	{
-		quoted_var = quote_value(exp[i]);
-		if (!quoted_var)
+		shell->data->exp = update_exp(shell->data->exp, args[i], NULL, 0);
+		if (!shell->data->exp)
+			return ;
+		if (ft_strchr(args[i], '='))
 		{
-			ft_free_split(new_exp);
-			return (NULL);
+			shell->data->env = update_or_add_env(shell->data->env, args[i]);
+			if (!shell->data->env)
+				return ;
 		}
-		new_exp[i] = quoted_var;
 		i++;
 	}
-	new_exp[i] = NULL;
-	ft_free_split(exp);
-	return (new_exp);
 }
 
-void	export(t_shell *shell)
+void	export(t_shell *shell, char **args, char **tmp)
 {
-	char	**args;
-	char	**tmp;
-	int		i;
-
 	args = shell->cmd->arg;
 	if (strlen_av(args) == 1)
 	{
@@ -133,19 +121,6 @@ void	export(t_shell *shell)
 	{
 		if (error_export(args))
 			return ;
-		i = 1;
-		while (args[i])
-		{
-			shell->data->exp = update_or_add_export(shell->data->exp, args[i], NULL, 0);
-			if (!shell->data->exp)
-				return ;
-			if (ft_strchr(args[i], '='))
-			{
-				shell->data->env = update_or_add_env(shell->data->env, args[i]);
-				if (!shell->data->env)
-					return ;
-			}
-			i++;
-		}
+		update_all(shell, args);
 	}
 }
