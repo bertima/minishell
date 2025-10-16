@@ -116,6 +116,7 @@ int	creat_here_doc(t_shell *shell, t_cmd *temp_cmd, char *file_temp, int fd)
 			temp_redir->file_temp = ft_strdup(file_temp);
 			if (!temp_redir->file_temp)
 				return (1);
+			free(file_temp);
 		}
 		temp_redir = temp_redir->next;
 	}
