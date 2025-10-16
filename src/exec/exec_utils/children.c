@@ -19,6 +19,8 @@ static void	parent(t_shell *shell, t_cmd *cmd, int pid)
 
 static int	child_manage(t_shell *shell, t_cmd *cmd)
 {
+	int	exit_code;
+
 	if (shell->children->nbr_cmd > 1 && cmd->fd_in < 0)
 	{
 		if (dup2(shell->children->fd_transi, STDIN_FILENO) < 0
@@ -35,7 +37,9 @@ static int	child_manage(t_shell *shell, t_cmd *cmd)
 	if (verif_builtin(cmd))
 	{
 		bultin(shell, cmd);
-		exit (shell->data->exit_code);
+		exit_code = shell->data->exit_code;
+		all_free(shell);
+		exit (exit_code);
 	}
 	exec_com(shell, cmd->arg, shell->data->env);
 	return (0);
