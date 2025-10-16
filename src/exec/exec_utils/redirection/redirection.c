@@ -1,5 +1,23 @@
 #include "minishell.h"
 
+static int	here_doc_redir(t_cmd *cmd, t_redir *redir)
+{
+	if (redir->type == HERE_DOC)
+	{
+		close_fd(&cmd->fd_in);
+		cmd->fd_in = open(redir->file_temp, O_RDONLY);
+		if (cmd->fd_in < 0)
+			return (perror(redir->file_temp), 1);
+		if (dup2(cmd->fd_in, STDIN_FILENO) < 0)
+			return (perror(""), 1);
+		close_fd(&cmd->fd_in);
+		unlink(redir->file_temp);
+		free(redir->file_temp);
+		redir->file_temp = NULL;
+	}
+	return (0);
+}
+
 static int	here_doc_and_less(t_cmd *cmd, t_redir *redir)
 {
 	if (redir->type == LESS)
@@ -11,22 +29,11 @@ static int	here_doc_and_less(t_cmd *cmd, t_redir *redir)
 		if (cmd->fd_in < 0)
 			return (perror(""), 1);
 		if (dup2(cmd->fd_in, STDIN_FILENO) < 0)
-			return (1);
+			return (perror(""), 1);
 		close_fd(&cmd->fd_in);
 	}
-	else if (redir->type == HERE_DOC)
-	{
-		close_fd(&cmd->fd_in);
-		cmd->fd_in = open(redir->file_temp, O_RDONLY);
-		if (cmd->fd_in < 0)
-			return (perror(redir->file_temp), 1);
-		if (dup2(cmd->fd_in, STDIN_FILENO) < 0)
-			return (1);
-		close_fd(&cmd->fd_in);
-		unlink(redir->file_temp);
-		free(redir->file_temp);
-		redir->file_temp = NULL;
-	}
+	if (here_doc_redir(cmd, redir))
+		return (1);
 	return (0);
 }
 
@@ -59,15 +66,6 @@ int	creat_dup(t_cmd *cmd, t_redir *redir)
 	return (0);
 }
 
-static int	creat_dup_file(t_shell *shell, t_cmd *cmd, t_redir *redir)
-{
-	if (ft_len_array(redir->file) != 1)
-		return (error_find_int(shell, AMBIGUOUS, 1, redir->before_exp));
-	if (creat_dup(cmd, redir))
-		return (1);
-	return (0);
-}
-
 static int	manage_expand(t_shell *shell, t_redir *redir, int i, int j)
 {
 	t_redir	*temp_red;
@@ -83,15 +81,17 @@ static int	manage_expand(t_shell *shell, t_redir *redir, int i, int j)
 
 int	redirect_cmd(t_shell *shell, t_cmd *cmd)
 {
-	t_redir	*temp_redir;
+	t_redir	*redir;
 
-	temp_redir = cmd->redir;
-	while (temp_redir)
+	redir = cmd->redir;
+	while (redir)
 	{
-		manage_expand(shell, temp_redir, 0, 0);
-		if (creat_dup_file(shell, cmd, temp_redir))
+		manage_expand(shell, redir, 0, 0);
+		if (ft_len_array(redir->file) != 1)
+			return (error_find_int(shell, AMBIGUOUS, 1, redir->before_exp));
+		if (creat_dup(cmd, redir))
 			return (1);
-		temp_redir = temp_redir->next;
+		redir = redir->next;
 	}
 	return (0);
 }

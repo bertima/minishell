@@ -77,9 +77,9 @@ int	search_expand(t_shell *shell, char ***arg, int *i, int *j)
 			if (var)
 			{
 				if (remplace(&(*arg)[*i], *j, var, ft_strlen(name)))
-					return (free(name), free(var), 1);
+					return (free(name), 1);
 				*j += ft_strlen(var);
-				return (free(var), free(name), 0);
+				return (free (name), 0);
 			}
 		}
 		if (remplace(&(*arg)[*i], *j, NULL, ft_strlen(name)))
