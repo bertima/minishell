@@ -29,14 +29,22 @@ static int	compare(t_shell *shell, t_cmd **cmd, t_token **temp)
 
 static void	clear_redir(t_redir *redir)
 {
+	t_redir	*temp_redir;
+
+	temp_redir = redir;
 	while (redir)
 	{
 		if (redir->before_exp)
 			free(redir->before_exp);
+		redir->before_exp = NULL;
 		if (redir->file)
 			ft_free_split(redir->file);
+		redir->file = NULL;
 		if (redir->file_temp)
 			free(redir->file_temp);
+		redir->file_temp = NULL;
+		free(temp_redir);
+		temp_redir = NULL;
 		redir = redir->next;
 	}
 }

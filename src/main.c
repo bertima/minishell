@@ -1,10 +1,10 @@
 #include "minishell.h"
 
-volatile sig_atomic_t g_signal = 0;
+volatile sig_atomic_t	g_signal = 0;
 
 t_shell	*get_shell_ptr(t_shell *new_ptr)
 {
-	static t_shell *ptr = NULL;
+	static t_shell	*ptr = NULL;
 
 	if (new_ptr)
 		ptr = new_ptr;
@@ -13,8 +13,9 @@ t_shell	*get_shell_ptr(t_shell *new_ptr)
 
 void	gst_handler(int sig)
 {
-	t_shell *shell = get_shell_ptr(NULL);
+	t_shell	*shell;
 
+	shell = get_shell_ptr(NULL);
 	if (sig == SIGINT)
 	{
 		g_signal = SIGINT;

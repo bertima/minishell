@@ -104,8 +104,6 @@ int	put_prompt(char *line, t_shell *shell)
 	}
 	if (*line)
 		add_history(line);
-	if (shell->data->line)
-		free(shell->data->line);
 	shell->data->line = ft_strdup(line);
 	if (!shell->data->line)
 		return (free(line), free(shell->data->w_dir_prompt), 1);
