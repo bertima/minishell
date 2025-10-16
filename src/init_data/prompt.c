@@ -68,7 +68,7 @@ char *recup_wd(t_shell *shell, char *fallback)
 	{
 		perror("minishell: répertoire courant inaccessible ou supprimé");
 
-		fallback = getenv("HOME");
+		fallback = shell->data->home;
 		if (!fallback)
 		{
 			perror("minishell: variable HOME non définie");
@@ -99,8 +99,8 @@ int	put_prompt(char *line, t_shell *shell)
 		free(shell->data->w_dir_prompt);
 		printf("exit\n");
 		exit(127);
-		perror(NULL);
-		return (error_find_int(shell, -1, 1, NULL));
+		//perror(NULL);
+		//return (error_find_int(shell, -1, 1, NULL));
 	}
 	if (*line)
 		add_history(line);

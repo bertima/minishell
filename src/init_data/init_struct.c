@@ -53,6 +53,7 @@ static int	cp_env(char ***env, char **environ)
 
 int	init_struct(t_shell *shell, char **environ)
 {
+
 	ft_memset(shell, 0, sizeof(t_shell));
 	shell->data = ft_calloc(1, sizeof(t_data));
 	if (!shell->data)
@@ -61,6 +62,7 @@ int	init_struct(t_shell *shell, char **environ)
 		return (1);
 	if (cp_env(&shell->data->exp, environ))
 		return (1);
+	shell->data->home = getenv("HOME");
 	shell->data->fd_stock_in = -1;
 	shell->data->fd_stock_out = -1;
 	return (0);
