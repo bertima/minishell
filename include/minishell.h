@@ -225,6 +225,11 @@ void	tri_bubule(char **ex);
 int		error_export(char **av);
 int		inv_av(char **av);
 char	**cp_ex(char **env);
+char	*remove_quotes_value(char *var);
+int		var_exists(char **env, char *var);
+char	*quote_value(char *var);
+int		var_name_match(char *s1, char *s2);
+int		is_quoted(char *value);
 
 /* -------------- unset -------------- */
 char	**unset(char **env, char **av);

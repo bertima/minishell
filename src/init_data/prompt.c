@@ -43,7 +43,7 @@ static int	path(char **w_dir)
 	return (0);
 }
 
-static char	*recup_pwd(char **env)
+/*static char	*recup_pwd(char **env)
 {
 	int	i;
 
@@ -55,33 +55,51 @@ static char	*recup_pwd(char **env)
 		i++;
 	}
 	return (NULL);
-}
+}*/
 
-char	*recup_wd(t_shell *shell, char *w_dir, char *fallback)
+char *recup_wd(t_shell *shell, char *w_dir, char *fallback)
 {
-	w_dir = recup_pwd(shell->data->env);
-	while (!w_dir)
+	w_dir = getcwd(NULL, 0);
+	if (!w_dir)
 	{
-		perror("minishell: getcwd");
-		fallback = getenv("PWD");
+		perror("minishell: répertoire courant inaccessible ou supprimé");
+
+		// On tente de fallback sur $HOME
+		fallback = getenv("HOME");
 		if (!fallback)
-			fallback = "/";
-		if (chdir(fallback) != 0)
 		{
-			perror("minishell: chdir fallback failed");
-			return (error_find_char(shell, -1, 1, NULL));
+			perror("minishell: variable d'environnement HOME non définie\n");
+			return error_find_char(shell, -1, 1, NULL);
 		}
+
+		// On change vers HOME
+		if (chdir(fallback) == -1)
+		{
+			perror("minishell: impossible de changer de répertoire vers $HOME");
+			return error_find_char(shell, -1, 1, NULL);
+		}
+
+		// Maintenant qu'on est dans HOME, on tente à nouveau getcwd
 		w_dir = getcwd(NULL, 0);
 		if (!w_dir)
 		{
-			perror("minishell: getcwd after chdir");
-			return (error_find_char(shell, -1, 1, NULL));
+			perror("minishell: getcwd après chdir vers $HOME a échoué");
+			return error_find_char(shell, -1, 1, NULL);
 		}
 	}
+
+	// Vérifie si le chemin est invalide via ta fonction path()
+	// (on suppose qu'elle renvoie 1 en cas d'erreur)
 	if (path(&w_dir))
-		return (free(w_dir), error_find_char(shell, -1, 1, NULL));
-	return (w_dir);
+	{
+		free(w_dir);  // libération indispensable
+		return error_find_char(shell, -1, 1, NULL);
+	}
+
+	return (w_dir); // Le caller DOIT faire free(w_dir) après usage
 }
+
+
 
 int	put_prompt(char *line, t_shell *shell)
 {
