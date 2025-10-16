@@ -1,126 +1,151 @@
 #include "minishell.h"
 
-char	**join_av_exp(char **ex, char **av, int i)
+char	**add_var_to_env(char **env, char *var, int i, int len)
 {
-	int	j;
+	char	**new_env;
 
-	j = 1;
-	while (av[j])
-	{
-		ex[i] = ft_strdup(av[j]);
-		if (!ex[i])
-		{
-			ft_free_split(ex);
-			return (NULL);
-		}
-		i++;
-		j++;
-	}
-	ex[i] = NULL;
-	return (ex);
-}
-
-char	**add_av_exp(char **env, char **av)
-{
-	char	**ex;
-	int		i;
-	int		len;
-	int		nbr_av;
-
-	i = 0;
 	len = ft_len_array(env);
-	nbr_av = strlen_av(av);
-	ex = calloc(len + nbr_av + 1, sizeof(char *));
-	if (!ex)
+	new_env = ft_calloc(len + 2, sizeof(char *));
+	if (!new_env)
 		return (NULL);
+	i = 0;
 	while (i < len)
 	{
-		ex[i] = ft_strdup(env[i]);
-		if (!ex[i])
+		new_env[i] = ft_strdup(env[i]);
+		if (!new_env[i])
 		{
-			ft_free_split(ex);
+			ft_free_split(new_env);
 			return (NULL);
 		}
 		i++;
 	}
-	return (join_av_exp(ex, av, i));
+	new_env[i] = ft_strdup(var);
+	if (!new_env[i])
+	{
+		ft_free_split(new_env);
+		return (NULL);
+	}
+	return (new_env);
 }
 
-char	**join_av_env(char **ex, char **av, int i)
+char	**update_or_add_env(char **env, char *var)
 {
-	int	j;
+	int		index;
+	char	*new_var;
+	char	**new_env;
 
-	j = 1;
-	while (av[j])
+	if (!var)
+		return (env);
+	new_var = remove_quotes_value(var);
+	if (!new_var)
+		return (NULL);
+	index = var_exists(env, var);
+	if (index != -1)
 	{
-		if (check_sign(av[j]) == 1)
+		free(env[index]);
+		env[index] = new_var;
+		return (env);
+	}
+	new_env = add_var_to_env(env, new_var, 0, 0);
+	free(new_var);
+	if (!new_env)
+		return (NULL);
+	ft_free_split(env);
+	return (new_env);
+}
+
+char	**update_or_add_export(char **exp, char *var, char *new_var, int i)
+{
+	char	**new_exp;
+
+	i = var_exists(exp, var);
+	if (i != -1)
+	{
+		if (ft_strchr(var, '='))
 		{
-			ex[i] = ft_strdup(av[j]);
-			if (!ex[i])
-			{
-				ft_free_split(ex);
+			new_var = quote_value(var);
+			if (!new_var)
 				return (NULL);
-			}
-			i++;
+			free(exp[i]);
+			exp[i] = new_var;
 		}
-		j++;
+		return (exp);
 	}
-	ex[i] = NULL;
-	return (ex);
+	new_var = quote_value(var);
+	if (!new_var)
+		return (NULL);
+	new_exp = add_var_to_env(exp, new_var, 0, 0);
+	free(new_var);
+	if (!new_exp)
+		return (NULL);
+	ft_free_split(exp);
+	return (new_exp);
 }
 
-char	**add_av_env(char **env, char **av)
+char	**normalize_export(char **exp)
 {
-	char	**ex;
+	char	**new_exp;
+	char	*quoted_var;
 	int		i;
 	int		len;
-	int		nbr_av;
 
-	i = 0;
-	len = ft_len_array(env);
-	nbr_av = inv_av(av);
-	ex = calloc(len + nbr_av + 1, sizeof(char *));
-	if (!ex)
+	len = ft_len_array(exp);
+	new_exp = ft_calloc(len + 1, sizeof(char *));
+	if (!new_exp)
 		return (NULL);
+	i = 0;
 	while (i < len)
 	{
-		ex[i] = ft_strdup(env[i]);
-		if (!ex[i])
+		quoted_var = quote_value(exp[i]);
+		if (!quoted_var)
 		{
-			ft_free_split(ex);
+			ft_free_split(new_exp);
 			return (NULL);
 		}
+		new_exp[i] = quoted_var;
 		i++;
 	}
-	return (join_av_env(ex, av, i));
+	new_exp[i] = NULL;
+	ft_free_split(exp);
+	return (new_exp);
 }
 
 void	export(t_shell *shell)
 {
+	char	**args;
 	char	**tmp;
+	int		i;
 
-	if (strlen_av(shell->cmd->arg) == 1)
+	args = shell->cmd->arg;
+	if (strlen_av(args) == 1)
 	{
 		tmp = cp_ex(shell->data->exp);
+		if (!tmp)
+			return ;
+		tmp = normalize_export(tmp);
 		if (!tmp)
 			return ;
 		tri_bubule(tmp);
 		show_ex(tmp);
 		ft_free_split(tmp);
 	}
-	else if (strlen_av(shell->cmd->arg) > 1)
+	else
 	{
-		if (error_export(shell->cmd->arg))
+		if (error_export(args))
 			return ;
-		tmp = add_av_exp(shell->data->exp, shell->cmd->arg);
-		if (!tmp)
-			return ;
-		ft_free_split(shell->data->exp);
-		shell->data->exp = tmp;
-		tmp = add_av_env(shell->data->env, shell->cmd->arg);
-		if (!tmp)
-			return ;
-		ft_free_split(shell->data->env);
-		shell->data->env = tmp;
+		i = 1;
+		while (args[i])
+		{
+			shell->data->exp = update_or_add_export(shell->data->exp, args[i], NULL, 0);
+			if (!shell->data->exp)
+				return ;
+			if (ft_strchr(args[i], '='))
+			{
+				shell->data->env = update_or_add_env(shell->data->env, args[i]);
+				if (!shell->data->env)
+					return ;
+			}
+			i++;
+		}
 	}
 }
