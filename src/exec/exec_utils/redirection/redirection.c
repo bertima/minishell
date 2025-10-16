@@ -12,6 +12,7 @@ static int	here_doc_and_less(t_cmd *cmd, t_redir *redir)
 			return (perror(""), 1);
 		if (dup2(cmd->fd_in, STDIN_FILENO) < 0)
 			return (1);
+		close_fd(&cmd->fd_in);
 	}
 	else if (redir->type == HERE_DOC)
 	{
@@ -21,6 +22,10 @@ static int	here_doc_and_less(t_cmd *cmd, t_redir *redir)
 			return (perror(redir->file_temp), 1);
 		if (dup2(cmd->fd_in, STDIN_FILENO) < 0)
 			return (1);
+		close_fd(&cmd->fd_in);
+		unlink(redir->file_temp);
+		free(redir->file_temp);
+		redir->file_temp = NULL;
 	}
 	return (0);
 }
@@ -39,6 +44,7 @@ int	creat_dup(t_cmd *cmd, t_redir *redir)
 			return (perror(redir->file[0]), 1);
 		if (dup2(cmd->fd_out, STDOUT_FILENO) < 0)
 			return (1);
+		close_fd(&cmd->fd_out);
 	}
 	else if (redir->type == REDIRECT_A)
 	{
@@ -48,6 +54,7 @@ int	creat_dup(t_cmd *cmd, t_redir *redir)
 			return (perror(redir->file[0]), 1);
 		if (dup2(cmd->fd_out, STDOUT_FILENO) < 0)
 			return (1);
+		close_fd(&cmd->fd_out);
 	}
 	return (0);
 }
@@ -55,7 +62,7 @@ int	creat_dup(t_cmd *cmd, t_redir *redir)
 static int	creat_dup_file(t_shell *shell, t_cmd *cmd, t_redir *redir)
 {
 	if (ft_len_array(redir->file) != 1)
-		return (error_find_int(shell, AMBIGUOUS, 1, redir->file_temp));
+		return (error_find_int(shell, AMBIGUOUS, 1, redir->before_exp));
 	if (creat_dup(cmd, redir))
 		return (1);
 	return (0);

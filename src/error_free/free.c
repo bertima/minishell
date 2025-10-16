@@ -69,6 +69,7 @@ void	free_command_redir_token_children(t_shell *shell)
 {
 	t_token		*temp_token;
 
+	free_command_redir(shell);
 	while (shell->token)
 	{
 		temp_token = shell->token->next;
@@ -76,6 +77,7 @@ void	free_command_redir_token_children(t_shell *shell)
 			free(shell->token->sentence);
 		shell->token->sentence = NULL;
 		free(shell->token);
+		shell->token = NULL;
 		shell->token = temp_token;
 	}
 	if (shell->children)
@@ -84,9 +86,8 @@ void	free_command_redir_token_children(t_shell *shell)
 		close_fd(&shell->children->pipefd[1]);
 		close_fd(&shell->children->fd_transi);
 		free(shell->children);
+		shell->children = NULL;
 	}
-	shell->children = NULL;
-	free_command_redir(shell);
 }
 
 void	all_free(t_shell *shell)
