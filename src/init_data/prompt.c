@@ -28,6 +28,7 @@ static int	path(char **w_dir)
 
 	if (ft_strcmp(*w_dir, "/") == 0)
 	{
+		free(*w_dir); 
 		*w_dir = ft_strdup("/$");
 		if (!*w_dir)
 			return (1);
@@ -36,6 +37,7 @@ static int	path(char **w_dir)
 	split_path = ft_split(*w_dir, "/");
 	if (!split_path)
 		return (1);
+	free(*w_dir);
 	len = ft_len_array(split_path);
 	if (join_dir(w_dir, split_path, len))
 		return ((ft_free_split(split_path), 1));
@@ -57,59 +59,44 @@ static int	path(char **w_dir)
 	return (NULL);
 }*/
 
-char *recup_wd(t_shell *shell, char *w_dir, char *fallback)
+char *recup_wd(t_shell *shell, char *fallback)
 {
+	char *w_dir;
+
 	w_dir = getcwd(NULL, 0);
 	if (!w_dir)
 	{
 		perror("minishell: répertoire courant inaccessible ou supprimé");
 
-		// On tente de fallback sur $HOME
 		fallback = getenv("HOME");
 		if (!fallback)
 		{
-			perror("minishell: variable d'environnement HOME non définie\n");
+			perror("minishell: variable HOME non définie");
 			return error_find_char(shell, -1, 1, NULL);
 		}
-
-		// On change vers HOME
 		if (chdir(fallback) == -1)
 		{
-			perror("minishell: impossible de changer de répertoire vers $HOME");
-			return error_find_char(shell, -1, 1, NULL);
-		}
-
-		// Maintenant qu'on est dans HOME, on tente à nouveau getcwd
-		w_dir = getcwd(NULL, 0);
-		if (!w_dir)
-		{
-			perror("minishell: getcwd après chdir vers $HOME a échoué");
+			perror("minishell: impossible de changer vers $HOME");
 			return error_find_char(shell, -1, 1, NULL);
 		}
 	}
-
-	// Vérifie si le chemin est invalide via ta fonction path()
-	// (on suppose qu'elle renvoie 1 en cas d'erreur)
 	if (path(&w_dir))
 	{
-		free(w_dir);  // libération indispensable
 		return error_find_char(shell, -1, 1, NULL);
 	}
-
-	return (w_dir); // Le caller DOIT faire free(w_dir) après usage
+	return w_dir;
 }
-
-
 
 int	put_prompt(char *line, t_shell *shell)
 {
-	shell->data->w_dir_prompt = recup_wd(shell, NULL, NULL);
+	shell->data->w_dir_prompt = recup_wd(shell, NULL);
 	if (!shell->data->w_dir_prompt)
 		return (1);
 	line = readline(shell->data->w_dir_prompt);
 	if (!line)
 	{
 		all_free(shell);
+		free(shell->data->w_dir_prompt);
 		printf("exit\n");
 		exit(127);
 		perror(NULL);

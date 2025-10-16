@@ -14,26 +14,32 @@ void	show_ex(char **av)
 	}
 }
 
-int	inv_av(char **av)
+char	**normalize_export(char **exp)
 {
-	int	i;
-	int	j;
-	int	av_val;
+	char	**new_exp;
+	char	*quoted_var;
+	int		i;
+	int		len;
 
+	len = ft_len_array(exp);
+	new_exp = ft_calloc(len + 1, sizeof(char *));
+	if (!new_exp)
+		return (NULL);
 	i = 0;
-	av_val = 0;
-	while (av[i])
+	while (i < len)
 	{
-		j = 0;
-		while (av[i][j])
+		quoted_var = quote_value(exp[i]);
+		if (!quoted_var)
 		{
-			if (av[i][j] == '=')
-				av_val++;
-			j++;
+			ft_free_split(new_exp);
+			return (NULL);
 		}
+		new_exp[i] = quoted_var;
 		i++;
 	}
-	return (av_val);
+	new_exp[i] = NULL;
+	ft_free_split(exp);
+	return (new_exp);
 }
 
 int	error_export(char **av)

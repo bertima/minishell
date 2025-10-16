@@ -218,12 +218,12 @@ char	*get_env_value(char **env, const char *key);
 char	*return_home(char *str);
 
 /* -------------- export -------------- */
-void	export(t_shell *shell);
+void	export(t_shell *shell, char **args, char **tmp);
 int		check_sign(char *av);
 void	show_ex(char **av);
 void	tri_bubule(char **ex);
 int		error_export(char **av);
-int		inv_av(char **av);
+char	**normalize_export(char **exp);
 char	**cp_ex(char **env);
 char	*remove_quotes_value(char *var);
 int		var_exists(char **env, char *var);
