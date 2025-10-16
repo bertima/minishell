@@ -11,19 +11,6 @@ t_shell	*get_shell_ptr(t_shell *new_ptr)
 	return (ptr);
 }
 
-static void	programme(char *line, t_shell *shell)
-{
-	if (put_prompt(line, shell))
-		return ;
-	if (parsing(shell))
-		return ;
-	if (expand(shell, shell->cmd, 0, 0))
-		return ;
-	if (here_doc(shell, NULL))
-		return ;
-	exec(shell);
-}
-
 void	gst_handler(int sig)
 {
 	t_shell *shell = get_shell_ptr(NULL);
@@ -40,6 +27,19 @@ void	gst_handler(int sig)
 	}
 }
 
+static void	programme(char *line, t_shell *shell)
+{
+	if (put_prompt(line, shell))
+		return ;
+	if (parsing(shell))
+		return ;
+	if (expand(shell, shell->cmd, 0, 0))
+		return ;
+	if (here_doc(shell, NULL))
+		return ;
+	exec(shell);
+}
+
 int	main(int ac, char **av, char **environ)
 {
 	char		*line;
@@ -53,13 +53,11 @@ int	main(int ac, char **av, char **environ)
 	get_shell_ptr(&shell);
 	signal_break(SIGINT, gst_handler);
 	ignore_signal(SIGQUIT);
-
 	while (1)
 	{
 		programme(line, &shell);
 		free_command_redir_token_children(&shell);
 	}
-
 	all_free(&shell);
 	return (0);
 }

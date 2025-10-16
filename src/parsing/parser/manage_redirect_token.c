@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-static int	add_redir_arg(t_redir *new, t_token *token)
+static int	add_redir_argument(t_redir *new, t_token *token)
 {
 	new->file = calloc(2, sizeof(char *));
 	if (!new->file)
@@ -21,7 +21,7 @@ static int	add_redirect(t_cmd *cmd, t_token *token, int type)
 	if (!new)
 		return (1);
 	new->type = type;
-	if (add_redir_arg(new, token))
+	if (add_redir_argument(new, token))
 	{
 		if (new->file)
 			ft_free_split(new->file);

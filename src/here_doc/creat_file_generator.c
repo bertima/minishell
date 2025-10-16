@@ -7,6 +7,8 @@ static int	insert_name(char **str, char *nbr, char *time)
 	temp = ft_strjoin_var(3, "temp_file", nbr, time);
 	if (!temp)
 		return (1);
+	free(nbr);
+	free(time);
 	free(*str);
 	*str = temp;
 	return (0);
@@ -31,8 +33,8 @@ int	generator_of_file_name(char **str, char *nbr_count, char *nbr_sec)
 	if (!*str)
 		return (free(nbr_count), free(nbr_sec), 1);
 	if (insert_name(str, nbr_count, nbr_sec))
-		return (free(nbr_count), free(nbr_sec), 1);
-	return (free(nbr_count), free(nbr_sec), 0);
+		return (1);
+	return (0);
 }
 
 int	here_doc(t_shell *shell, t_cmd *temp_cmd)

@@ -50,10 +50,12 @@ static int	copie_new(char **new, int *j, char ***temp)
 		if (!(*temp)[*j])
 			return (ft_free_split(new), 1);
 		free(new[k]);
+		new[k] = NULL;
 		(*j)++;
 		k++;
 	}
 	free(new);
+	new = NULL;
 	return (0);
 }
 

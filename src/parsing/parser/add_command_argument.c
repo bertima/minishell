@@ -9,6 +9,7 @@ static int	new_command(t_cmd **cmd)
 	if (!(*cmd)->arg)
 	{
 		free(*cmd);
+		*cmd = NULL;
 		return (1);
 	}
 	(*cmd)->fd_in = -2;
@@ -40,7 +41,11 @@ static int	creat_first(t_cmd *cmd, char *new)
 {
 	cmd->arg = ft_calloc(1, sizeof(char *));
 	if (!cmd->arg)
-		return (free(cmd), 1);
+	{
+		free(cmd);
+		cmd = NULL;
+		return (1);
+	}
 	cmd->arg[0] = new;
 	return (0);
 }
