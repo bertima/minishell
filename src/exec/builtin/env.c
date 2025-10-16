@@ -1,15 +1,15 @@
 #include "minishell.h"
 
-int check_sign(char *av)
+int	check_sign(char *av)
 {
 	int	i;
 
 	i = 0;
-	while(av[i])
+	while (av[i])
 	{
 		if (av[i] == '=')
 			return (1);
-		i++;;
+		i++;
 	}
 	return (0);
 }

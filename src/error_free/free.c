@@ -88,6 +88,9 @@ void	free_command_redir_token_children(t_shell *shell)
 		free(shell->children);
 		shell->children = NULL;
 	}
+	if (shell->data->line)
+		free(shell->data->line);
+	shell->data->line = NULL;
 }
 
 void	all_free(t_shell *shell)
