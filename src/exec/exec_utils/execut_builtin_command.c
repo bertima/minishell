@@ -2,12 +2,10 @@
 
 static void	parent(t_shell *shell, int status, int pid)
 {
-  signal(SIGINT, SIG_IGN);
+	signal(SIGINT, SIG_IGN);
 	if (redirect_std(shell))
 		return ;
-	signal(SIGINT, SIG_IGN);
 	waitpid(pid, &status, 0);
-	signal_break(SIGINT, gst_handler);
 	if (WIFEXITED(status))
 		shell->data->exit_code = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))
@@ -32,7 +30,7 @@ int	execut_command(t_shell *shell, t_cmd *cmd, int status)
 		}
 		close_fd_cmd_shell_stock(shell, cmd);
 		exec_com(shell, cmd->arg, shell->data->env);
-  }
+	}
 	parent(shell, status, pid);
 	return (0);
 }
