@@ -1,5 +1,19 @@
 #include "minishell.h"
 
+static void	parent(t_shell *shell, int status, int pid)
+{
+  signal(SIGINT, SIG_IGN);
+	if (redirect_std(shell))
+		return ;
+	signal(SIGINT, SIG_IGN);
+	waitpid(pid, &status, 0);
+	signal_break(SIGINT, gst_handler);
+	if (WIFEXITED(status))
+		shell->data->exit_code = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+		shell->data->exit_code = ft_sig(status);
+}
+
 int	execut_command(t_shell *shell, t_cmd *cmd, int status)
 {
 	int	pid;
@@ -12,19 +26,14 @@ int	execut_command(t_shell *shell, t_cmd *cmd, int status)
 		reset_child_signal();
 		close_stock(shell);
 		if (redirect_cmd(shell, cmd))
-			return (all_free(shell), exit(1), 1);
-		close_fd_cmd_shell(shell, cmd);
+		{
+			all_free(shell);
+			exit(1);
+		}
+		close_fd_cmd_shell_stock(shell, cmd);
 		exec_com(shell, cmd->arg, shell->data->env);
-	}
-	signal(SIGINT, SIG_IGN);
-	close_fd_cmd_shell(shell, cmd);
-	redirect_std(shell);
-	close_stock(shell);
-	waitpid(pid, &status, 0);
-	if (WIFEXITED(status))
-		shell->data->exit_code = WEXITSTATUS(status);
-	else if (WIFSIGNALED(status))
-		shell->data->exit_code = ft_sig(status);
+  }
+	parent(shell, status, pid);
 	return (0);
 }
 
@@ -54,13 +63,12 @@ int	exec_builtin(t_shell *shell, t_cmd *cmd)
 	if (redirect_cmd(shell, cmd))
 	{
 		redirect_std(shell);
+		shell->data->exit_code = 1;
 		return (1);
 	}
 	bultin(shell, cmd);
-	shell->data->exit_code = 0;
-	redirect_std(shell);
-	close_fd_cmd_shell(shell, cmd);
-	close_stock(shell);
+	if (redirect_std(shell))
+		return (1);
 	return (0);
 }
 

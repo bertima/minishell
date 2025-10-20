@@ -1,19 +1,5 @@
 #include "minishell.h"
 
-int	g_exit_code = 0;
-
-void	gst_handler(int sig)
-{
-	if (sig == SIGINT)
-	{
-		g_exit_code = 130;
-		write(1, "\n", 1);
-		rl_replace_line("", 0);
-		rl_on_new_line();
-		rl_redisplay();
-	}
-}
-
 static void	programme(char *line, t_shell *shell)
 {
 	if (put_prompt(line, shell))

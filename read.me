@@ -1,21 +1,5 @@
-code retour
-leak
-
-make && valgrind --leak-check=full --track-fds=yes --suppressions=RL.supp --show-leak-kinds=all ./minishell
+make && valgrind --leak-check=full --track-fds=yes --suppressions=valgrind_readline.supp --show-leak-kinds=all ./minishell
 make && valgrind --track-fds=yes ./minishell
 make && valgrind --leak-check=full --show-leak-kinds=definite ./minishell
 make && valgrind --leak-check=full --show-leak-kinds=definite  --track-fds=yes ./minishell
 make && valgrind --leak-check=full --track-fds=yes --show-leak-kinds=all ./minishell
-make && valgrind --leak-check=full --track-fds=yes --suppressions=valgrind_readline.supp --show-leak-kinds=all ./minishell
- 
-
-
- Gestion des signaux :
-Si un signal est envoyé à une commande dans un tel chaînage, 
-le shell peut l'interrompre. 
-Si l'interruption se produit pendant commande1, 
-le résultat de commande1 (succès ou échec) ne sera pas connu, 
-et l'exécution de commande2 dépendra de la condition && ou ||. 
-
-
-void (*gst_handler)(int)
