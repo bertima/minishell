@@ -23,8 +23,8 @@ static int	child_manage(t_shell *shell, t_cmd *cmd)
 
 	if (shell->children->nbr_cmd > 1 && cmd->fd_in < 0)
 	{
-		if (dup2(shell->children->fd_transi, STDIN_FILENO) < 0
-			&& shell->children->fd_transi >= 0)
+		if (shell->children->fd_transi >= 0
+			&& dup2(shell->children->fd_transi, STDIN_FILENO) < 0)
 			return (perror(""), 1);
 	}
 	if (cmd->next && cmd->fd_out < 0 && shell->children->pipefd[0] >= 0)
@@ -32,11 +32,11 @@ static int	child_manage(t_shell *shell, t_cmd *cmd)
 		if (dup2(shell->children->pipefd[1], STDOUT_FILENO) < 0)
 			return (perror(""), 1);
 	}
-	close_fd_cmd_shell(shell, cmd);
-	close_stock(shell);
+	close_fd_cmd_shell_stock(shell, cmd);
 	if (verif_builtin(cmd))
 	{
 		bultin(shell, cmd);
+		shell->data->exit_code = 0;
 		exit_code = shell->data->exit_code;
 		all_free(shell);
 		exit (exit_code);
@@ -54,7 +54,6 @@ void	creat_child(t_shell *shell, t_cmd *cmd, int pid)
 	{
 		if (redirect_cmd(shell, cmd))
 		{
-			close_fd_cmd_shell(shell, cmd);
 			close_stock(shell);
 			all_free(shell);
 			exit(1);
@@ -69,7 +68,6 @@ void	wait_parent(t_shell *shell)
 	int		status;
 	pid_t	pid;
 
-	close_fd_cmd_shell(shell, NULL);
 	while (shell->children->nbr_cmd > 0)
 	{
 		pid = wait(&status);

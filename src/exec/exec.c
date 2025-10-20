@@ -23,8 +23,8 @@ static int	multi_command(t_shell *shell, t_cmd *cmd)
 		temp_cmd = temp_cmd->next;
 	}
 	wait_parent(shell);
-	redirect_std(shell);
-	close_stock(shell);
+	if (redirect_std(shell))
+		return (1);
 	return (0);
 }
 
@@ -42,10 +42,10 @@ static int	one_cmd(t_shell *shell, t_cmd *cmd)
 			{
 				if (exec_builtin(shell, cmd))
 					return (1);
+				shell->data->exit_code = 0;
 			}
 			else
 				execut_command(shell, cmd, 0);
-			close_stock(shell);
 		}
 	}
 	return (0);
