@@ -1,31 +1,50 @@
 #include "minishell.h"
 
-static int	creat_env(char ***env)
+static int	shell_levelup(char ***env, char *environ, int i)
 {
-	char	*temp;
+	long	nbr_sh;
+	char	*new_nbr_sh;
 
-	*env = calloc(4, sizeof(char *));
-	if (!*env)
-		return (1);
-	temp = ft_strdup("PATH=/usr/local/sbin:/usr/local/bin:");
-	if (!temp)
+	if (ft_atol(&environ[6], &nbr_sh))
 	{
-		free(*env);
+		ft_putstr_fd("too much shell open\n", 2);
 		return (1);
 	}
-	(*env)[0] = ft_strjoin("PWD=", getcwd(NULL, 0));
-	(*env)[1] = ft_strdup("SHLVL=1");
-	(*env)[2] = ft_strjoin(temp, "/usr/sbin:/usr/bin:/sbin:/bin");
-	(*env)[3] = NULL;
-	if (!(*env)[0] || !(*env)[1] || !(*env)[2])
-	{
-		ft_free_split(*env);
+	nbr_sh++;
+	new_nbr_sh = ft_ltoa(nbr_sh);
+	if (!new_nbr_sh)
 		return (1);
+	(*env)[i] = ft_strjoin("SHLVL=", new_nbr_sh);
+	if (!(*env)[i])
+		return (free(new_nbr_sh), 1);
+	return (free(new_nbr_sh), 0);
+}
+
+static int	malloc_env(char ***env, char **environ, int len)
+{
+	int	i;
+
+	i = 0;
+	while (i < len)
+	{
+		if (ft_strncmp(environ[i], "SHLVL=", 6) == 0)
+		{
+			if (shell_levelup(env, environ[i], i))
+				return (ft_free_split(*env), 1);
+		}
+		else
+		{
+			(*env)[i] = ft_strdup(environ[i]);
+			if (!(*env)[i])
+				return (ft_free_split(*env), 1);
+		}
+		i++;
 	}
+	(*env)[i] = NULL;
 	return (0);
 }
 
-static int	cp_env(char ***env, char **environ)
+static int	copie_env(char ***env, char **environ)
 {
 	int	i;
 	int	len;
@@ -37,30 +56,44 @@ static int	cp_env(char ***env, char **environ)
 	(*env) = calloc(len + 1, sizeof(char *));
 	if (!(*env))
 		return (1);
+	if (malloc_env(env, environ, len))
+		return (ft_free_split (*env), 1);
+	return (0);
+}
+
+static int	init_export(char ***export, char **env)
+{
+	int	len;
+	int	i;
+
+	i = 0;
+	len = ft_len_array(env);
+	(*export) = calloc(len + 1, sizeof(char *));
+	if (!(export))
+		return (1);
 	while (i < len)
 	{
-		(*env)[i] = ft_strdup(environ[i]);
-		if (!(*env)[i])
+		(*export)[i] = ft_strdup(env[i]);
+		if (!(*export)[i])
 		{
-			ft_free_split((*env));
+			ft_free_split((*export));
 			return (1);
 		}
 		i++;
 	}
-	(*env)[i] = NULL;
+	(*export)[i] = NULL;
 	return (0);
 }
 
 int	init_struct(t_shell *shell, char **environ)
 {
-
 	ft_memset(shell, 0, sizeof(t_shell));
 	shell->data = ft_calloc(1, sizeof(t_data));
 	if (!shell->data)
 		return (1);
-	if (cp_env(&shell->data->env, environ))
+	if (copie_env(&shell->data->env, environ))
 		return (1);
-	if (cp_env(&shell->data->exp, environ))
+	if (init_export(&shell->data->exp, shell->data->env))
 		return (1);
 	shell->data->fd_stock_in = -1;
 	shell->data->fd_stock_out = -1;

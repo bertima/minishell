@@ -1,38 +1,45 @@
 #include "minishell.h"
 
-static void	flag_exist(char **str, int i)
+static void	flag_exist(char **str, int *i, int *flag, int j)
 {
-	i += 1;
-	if (!str[i])
-		return ;
-	while (str[i])
+	int	len;
+
+	while (str[*i])
 	{
-		printf("%s", str[i]);
-		if (str[i + 1])
-			printf(" ");
-		i++;
+		len = ft_strlen(str[*i]);
+		j = 0;
+		while (str[*i] && str[*i][j])
+		{
+			if (str[*i][j] && str[*i][j] != '-')
+				return ;
+			j++;
+			while (str[*i][j] && str[*i][j] == 'n')
+				j++;
+			if (j < len)
+				return ;
+			(*flag)++;
+		}
+		(*i)++;
 	}
 }
 
 void	echo(char **str)
 {
 	int	i;
+	int	j;
+	int	flag;
 
+	j = 0;
 	i = 1;
-	while (str && str[0] && str[i])
+	flag = 0;
+	flag_exist(str, &i, &flag, 0);
+	while (str && str[i])
 	{
-		if (ft_strcmp(str[1], "-n") == 0)
-		{
-			flag_exist(str, i);
-			return ;
-		}
-		else
-		{
-			printf("%s", str[i]);
-			if (str[i + 1])
-				printf(" ");
-		}
+		printf("%s", str[i]);
+		if (str[i + 1])
+			printf(" ");
 		i++;
 	}
-	printf("\n");
+	if (flag == 0)
+		printf("\n");
 }

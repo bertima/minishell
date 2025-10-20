@@ -28,6 +28,7 @@ FSRC = src/main.c \
 	   \
 	   \
 	   src/init_data/prompt.c \
+	   src/init_data/creat_env.c \
 	   src/init_data/init_struct.c \
 	   \
 	   \
