@@ -146,9 +146,8 @@ int		add_arg(t_cmd *current, t_token *temp, int i);
 
 /*===================== signaux =====================*/
 /* -------------- signaux -------------- */
-void	signal_break(int sig, void (*gst_handler)(int));
-void	restore_default_signals(void);
-void	ignore_signal(int sig);
+void	setup_parent_signal(void);
+void	reset_child_signal(void);
 void	gst_handler(int sig);
 int		ft_sig(int status);
 

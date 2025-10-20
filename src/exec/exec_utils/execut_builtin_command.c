@@ -2,6 +2,7 @@
 
 static void	parent(t_shell *shell, int status, int pid)
 {
+  signal(SIGINT, SIG_IGN);
 	if (redirect_std(shell))
 		return ;
 	signal(SIGINT, SIG_IGN);
@@ -22,7 +23,8 @@ int	execut_command(t_shell *shell, t_cmd *cmd, int status)
 		return (perror(""), 1);
 	else if (pid == 0)
 	{
-		restore_default_signals();
+		reset_child_signal();
+		close_stock(shell);
 		if (redirect_cmd(shell, cmd))
 		{
 			all_free(shell);
@@ -30,7 +32,7 @@ int	execut_command(t_shell *shell, t_cmd *cmd, int status)
 		}
 		close_fd_cmd_shell_stock(shell, cmd);
 		exec_com(shell, cmd->arg, shell->data->env);
-	}
+  }
 	parent(shell, status, pid);
 	return (0);
 }
