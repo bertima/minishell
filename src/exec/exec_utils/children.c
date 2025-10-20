@@ -77,11 +77,10 @@ void	wait_parent(t_shell *shell)
 			if (WIFEXITED(status))
 				shell->data->exit_code = WEXITSTATUS(status);
 			if (WIFSIGNALED(status))
-			{
-				write(1, "\n", 1);
 				shell->data->exit_code = 130;
-			}
 		}
 		shell->children->nbr_cmd--;
 	}
+	if (WIFSIGNALED(status))
+		write(1, "\n", 1);
 }
