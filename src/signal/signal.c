@@ -1,25 +1,17 @@
 #include "minishell.h"
 
-void	signal_break(int sig, void (*gst_handler)(int))
+void	setup_parent_signal(void)
 {
-	struct sigaction	sa;
-
-	(void)sig;
-	sa.sa_handler = gst_handler;
-	sigemptyset (&sa.sa_mask);
-	sa.sa_flags = 0;
-	sigaction (SIGINT, &sa, NULL);
+	signal(SIGINT, gst_handler);
+	signal(SIGQUIT, SIG_IGN);
+	signal(SIGTSTP, SIG_IGN);
 }
 
-void	ignore_signal(int sig)
+void	reset_child_signal(void)
 {
-	struct sigaction	sa;
-
-	(void)sig;
-	sa.sa_handler = SIG_IGN;
-	sigemptyset (&sa.sa_mask);
-	sa.sa_flags = 0;
-	sigaction (SIGQUIT, &sa, NULL);
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
+	signal(SIGTSTP, SIG_IGN);
 }
 
 int	ft_sig(int status)
@@ -40,18 +32,5 @@ int	ft_sig(int status)
 			return (130);
 		}
 	}
-	signal_break(SIGINT, gst_handler);
-	ignore_signal(SIGQUIT);
 	return (0);
-}
-
-void	restore_default_signals(void)
-{
-	struct sigaction	sa;
-
-	sa.sa_handler = SIG_DFL;
-	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = 0;
-	sigaction(SIGINT, &sa, NULL);
-	sigaction(SIGQUIT, &sa, NULL);
 }

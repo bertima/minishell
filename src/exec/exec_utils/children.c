@@ -72,14 +72,15 @@ void	wait_parent(t_shell *shell)
 	close_fd_cmd_shell(shell, NULL);
 	while (shell->children->nbr_cmd > 0)
 	{
+		signal(SIGINT, SIG_IGN);
 		pid = wait(&status);
 		if (pid == shell->children->last_pid)
 		{
 			if (WIFEXITED(status))
 				shell->data->exit_code = WEXITSTATUS(status);
-			else if (WIFSIGNALED(status))
-				shell->data->exit_code = ft_sig(status);
 		}
+		if (WIFSIGNALED(status))
+			write(1, "\n", 1);
 		shell->children->nbr_cmd--;
 	}
 }

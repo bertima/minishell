@@ -28,7 +28,7 @@ static int	path(char **w_dir)
 
 	if (ft_strcmp(*w_dir, "/") == 0)
 	{
-		free(*w_dir); 
+		free(*w_dir);
 		*w_dir = ft_strdup("/$");
 		if (!*w_dir)
 			return (1);
@@ -45,50 +45,32 @@ static int	path(char **w_dir)
 	return (0);
 }
 
-/*static char	*recup_pwd(char **env)
+char	*recup_wd(t_shell *shell)
 {
-	int	i;
-
-	i = 0;
-	while (env[i])
-	{
-		if (ft_strncmp(env[i], "PWD=", 4) == 0)
-			return (env[i] + 4);
-		i++;
-	}
-	return (NULL);
-}*/
-
-char *recup_wd(t_shell *shell)
-{
-	char *w_dir;
+	char	*w_dir;
 
 	w_dir = getcwd(NULL, 0);
 	if (!w_dir)
 	{
 		perror("minishell: répertoire courant inaccessible ou supprimé");
-
-		// On change vers la racine "/" au lieu de $HOME
 		if (chdir("/") == -1)
 		{
 			perror("minishell: impossible de changer vers la racine /");
-			return error_find_char(shell, -1, 1, NULL);
+			return (error_find_char(shell, -1, 1, NULL));
 		}
-
-		// Nouvelle tentative pour récupérer le chemin après chdir("/")
 		w_dir = getcwd(NULL, 0);
 		if (!w_dir)
 		{
 			perror("minishell: getcwd après chdir / a échoué");
-			return error_find_char(shell, -1, 1, NULL);
+			return (error_find_char(shell, -1, 1, NULL));
 		}
 	}
 	if (path(&w_dir))
 	{
-		free(w_dir);  // Pense à libérer si path échoue
-		return error_find_char(shell, -1, 1, NULL);
+		free(w_dir);
+		return (error_find_char(shell, -1, 1, NULL));
 	}
-	return w_dir;
+	return (w_dir);
 }
 
 int	put_prompt(char *line, t_shell *shell)
@@ -100,11 +82,8 @@ int	put_prompt(char *line, t_shell *shell)
 	if (!line)
 	{
 		all_free(shell);
-		free(shell->data->w_dir_prompt);
 		printf("exit\n");
 		exit(127);
-		//perror(NULL);
-		//return (error_find_int(shell, -1, 1, NULL));
 	}
 	if (*line)
 		add_history(line);

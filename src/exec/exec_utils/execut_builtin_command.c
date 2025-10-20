@@ -9,19 +9,18 @@ int	execut_command(t_shell *shell, t_cmd *cmd, int status)
 		return (perror(""), 1);
 	else if (pid == 0)
 	{
+		reset_child_signal();
 		close_stock(shell);
-		restore_default_signals();
 		if (redirect_cmd(shell, cmd))
 			return (all_free(shell), exit(1), 1);
 		close_fd_cmd_shell(shell, cmd);
 		exec_com(shell, cmd->arg, shell->data->env);
 	}
+	signal(SIGINT, SIG_IGN);
 	close_fd_cmd_shell(shell, cmd);
 	redirect_std(shell);
 	close_stock(shell);
-	signal(SIGINT, SIG_IGN);
 	waitpid(pid, &status, 0);
-	signal_break(SIGINT, gst_handler);
 	if (WIFEXITED(status))
 		shell->data->exit_code = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))

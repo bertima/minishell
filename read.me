@@ -10,7 +10,12 @@ make && valgrind --leak-check=full --track-fds=yes --suppressions=valgrind_readl
  
 
 
-cd modifier la securiter dans le cas du cd si on supprimedossier
+ Gestion des signaux :
+Si un signal est envoyé à une commande dans un tel chaînage, 
+le shell peut l'interrompre. 
+Si l'interruption se produit pendant commande1, 
+le résultat de commande1 (succès ou échec) ne sera pas connu, 
+et l'exécution de commande2 dépendra de la condition && ou ||. 
 
-getcwd : utilisation de variable temporaire dans la fonction qui utilise le getcwd
-    
+
+void (*gst_handler)(int)
