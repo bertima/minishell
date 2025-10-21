@@ -70,7 +70,7 @@ static int	read_input(t_shell *shell, t_redir *redir, char *str, int fd_temp)
 	return (0);
 }
 
-static int	recup_in(t_shell *shell, t_redir *redir, char *av, int fd_temp)
+int	recup_in(t_shell *shell, t_redir *redir, char *av, int fd_temp)
 {
 	char	*str;
 	char	*word_stop;
@@ -82,7 +82,7 @@ static int	recup_in(t_shell *shell, t_redir *redir, char *av, int fd_temp)
 	str = get_next_line(STDIN_FILENO);
 	while (str)
 	{
-		if (ft_strcmp(str, word_stop) == 0)
+		if (ft_strcmp(str, word_stop) == 0 || g_exit_code == 130)
 		{
 			get_next_line(-1);
 			ft_free(&str);
