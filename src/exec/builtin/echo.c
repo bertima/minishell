@@ -23,7 +23,7 @@ static void	flag_exist(char **str, int *i, int *flag, int j)
 	}
 }
 
-void	echo(char **str)
+void	echo(t_shell *shell, char **str)
 {
 	int	i;
 	int	j;
@@ -42,4 +42,5 @@ void	echo(char **str)
 	}
 	if (flag == 0)
 		printf("\n");
+	shell->data->exit_code = 0;
 }

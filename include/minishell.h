@@ -199,10 +199,10 @@ void	wait_parent(t_shell *shell);
 
 /*===================== builtin =====================*/
 /* -------------- echo -------------- */
-void	echo(char **str);
+void	echo(t_shell *shell, char **str);
 
 /* -------------- env -------------- */
-void	show_environ(char **av);
+void	show_environ(t_shell *shell, char **av);
 
 /* -------------- pwd -------------- */
 void	print_emplacement(t_shell *shell);
@@ -211,7 +211,7 @@ void	print_emplacement(t_shell *shell);
 void	end_prog(t_shell *shell, char **av);
 
 /* -------------- cd -------------- */
-char	**dep_fd(char **av, char **env);
+char	**dep_fd(t_shell *shell, char **av, char **env);
 char	*return_oldpwd(char **env);
 char	*stock_pwd(const char *s, int i);
 char	*get_env_value(char **env, const char *key);

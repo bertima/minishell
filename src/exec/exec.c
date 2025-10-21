@@ -42,7 +42,6 @@ static int	one_cmd(t_shell *shell, t_cmd *cmd)
 			{
 				if (exec_builtin(shell, cmd))
 					return (1);
-				shell->data->exit_code = 0;
 			}
 			else
 				execut_command(shell, cmd, 0);

@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void	show_environ(char **av)
+void	show_environ(t_shell *shell, char **av)
 {
 	int	i;
 	int	len;
@@ -12,4 +12,5 @@ void	show_environ(char **av)
 		printf("%s\n", av[i]);
 		i++;
 	}
+	shell->data->exit_code = 0;
 }

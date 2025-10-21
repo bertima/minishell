@@ -36,7 +36,6 @@ static int	child_manage(t_shell *shell, t_cmd *cmd)
 	if (verif_builtin(cmd))
 	{
 		bultin(shell, cmd);
-		shell->data->exit_code = 0;
 		exit_code = shell->data->exit_code;
 		all_free(shell);
 		exit (exit_code);

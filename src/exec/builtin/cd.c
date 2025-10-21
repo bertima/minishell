@@ -93,7 +93,7 @@ int	to_many_argument(char **av)
 	return (0);
 }
 
-char	**dep_fd(char **av, char **env)
+char	**dep_fd(t_shell *shell, char **av, char **env)
 {
 	char	*target_dir;
 	char	*prev_dir;
@@ -108,16 +108,19 @@ char	**dep_fd(char **av, char **env)
 	if (!prev_dir)
 	{
 		perror("getcwd");
+		shell->data->exit_code = 1;
 		return (env);
 	}
 	if (chdir(target_dir) != 0)
 	{
 		printf("bash: cd: %s: %s\n", target_dir, strerror(errno));
+		shell->data->exit_code = 1;
 		free(prev_dir);
 		return (env);
 	}
 	env = update_pwd_env(env, prev_dir, 0, NULL);
 	if (prev_dir)
 		free(prev_dir);
+	shell->data->exit_code = 0;
 	return (env);
 }

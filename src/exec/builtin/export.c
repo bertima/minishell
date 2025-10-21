@@ -115,12 +115,17 @@ void	export(t_shell *shell, char **args, char **tmp)
 			return ;
 		tri_bubule(tmp);
 		show_ex(tmp);
+		shell->data->exit_code = 0;
 		ft_free_split(tmp);
 	}
 	else
 	{
 		if (error_export(args))
+		{
+			shell->data->exit_code = 1;
 			return ;
+		}
 		update_all(shell, args);
+		shell->data->exit_code = 0;
 	}
 }
