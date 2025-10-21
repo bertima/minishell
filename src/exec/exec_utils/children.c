@@ -1,27 +1,5 @@
 #include "minishell.h"
 
-void	wait_parent(t_shell *shell)
-{
-	int		status;
-	pid_t	pid;
-
-	while (shell->children->nbr_cmd > 0)
-	{
-		signal(SIGINT, SIG_IGN);
-		pid = wait(&status);
-		if (pid == shell->children->last_pid)
-		{
-			if (WIFEXITED(status))
-				shell->data->exit_code = WEXITSTATUS(status);
-			if (WIFSIGNALED(status))
-				shell->data->exit_code = 130;
-		}
-		shell->children->nbr_cmd--;
-	}
-	if (WIFSIGNALED(status))
-		write(1, "\n", 1);
-}
-
 static void	parent(t_shell *shell, t_cmd *cmd, int pid)
 {
 	if (cmd->next)
@@ -55,7 +33,6 @@ static int	child_manage(t_shell *shell, t_cmd *cmd)
 	if (verif_builtin(cmd))
 	{
 		bultin(shell, cmd);
-		shell->data->exit_code = 0;
 		exit_code = shell->data->exit_code;
 		all_free(shell);
 		exit (exit_code);
@@ -71,6 +48,7 @@ void	creat_child(t_shell *shell, t_cmd *cmd, int pid)
 		return (perror(""));
 	else if (pid == 0)
 	{
+		reset_child_signal();
 		if (redirect_cmd(shell, cmd))
 		{
 			all_free(shell);
@@ -79,4 +57,26 @@ void	creat_child(t_shell *shell, t_cmd *cmd, int pid)
 		child_manage(shell, cmd);
 	}
 	parent(shell, cmd, pid);
+}
+
+void	wait_parent(t_shell *shell)
+{
+	int		status;
+	pid_t	pid;
+
+	while (shell->children->nbr_cmd > 0)
+	{
+		signal(SIGINT, SIG_IGN);
+		pid = wait(&status);
+		if (pid == shell->children->last_pid)
+		{
+			if (WIFEXITED(status))
+				shell->data->exit_code = WEXITSTATUS(status);
+			if (WIFSIGNALED(status))
+				shell->data->exit_code = ft_sig(status);
+		}
+		shell->children->nbr_cmd--;
+	}
+	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+		write(1, "\n", 1);
 }

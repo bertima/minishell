@@ -28,7 +28,7 @@ int	check_option(char **av)
 {
 	if (av[1][0] == '-')
 	{
-		printf("les consigne ne demande pas de gere les option!\n");
+		printf("minishell : not implement");
 		return (1);
 	}
 	return (0);
