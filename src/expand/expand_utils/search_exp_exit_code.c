@@ -67,6 +67,7 @@ int	search_expand(t_shell *shell, char ***arg, int *i, int *j)
 	char	*var;
 	char	*name;
 
+	name = NULL;
 	c = (*arg)[*i][*j + 1];
 	if ((*arg)[*i][*j] == '$' && c && ft_isalnum(c))
 	{
@@ -77,42 +78,14 @@ int	search_expand(t_shell *shell, char ***arg, int *i, int *j)
 			if (var)
 			{
 				if (remplace(&(*arg)[*i], *j, var, ft_strlen(name)))
-					return (free(name), 1);
+					return (ft_free(&name), 1);
 				*j += ft_strlen(var);
-				return (free (name), 0);
+				return (ft_free(&name), 0);
 			}
 		}
 		if (remplace(&(*arg)[*i], *j, NULL, ft_strlen(name)))
-			return (free(name), 1);
+			return (ft_free(&name), 1);
 	}
-	return (0);
-}
-
-int	suppress_arg(char ***arg, int *i)
-{
-	char	**temp;
-	int		j;
-	int		k;
-
-	j = 0;
-	k = 0;
-	temp = calloc(ft_len_array(*arg), sizeof(char *));
-	if (!temp)
-		return (1);
-	while ((*arg)[j])
-	{
-		if (j == *i)
-		{
-			free((*arg)[j]);
-			(*arg)[j] = NULL;
-		}
-		else
-			temp[k++] = (*arg)[j];
-		j++;
-	}
-	temp[k] = NULL;
-	(*i)--;
-	free(*arg);
-	*arg = temp;
+	ft_free(&name);
 	return (0);
 }

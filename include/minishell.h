@@ -191,7 +191,7 @@ int		redirect_std(t_shell *shell);
 int		redirect_cmd(t_shell *shell, t_cmd *temp_cmd);
 void	close_fd(int *fd);
 void	close_stock(t_shell *shell);
-void	close_fd_cmd_shell_stock(t_shell *shell, t_cmd *cmd);
+void	close_fd_cmd_shell(t_shell *shell, t_cmd *cmd);
 
 /* -------------- child -------------- */
 void	creat_child(t_shell *shell, t_cmd *cmd, int pid);

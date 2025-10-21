@@ -14,10 +14,8 @@ static int	join_dir(char **w_dir, char **split_path, int len)
 	*w_dir = ft_strjoin_var(3, first, split_path[len - 1], last);
 	if (!*w_dir)
 		return (1);
-	free(first);
-	free(last);
-	first = NULL;
-	last = NULL;
+	ft_free(&first);
+	ft_free(&last);
 	return (0);
 }
 

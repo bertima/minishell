@@ -9,10 +9,7 @@ static void	parent(t_shell *shell, t_cmd *cmd, int pid)
 		close_fd(&shell->children->pipefd[1]);
 	}
 	else
-	{
 		close_fd(&shell->children->pipefd[0]);
-		shell->children->fd_transi = -1;
-	}
 	if (!cmd->next)
 		shell->children->last_pid = pid;
 }
@@ -23,16 +20,16 @@ static int	child_manage(t_shell *shell, t_cmd *cmd)
 
 	if (shell->children->nbr_cmd > 1 && cmd->fd_in < 0)
 	{
-		if (shell->children->fd_transi >= 0
-			&& dup2(shell->children->fd_transi, STDIN_FILENO) < 0)
+		if (dup2(shell->children->fd_transi, STDIN_FILENO) < 0)
 			return (perror(""), 1);
+		close_fd(&shell->children->fd_transi);
 	}
-	if (cmd->next && cmd->fd_out < 0 && shell->children->pipefd[0] >= 0)
+	if (cmd->next && cmd->fd_out < 0)
 	{
 		if (dup2(shell->children->pipefd[1], STDOUT_FILENO) < 0)
 			return (perror(""), 1);
+		close_fd(&shell->children->pipefd[1]);
 	}
-	close_fd_cmd_shell_stock(shell, cmd);
 	if (verif_builtin(cmd))
 	{
 		bultin(shell, cmd);
@@ -54,7 +51,6 @@ void	creat_child(t_shell *shell, t_cmd *cmd, int pid)
 		reset_child_signal();
 		if (redirect_cmd(shell, cmd))
 		{
-			close_stock(shell);
 			all_free(shell);
 			exit(1);
 		}

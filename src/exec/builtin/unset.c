@@ -2,7 +2,7 @@
 
 void	modif_env(char **env, int i)
 {
-	free(env[i]);
+	ft_free(&env[i]);
 	while (env[i])
 	{
 		env[i] = env[i + 1];

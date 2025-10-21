@@ -6,7 +6,7 @@
 /*   By: bertrmar <bertrmar@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 11:27:36 by bertrmar          #+#    #+#             */
-/*   Updated: 2025/08/28 16:13:47 by bertrmar         ###   ########.fr       */
+/*   Updated: 2025/10/21 09:29:59 by bertrmar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef LIBFT_H
@@ -43,6 +43,7 @@ void			ft_bzero(void *str, size_t n);
 void			*ft_calloc(size_t number, size_t size);
 int				ft_check_base(char *base);
 void			ft_free_split(char **str);
+void			ft_free(char **name);
 int				ft_isalnum(int c);
 int				ft_isalpha(int c);
 int				ft_isascii(int c);

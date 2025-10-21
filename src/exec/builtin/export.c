@@ -42,12 +42,12 @@ char	**update_or_add_env(char **env, char *var)
 	index = var_exists(env, var);
 	if (index != -1)
 	{
-		free(env[index]);
+		ft_free(&env[index]);
 		env[index] = new_var;
 		return (env);
 	}
 	new_env = add_var_to_env(env, new_var, 0, 0);
-	free(new_var);
+	ft_free(&new_var);
 	if (!new_env)
 		return (NULL);
 	ft_free_split(env);
@@ -66,7 +66,7 @@ char	**update_exp(char **exp, char *var, char *new_var, int i)
 			new_var = quote_value(var);
 			if (!new_var)
 				return (NULL);
-			free(exp[i]);
+			ft_free(&exp[i]);
 			exp[i] = new_var;
 		}
 		return (exp);
@@ -75,7 +75,7 @@ char	**update_exp(char **exp, char *var, char *new_var, int i)
 	if (!new_var)
 		return (NULL);
 	new_exp = add_var_to_env(exp, new_var, 0, 0);
-	free(new_var);
+	ft_free(&new_var);
 	if (!new_exp)
 		return (NULL);
 	ft_free_split(exp);

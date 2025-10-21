@@ -6,7 +6,7 @@ char	**update_pwd_env(char **env, char *oldpwd, int i, char *newpwd)
 	{
 		if (ft_strncmp(env[i], "OLDPWD=", 7) == 0)
 		{
-			free(env[i]);
+			ft_free(&env[i]);
 			env[i] = ft_strjoin("OLDPWD=", oldpwd);
 		}
 		i++;
@@ -19,12 +19,12 @@ char	**update_pwd_env(char **env, char *oldpwd, int i, char *newpwd)
 	{
 		if (ft_strncmp(env[i], "PWD=", 4) == 0)
 		{
-			free(env[i]);
+			ft_free(&env[i]);
 			env[i] = ft_strjoin("PWD=", newpwd);
 		}
 		i++;
 	}
-	free(newpwd);
+	ft_free(&newpwd);
 	return (env);
 }
 
@@ -75,7 +75,7 @@ char	*def_dir(char *av, char **env)
 		{
 			tmp = return_home(NULL);
 			str = join_home(tmp, av, 0, 1);
-			free (tmp);
+			ft_free(&tmp);
 		}
 		else
 			str = av;

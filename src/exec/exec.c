@@ -17,7 +17,7 @@ static int	multi_command(t_shell *shell, t_cmd *cmd)
 		if (temp_cmd->next)
 		{
 			if (pipe(shell->children->pipefd))
-				return (1);
+				return (perror(""), 1);
 		}
 		creat_child(shell, temp_cmd, pid);
 		temp_cmd = temp_cmd->next;
