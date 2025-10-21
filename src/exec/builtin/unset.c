@@ -34,7 +34,7 @@ int	check_option(char **av)
 	return (0);
 }
 
-char	**unset(char **env, char **av)
+char	**unset(t_shell *shell, char **env, char **av)
 {
 	int	i;
 	int	j;
@@ -59,5 +59,6 @@ char	**unset(char **env, char **av)
 			j++;
 		}
 	}
+	shell->data->exit_code = 0;
 	return (env);
 }

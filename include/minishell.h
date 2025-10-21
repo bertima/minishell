@@ -232,7 +232,7 @@ int		var_name_match(char *s1, char *s2);
 int		is_quoted(char *value);
 
 /* -------------- unset -------------- */
-char	**unset(char **env, char **av);
+char	**unset(t_shell *shell, char **env, char **av);
 
 /* -------------- utility -------------- */
 int		strlen_av(char **av);

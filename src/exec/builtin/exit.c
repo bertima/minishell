@@ -55,7 +55,7 @@ void	end_prog(t_shell *shell, char **av)
 	{
 		all_free(shell);
 		printf("exit\n");
-		exit(127);
+		exit(shell->data->exit_code);
 	}
 	if (strlen_av(av) > 1)
 	{
