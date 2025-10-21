@@ -35,19 +35,6 @@ int	execut_command(t_shell *shell, t_cmd *cmd, int status)
 	return (0);
 }
 
-int	verif_builtin(t_cmd *cmd)
-{
-	if (ft_strcmp(cmd->arg[0], "echo") == 0
-		|| ft_strcmp(cmd->arg[0], "env") == 0
-		|| ft_strcmp(cmd->arg[0], "exit") == 0
-		|| ft_strcmp(cmd->arg[0], "pwd") == 0
-		|| ft_strcmp(cmd->arg[0], "cd") == 0
-		|| ft_strcmp(cmd->arg[0], "export") == 0
-		|| ft_strcmp(cmd->arg[0], "unset") == 0)
-		return (1);
-	return (0);
-}
-
 int	bultin(t_shell *shell, t_cmd *cmd)
 {
 	if (ft_strcmp(cmd->arg[0], "echo") == 0)
@@ -63,7 +50,7 @@ int	bultin(t_shell *shell, t_cmd *cmd)
 	if (ft_strcmp(cmd->arg[0], "export") == 0)
 		return (export(shell, NULL, NULL), 1);
 	if (ft_strcmp(cmd->arg[0], "unset") == 0)
-		return (shell->data->env = unset(shell->data->env, shell->cmd->arg), 1);
+		return (shell->data->env = unset(shell, shell->data->env, cmd->arg), 1);
 	return (0);
 }
 
@@ -79,10 +66,19 @@ int	exec_builtin(t_shell *shell, t_cmd *cmd)
 	}
 	bultin(shell, cmd);
 	if (redirect_std(shell))
-	{
-		shell->data->exit_code = 1;
 		return (1);
-	}
-	shell->data->exit_code = 0;
+	return (0);
+}
+
+int	verif_builtin(t_cmd *cmd)
+{
+	if (ft_strcmp(cmd->arg[0], "echo") == 0
+		|| ft_strcmp(cmd->arg[0], "env") == 0
+		|| ft_strcmp(cmd->arg[0], "exit") == 0
+		|| ft_strcmp(cmd->arg[0], "pwd") == 0
+		|| ft_strcmp(cmd->arg[0], "cd") == 0
+		|| ft_strcmp(cmd->arg[0], "export") == 0
+		|| ft_strcmp(cmd->arg[0], "unset") == 0)
+		return (1);
 	return (0);
 }

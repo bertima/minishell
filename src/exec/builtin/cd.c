@@ -100,7 +100,10 @@ char	**dep_fd(t_shell *shell, char **av, char **env)
 
 	target_dir = NULL;
 	if (to_many_argument(av) == 1)
+	{
+		shell->data->exit_code = 1;
 		return (env);
+	}
 	target_dir = def_dir(av[1], env);
 	if (!target_dir)
 		return (env);
@@ -113,8 +116,8 @@ char	**dep_fd(t_shell *shell, char **av, char **env)
 	}
 	if (chdir(target_dir) != 0)
 	{
-		printf("bash: cd: %s: %s\n", target_dir, strerror(errno));
 		shell->data->exit_code = 1;
+		perror("cd");
 		free(prev_dir);
 		return (env);
 	}
