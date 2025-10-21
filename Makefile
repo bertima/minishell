@@ -47,10 +47,11 @@ FSRC = src/main.c \
 	   \
 	   \
 	   src/expand/expand.c \
-	   src/expand/expand_utils/search_exp_exit_code_suppress_arg.c \
+	   src/expand/expand_utils/search_exp_exit_code.c \
 	   src/expand/expand_utils/expand_manage.c \
 	   src/expand/expand_utils/remove_quote_search_name.c \
 	   src/expand/expand_utils/insert_arg_expand.c \
+	   src/expand/expand_utils/suppress_arg.c \
 	   \
 	   \
 	   src/here_doc/creat_file_generator.c \

@@ -41,6 +41,7 @@ FSRC = ft_abs.c \
        ft_strcat.c \
        ft_check_base.c \
        ft_free_split.c \
+       ft_free.c \
        ft_isalnum.c \
        ft_isalpha.c \
        ft_isascii.c \

@@ -7,8 +7,8 @@ static int	insert_name(char **str, char *nbr, char *time)
 	temp = ft_strjoin_var(3, ".temp_file", nbr, time);
 	if (!temp)
 		return (1);
-	free(nbr);
-	free(time);
+	ft_free(&nbr);
+	ft_free(&time);
 	free(*str);
 	*str = temp;
 	return (0);

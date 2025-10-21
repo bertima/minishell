@@ -48,7 +48,7 @@ static char	*com_find(char *av, char **environ)
 			ft_free_split(path);
 			return (way);
 		}
-		free(way);
+		ft_free(&way);
 		i++;
 	}
 	return (ft_free_split(path), NULL);
@@ -85,7 +85,7 @@ int	exec_com(t_shell *shell, char **av, char **environ)
 	{
 		path = ft_strjoin_var(3, "command not found: ", av[0], "\n");
 		write (2, path, ft_strlen(path));
-		free (path);
+		ft_free(&path);
 		all_free(shell);
 		exit (127);
 	}

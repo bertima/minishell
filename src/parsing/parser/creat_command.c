@@ -34,15 +34,11 @@ static void	clear_redir(t_redir *redir)
 	temp_redir = redir;
 	while (redir)
 	{
-		if (redir->before_exp)
-			free(redir->before_exp);
-		redir->before_exp = NULL;
+		ft_free(&redir->before_exp);
 		if (redir->file)
 			ft_free_split(redir->file);
 		redir->file = NULL;
-		if (redir->file_temp)
-			free(redir->file_temp);
-		redir->file_temp = NULL;
+		ft_free(&redir->file_temp);
 		free(temp_redir);
 		temp_redir = NULL;
 		redir = redir->next;

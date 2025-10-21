@@ -9,33 +9,25 @@ void	close_fd(int *fd)
 
 void	close_stock(t_shell *shell)
 {
-	if (shell->data->fd_stock_in >= 0)
-		close_fd(&shell->data->fd_stock_in);
-	if (shell->data->fd_stock_out >= 0)
-		close_fd(&shell->data->fd_stock_out);
+	close_fd(&shell->data->fd_stock_in);
+	close_fd(&shell->data->fd_stock_out);
 }
 
-void	close_fd_cmd_shell_stock(t_shell *shell, t_cmd *cmd)
+void	close_fd_cmd_shell(t_shell *shell, t_cmd *cmd)
 {
 	if (!shell)
 		return ;
 	if (cmd)
 	{
-		if (cmd->fd_in >= 0)
-			close_fd(&cmd->fd_in);
-		if (cmd->fd_out >= 0)
-			close_fd(&cmd->fd_out);
+		close_fd(&cmd->fd_in);
+		close_fd(&cmd->fd_out);
 	}
 	if (shell->children)
 	{
-		if (shell->children->fd_transi >= 0)
-			close_fd(&shell->children->fd_transi);
-		if (shell->children->pipefd[0] >= 0)
-			close_fd(&shell->children->pipefd[0]);
-		if (shell->children->pipefd[1] >= 0)
-			close_fd(&shell->children->pipefd[1]);
+		close_fd(&shell->children->fd_transi);
+		close_fd(&shell->children->pipefd[0]);
+		close_fd(&shell->children->pipefd[1]);
 	}
-	close_stock(shell);
 }
 
 int	redirect_std(t_shell *shell)

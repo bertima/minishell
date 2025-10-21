@@ -10,10 +10,9 @@ static int	here_doc_redir(t_cmd *cmd, t_redir *redir)
 			return (perror(redir->file_temp), 1);
 		if (dup2(cmd->fd_in, STDIN_FILENO) < 0)
 			return (perror(""), 1);
-		close_fd(&cmd->fd_in);
+		close(cmd->fd_in);
 		unlink(redir->file_temp);
-		free(redir->file_temp);
-		redir->file_temp = NULL;
+		ft_free(&redir->file_temp);
 	}
 	return (0);
 }
@@ -30,7 +29,7 @@ static int	here_doc_and_less(t_cmd *cmd, t_redir *redir)
 			return (perror(""), 1);
 		if (dup2(cmd->fd_in, STDIN_FILENO) < 0)
 			return (perror(""), 1);
-		close_fd(&cmd->fd_in);
+		close(cmd->fd_in);
 	}
 	if (here_doc_redir(cmd, redir))
 		return (1);
@@ -51,7 +50,7 @@ int	creat_dup(t_cmd *cmd, t_redir *redir)
 			return (perror(redir->file[0]), 1);
 		if (dup2(cmd->fd_out, STDOUT_FILENO) < 0)
 			return (1);
-		close_fd(&cmd->fd_out);
+		close(cmd->fd_out);
 	}
 	else if (redir->type == REDIRECT_A)
 	{
@@ -61,7 +60,7 @@ int	creat_dup(t_cmd *cmd, t_redir *redir)
 			return (perror(redir->file[0]), 1);
 		if (dup2(cmd->fd_out, STDOUT_FILENO) < 0)
 			return (1);
-		close_fd(&cmd->fd_out);
+		close(cmd->fd_out);
 	}
 	return (0);
 }

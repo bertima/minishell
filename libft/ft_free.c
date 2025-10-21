@@ -1,20 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_abs.c                                           :+:      :+:    :+:   */
+/*   ft_free.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bertrmar <bertrmar@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/09 10:38:14 by bertrmar          #+#    #+#             */
-/*   Updated: 2025/06/09 10:44:42 by bertrmar         ###   ########.fr       */
+/*   Created: 2025/10/20 14:30:30 by bertrmar          #+#    #+#             */
+/*   Updated: 2025/10/21 09:29:22 by bertrmar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_abs(int num)
+void	ft_free(char **name)
 {
-	if (num < 0)
-		num *= -1;
-	return (num);
+	if (*name)
+		free(*name);
+	*name = NULL;
 }
