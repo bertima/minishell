@@ -69,7 +69,7 @@ int	search_expand(t_shell *shell, char ***arg, int *i, int *j)
 
 	name = NULL;
 	c = (*arg)[*i][*j + 1];
-	if ((*arg)[*i][*j] == '$' && c && ft_isalnum(c))
+	if ((*arg)[*i][*j] == '$' && c && ft_valid_expand(c))
 	{
 		name = search_name((*arg)[*i], *j + 1);
 		if (name)

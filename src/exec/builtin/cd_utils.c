@@ -1,17 +1,5 @@
 #include "minishell.h"
 
-int	strlen_av(char **av)
-{
-	int	i;
-
-	i = 0;
-	if (!av)
-		return (0);
-	while (av[i])
-		i++;
-	return (i);
-}
-
 char	*return_home(char *str)
 {
 	str = getenv("HOME");

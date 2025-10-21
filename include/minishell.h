@@ -165,6 +165,7 @@ int		quote_process(t_shell *shell, char ***arg, int *i, int *j);
 int		remove_quote(char **str, int *start);
 
 /* -------------- utils -------------- */
+int		ft_valid_expand(char c);
 char	*search_name(char *str, int start);
 int		search_expand(t_shell *shell, char ***arg, int *i, int *j);
 int		exit_code_expand(t_shell *shell, char **arg, int *i, int *end);
@@ -233,9 +234,6 @@ int		is_quoted(char *value);
 
 /* -------------- unset -------------- */
 char	**unset(t_shell *shell, char **env, char **av);
-
-/* -------------- utility -------------- */
-int		strlen_av(char **av);
 
 /*===================== error =====================*/
 /* -------------- error -------------- */

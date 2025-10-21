@@ -30,22 +30,19 @@ static int	multi_command(t_shell *shell, t_cmd *cmd)
 
 static int	one_cmd(t_shell *shell, t_cmd *cmd)
 {
-	if (cmd->arg)
+	if (cmd->arg || cmd->redir)
 	{
-		if (cmd->arg && cmd->arg[0] && cmd->arg[0][0] != '\0')
+		shell->data->fd_stock_in = dup(STDIN_FILENO);
+		shell->data->fd_stock_out = dup(STDOUT_FILENO);
+		if (shell->data->fd_stock_in < 0 || shell->data->fd_stock_out < 0)
+			return (perror(""), 1);
+		if (verif_builtin(cmd))
 		{
-			shell->data->fd_stock_in = dup(STDIN_FILENO);
-			shell->data->fd_stock_out = dup(STDOUT_FILENO);
-			if (shell->data->fd_stock_in < 0 || shell->data->fd_stock_out < 0)
-				return (perror(""), 1);
-			if (verif_builtin(cmd))
-			{
-				if (exec_builtin(shell, cmd))
-					return (1);
-			}
-			else
-				execut_command(shell, cmd, 0);
+			if (exec_builtin(shell, cmd))
+				return (1);
 		}
+		else
+			execut_command(shell, cmd, 0);
 	}
 	return (0);
 }

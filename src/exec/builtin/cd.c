@@ -85,7 +85,7 @@ char	*def_dir(char *av, char **env)
 
 int	to_many_argument(char **av)
 {
-	if (strlen_av(av) > 2)
+	if (ft_len_array(av) > 2)
 	{
 		perror("bash: cd: too many arguments");
 		return (1);
