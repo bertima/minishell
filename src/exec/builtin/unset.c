@@ -3,11 +3,12 @@
 void	modif_env(char **env, int i)
 {
 	ft_free(&env[i]);
-	while (env[i])
+	while (env[i + 1])
 	{
 		env[i] = env[i + 1];
 		i++;
 	}
+	env[i] = NULL;
 }
 
 int	check_name_variable(char *env, char *av)
@@ -24,11 +25,12 @@ int	check_name_variable(char *env, char *av)
 	return (0);
 }
 
-int	check_option(char **av)
+int	check_option(t_shell *shell, char **av)
 {
 	if (av[1][0] == '-')
 	{
-		printf("minishell : not implement");
+		ft_putstr_fd("minishell : option not implement", 2);
+		shell->data->exit_code = 2;
 		return (1);
 	}
 	return (0);
@@ -39,9 +41,9 @@ char	**unset(t_shell *shell, char **env, char **av)
 	int	i;
 	int	j;
 
-	if (strlen_av(av) >= 2)
+	if (ft_len_array(av) >= 2)
 	{
-		if (check_option(av) == 1)
+		if (check_option(shell, av) == 1)
 			return (env);
 		j = 1;
 		while (av[j])

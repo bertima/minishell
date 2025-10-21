@@ -38,7 +38,7 @@ static int	expand_hd(t_shell *shell, char **temp, int *j, char **str)
 				return (1);
 			else if (result == 2)
 				continue ;
-			if ((*temp)[*j + 1] && ft_isalnum((*temp)[*j + 1]))
+			if ((*temp)[*j + 1] && ft_valid_expand((*temp)[*j + 1]))
 			{
 				if (search_expand(shell, &temp, &i, j))
 					return (1);

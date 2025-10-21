@@ -46,12 +46,20 @@ int	error_export(char **av)
 {
 	if (av[1][0] == '-')
 	{
-		printf("export : options non supportées\n");
+		ft_putstr_fd("export : No option supported\n", 2);
 		return (1);
 	}
 	if (av[1][0] == '*' && av[1][1] == '\0')
 	{
-		printf("export : wildcard non supporté (bonus)\n");
+		ft_putstr_fd("export : No supported '*'\n", 2);
+		return (1);
+	}
+	if ((av[1][0] != '_') && (av[1][0] < 'a' || av[1][0] > 'z')
+		&& (av[1][0] < 'A' || av[1][0] > 'Z'))
+	{
+		ft_putstr_fd("bash: export: '", 2);
+		ft_putstr_fd(av[1], 2);
+		ft_putstr_fd("': not a valid identifier\n", 2);
 		return (1);
 	}
 	return (0);

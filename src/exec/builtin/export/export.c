@@ -108,7 +108,7 @@ void	update_all(t_shell *shell, char **av)
 void	export(t_shell *shell, char **args, char **tmp)
 {
 	args = shell->cmd->arg;
-	if (strlen_av(args) == 1)
+	if (ft_len_array(args) == 1)
 	{
 		tmp = cp_ex(shell->data->exp);
 		if (!tmp)

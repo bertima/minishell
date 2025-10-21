@@ -11,8 +11,10 @@ int	is_numerique(char **av)
 	{
 		if (av[1][i] > '9' || av[1][i] < '0')
 		{
-			printf("exit\n");
-			printf("bash: exit: %s: numeric argument required\n", av[1]);
+			ft_putstr_fd("exit\n", 2);
+			ft_putstr_fd("bash: exit: ", 2);
+			ft_putstr_fd(av[1], 2);
+			ft_putstr_fd(": numeric argument required\n", 2);
 			return (1);
 		}
 		i++;
@@ -22,22 +24,27 @@ int	is_numerique(char **av)
 
 int	is_not_valid_av(t_shell *shell, char **av)
 {
-	if (av && av[0] && av[1] && av[1][0] == '-')
+	if (ft_len_array(av) > 1)
 	{
-		printf("les consigne ne demande pas de gere les option!\n");
-		return (1);
-	}
-	else if (av && av[0] && av[1] && is_numerique(av) == 1)
-	{
-		all_free(shell);
-		rl_clear_history();
-		return (1);
-	}
-	else if (strlen_av(av) > 2)
-	{
-		printf("exit\n");
-		printf("bash: exit: too many arguments%s: \n", av[1]);
-		return (1);
+		if (av && av[0] && av[1] && av[1][0] == '-')
+		{
+			ft_putstr_fd("exit\n", 2);
+			ft_putstr_fd("No option for exit\n", 2);
+			shell->data->exit_code = 2;
+			return (1);
+		}
+		else if (av && av[0] && av[1] && is_numerique(av) == 1)
+		{
+			shell->data->exit_code = 2;
+			return (1);
+		}
+		else if (ft_len_array(av) > 2)
+		{
+			ft_putstr_fd("exit\n", 2);
+			ft_putstr_fd("bash: exit: too many arguments\n", 2);
+			shell->data->exit_code = 2;
+			return (1);
+		}
 	}
 	return (0);
 }
@@ -45,19 +52,18 @@ int	is_not_valid_av(t_shell *shell, char **av)
 void	end_prog(t_shell *shell, char **av)
 {
 	long long	ret;
+	int			exit_stock;
 
-	if (strlen_av(av) > 1)
+	if (is_not_valid_av(shell, av) == 1)
+		return ;
+	if (ft_len_array(av) == 1)
 	{
-		if (is_not_valid_av(shell, av) == 1)
-			exit (2);
-	}
-	if (strlen_av(av) == 1)
-	{
+		exit_stock = shell->data->exit_code;
 		all_free(shell);
 		printf("exit\n");
-		exit(shell->data->exit_code);
+		exit(exit_stock);
 	}
-	if (strlen_av(av) > 1)
+	if (ft_len_array(av) > 1)
 	{
 		ret = 0;
 		ft_atoll(av[1], &ret);

@@ -47,6 +47,7 @@ FSRC = src/main.c \
 	   \
 	   \
 	   src/expand/expand.c \
+	   src/expand/expand_utils/ft_valid_expand.c \
 	   src/expand/expand_utils/search_exp_exit_code.c \
 	   src/expand/expand_utils/expand_manage.c \
 	   src/expand/expand_utils/remove_quote_search_name.c \
