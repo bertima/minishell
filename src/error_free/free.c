@@ -2,9 +2,6 @@
 
 static void	free_data(t_shell *shell)
 {
-	int	i;
-
-	i = 0;
 	if (shell->data->env)
 		ft_free_split(shell->data->env);
 	shell->data->env = NULL;
