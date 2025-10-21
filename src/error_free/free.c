@@ -2,10 +2,10 @@
 
 static void	free_data(t_shell *shell)
 {
-	if (shell->data->env && *shell->data->env)
+	if (shell->data->env)
 		ft_free_split(shell->data->env);
 	shell->data->env = NULL;
-	if (shell->data->exp && *shell->data->exp)
+	if (shell->data->exp)
 		ft_free_split(shell->data->exp);
 	shell->data->exp = NULL;
 	ft_free(&shell->data->line);
