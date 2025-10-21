@@ -52,6 +52,7 @@ void	creat_child(t_shell *shell, t_cmd *cmd, int pid)
 		return (perror(""));
 	else if (pid == 0)
 	{
+		reset_child_signal();
 		if (redirect_cmd(shell, cmd))
 		{
 			close_stock(shell);
@@ -77,10 +78,10 @@ void	wait_parent(t_shell *shell)
 			if (WIFEXITED(status))
 				shell->data->exit_code = WEXITSTATUS(status);
 			if (WIFSIGNALED(status))
-				shell->data->exit_code = 130;
+				shell->data->exit_code = ft_sig(status);
 		}
 		shell->children->nbr_cmd--;
 	}
-	if (WIFSIGNALED(status))
+	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
 		write(1, "\n", 1);
 }
