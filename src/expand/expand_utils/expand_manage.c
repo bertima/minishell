@@ -9,7 +9,7 @@ int	expand_without_quote(t_shell *shell, char ***arg, int *i, int *j)
 		result = exit_code_expand(shell, *arg, i, j);
 		if (result)
 			return (result);
-		if ((*arg)[*i][*j + 1] && ft_isalnum((*arg)[*i][*j + 1]))
+		if ((*arg)[*i][*j + 1] && ft_valid_expand((*arg)[*i][*j + 1]))
 		{
 			if (search_expand(shell, arg, i, j))
 				return (1);
@@ -34,7 +34,7 @@ static int	double_quote(t_shell *shell, char **arg, int *i, int *j)
 				return (1);
 			if (result == 2)
 				continue ;
-			if (arg[*i][end + 1] && ft_isalnum(arg[*i][end + 1]))
+			if (arg[*i][end + 1] && ft_valid_expand(arg[*i][end + 1]))
 			{
 				if (search_expand(shell, &arg, i, &end) == 1)
 					return (1);

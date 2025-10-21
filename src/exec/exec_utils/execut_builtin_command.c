@@ -29,7 +29,10 @@ int	execut_command(t_shell *shell, t_cmd *cmd, int status)
 			exit(1);
 		}
 		close_fd_cmd_shell(shell, cmd);
-		exec_com(shell, cmd->arg, shell->data->env);
+		if (cmd->arg && cmd->arg[0] && cmd->arg[0][0] != '\0')
+			exec_com(shell, cmd->arg, shell->data->env);
+		all_free(shell);
+		exit(0);
 	}
 	parent(shell, status, pid);
 	return (0);
@@ -37,20 +40,23 @@ int	execut_command(t_shell *shell, t_cmd *cmd, int status)
 
 int	bultin(t_shell *shell, t_cmd *cmd)
 {
+	char	**env;
+
+	env = shell->data->env;
 	if (ft_strcmp(cmd->arg[0], "echo") == 0)
 		return (echo(shell, cmd->arg), 1);
 	if (ft_strcmp(cmd->arg[0], "env") == 0)
-		return (show_environ(shell, shell->data->env), 1);
+		return (show_environ(shell, env), 1);
 	if (ft_strcmp(cmd->arg[0], "exit") == 0)
 		return (end_prog(shell, shell->cmd->arg), 1);
 	if (ft_strcmp(cmd->arg[0], "pwd") == 0)
 		return (print_emplacement(shell), 1);
 	if (ft_strcmp(cmd->arg[0], "cd") == 0)
-		return (shell->data->env = dep_fd(shell, cmd->arg, shell->data->env), 1);
+		return (shell->data->env = dep_fd(shell, cmd->arg, env), 1);
 	if (ft_strcmp(cmd->arg[0], "export") == 0)
 		return (export(shell, NULL, NULL), 1);
 	if (ft_strcmp(cmd->arg[0], "unset") == 0)
-		return (shell->data->env = unset(shell, shell->data->env, cmd->arg), 1);
+		return (shell->data->env = unset(shell, env, cmd->arg), 1);
 	return (0);
 }
 
@@ -64,7 +70,8 @@ int	exec_builtin(t_shell *shell, t_cmd *cmd)
 		shell->data->exit_code = 1;
 		return (1);
 	}
-	bultin(shell, cmd);
+	if (cmd->arg && cmd->arg[0] && cmd->arg[0][0] != '\0')
+		bultin(shell, cmd);
 	if (redirect_std(shell))
 		return (1);
 	return (0);

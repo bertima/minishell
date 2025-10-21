@@ -59,7 +59,7 @@ char	*search_name(char *str, int start)
 	char	*name;
 
 	len = 0;
-	while (ft_isalnum(str[start + len]))
+	while (ft_valid_expand(str[start + len]))
 		len++;
 	if (len == 0)
 		return (NULL);
