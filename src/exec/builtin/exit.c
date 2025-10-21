@@ -33,7 +33,7 @@ int	is_not_valid_av(t_shell *shell, char **av)
 		rl_clear_history();
 		return (1);
 	}
-	else if (strlen_av(av) > 1)
+	else if (strlen_av(av) > 2)
 	{
 		printf("exit\n");
 		printf("bash: exit: too many arguments%s: \n", av[1]);

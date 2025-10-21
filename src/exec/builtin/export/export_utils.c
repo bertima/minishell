@@ -54,12 +54,6 @@ int	error_export(char **av)
 		printf("export : wildcard non supporté (bonus)\n");
 		return (1);
 	}
-	if ((av[1][0] != '_') && (av[1][0] < 'a' || av[1][0] > 'z')
-		&& (av[1][0] < 'A' || av[1][0] > 'Z'))
-	{
-		printf("bash: export: `%s`: not a valid identifier\n", av[1]);
-		return (1);
-	}
 	return (0);
 }
 

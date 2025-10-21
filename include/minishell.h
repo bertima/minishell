@@ -32,6 +32,8 @@
 # include <sys/time.h>
 # include <sys/types.h>
 
+extern int	g_exit_code;
+
 typedef struct s_shell		t_shell;
 typedef struct s_token		t_token;
 typedef struct s_cmd		t_cmd;
@@ -219,6 +221,7 @@ char	*return_home(char *str);
 
 /* -------------- export -------------- */
 void	export(t_shell *shell, char **args, char **tmp);
+void	update(t_shell *shell, char **av, int i);
 int		check_sign(char *av);
 void	show_ex(char **av);
 void	tri_bubule(char **ex);

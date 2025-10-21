@@ -46,7 +46,7 @@ int	bultin(t_shell *shell, t_cmd *cmd)
 	if (ft_strcmp(cmd->arg[0], "pwd") == 0)
 		return (print_emplacement(shell), 1);
 	if (ft_strcmp(cmd->arg[0], "cd") == 0)
-		return (shell->data->env = dep_fd(shell, cmd->arg, shell->data->env), 1);
+		return (shell->data->env = dep_fd(shell, cmd->arg, shell->data->env));
 	if (ft_strcmp(cmd->arg[0], "export") == 0)
 		return (export(shell, NULL, NULL), 1);
 	if (ft_strcmp(cmd->arg[0], "unset") == 0)

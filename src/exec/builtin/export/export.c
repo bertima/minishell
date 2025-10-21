@@ -82,21 +82,24 @@ char	**update_exp(char **exp, char *var, char *new_var, int i)
 	return (new_exp);
 }
 
-void	update_all(t_shell *shell, char **args)
+void	update_all(t_shell *shell, char **av)
 {
 	int		i;
 
 	i = 1;
-	while (args[i])
+	while (av[i])
 	{
-		shell->data->exp = update_exp(shell->data->exp, args[i], NULL, 0);
-		if (!shell->data->exp)
-			return ;
-		if (ft_strchr(args[i], '='))
+		if ((av[i][0] == '_') || (av[i][0] >= 'a' && av[i][0] <= 'z')
+		|| (av[i][0] >= 'A' && av[i][0] <= 'Z'))
 		{
-			shell->data->env = update_or_add_env(shell->data->env, args[i]);
-			if (!shell->data->env)
-				return ;
+			update(shell, av, i);
+		}
+		else
+		{
+			ft_putstr_fd("bash: export: '", 2);
+			ft_putstr_fd(av[i], 2);
+			ft_putstr_fd("': not a valid identifier\n", 2);
+			shell->data->exit_code = 1;
 		}
 		i++;
 	}
@@ -120,12 +123,12 @@ void	export(t_shell *shell, char **args, char **tmp)
 	}
 	else
 	{
+		shell->data->exit_code = 0;
 		if (error_export(args))
 		{
 			shell->data->exit_code = 1;
 			return ;
 		}
 		update_all(shell, args);
-		shell->data->exit_code = 0;
 	}
 }
