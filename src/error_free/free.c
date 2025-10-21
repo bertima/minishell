@@ -8,12 +8,8 @@ static void	free_data(t_shell *shell)
 	if (shell->data->exp && *shell->data->exp)
 		ft_free_split(shell->data->exp);
 	shell->data->exp = NULL;
-	if (shell->data->line)
-		free(shell->data->line);
-	shell->data->line = NULL;
-	if (shell->data->w_dir_prompt)
-		free(shell->data->w_dir_prompt);
-	shell->data->w_dir_prompt = NULL;
+	ft_free(&shell->data->line);
+	ft_free(&shell->data->w_dir_prompt);
 	close_fd(&shell->data->fd_stock_in);
 	close_fd(&shell->data->fd_stock_out);
 	free(shell->data);
@@ -29,18 +25,15 @@ static void	free_redir(t_cmd *cmd)
 	while (temp)
 	{
 		next = temp->next;
-		if (temp->before_exp)
-			free(temp->before_exp);
-		temp->before_exp = NULL;
+		ft_free(&temp->before_exp);
 		if (temp->file)
 			ft_free_split(temp->file);
 		temp->file = NULL;
 		if (temp->file_temp)
 		{
 			unlink(temp->file_temp);
-			free(temp->file_temp);
+			ft_free(&temp->file_temp);
 		}
-		temp->file_temp = NULL;
 		free(temp);
 		temp = next;
 	}
@@ -73,11 +66,8 @@ void	free_command_redir_token_children(t_shell *shell)
 	while (shell->token)
 	{
 		temp_token = shell->token->next;
-		if (shell->token->sentence)
-			free(shell->token->sentence);
-		shell->token->sentence = NULL;
+		ft_free(&shell->token->sentence);
 		free(shell->token);
-		shell->token = NULL;
 		shell->token = temp_token;
 	}
 	if (shell->children)
@@ -88,9 +78,7 @@ void	free_command_redir_token_children(t_shell *shell)
 		free(shell->children);
 		shell->children = NULL;
 	}
-	if (shell->data->line)
-		free(shell->data->line);
-	shell->data->line = NULL;
+	ft_free(&shell->data->line);
 }
 
 void	all_free(t_shell *shell)

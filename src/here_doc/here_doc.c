@@ -65,7 +65,7 @@ static int	read_input(t_shell *shell, t_redir *redir, char *str, int fd_temp)
 			return (1);
 	}
 	ft_putstr_fd(str, fd_temp);
-	free(str);
+	ft_free(&str);
 	write(1, "> ", 2);
 	return (0);
 }
@@ -85,14 +85,14 @@ static int	recup_in(t_shell *shell, t_redir *redir, char *av, int fd_temp)
 		if (ft_strcmp(str, word_stop) == 0)
 		{
 			get_next_line(-1);
-			free(str);
+			ft_free(&str);
 			break ;
 		}
 		if (read_input(shell, redir, str, fd_temp))
 			return (1);
 		str = get_next_line(STDIN_FILENO);
 	}
-	free(word_stop);
+	ft_free(&word_stop);
 	return (0);
 }
 
@@ -116,7 +116,7 @@ int	creat_here_doc(t_shell *shell, t_cmd *temp_cmd, char *file_temp, int fd)
 			temp_redir->file_temp = ft_strdup(file_temp);
 			if (!temp_redir->file_temp)
 				return (1);
-			free(file_temp);
+			ft_free(&file_temp);
 		}
 		temp_redir = temp_redir->next;
 	}

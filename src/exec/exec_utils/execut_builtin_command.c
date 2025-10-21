@@ -28,10 +28,23 @@ int	execut_command(t_shell *shell, t_cmd *cmd, int status)
 			all_free(shell);
 			exit(1);
 		}
-		close_fd_cmd_shell_stock(shell, cmd);
+		close_fd_cmd_shell(shell, cmd);
 		exec_com(shell, cmd->arg, shell->data->env);
 	}
 	parent(shell, status, pid);
+	return (0);
+}
+
+int	verif_builtin(t_cmd *cmd)
+{
+	if (ft_strcmp(cmd->arg[0], "echo") == 0
+		|| ft_strcmp(cmd->arg[0], "env") == 0
+		|| ft_strcmp(cmd->arg[0], "exit") == 0
+		|| ft_strcmp(cmd->arg[0], "pwd") == 0
+		|| ft_strcmp(cmd->arg[0], "cd") == 0
+		|| ft_strcmp(cmd->arg[0], "export") == 0
+		|| ft_strcmp(cmd->arg[0], "unset") == 0)
+		return (1);
 	return (0);
 }
 
@@ -66,19 +79,10 @@ int	exec_builtin(t_shell *shell, t_cmd *cmd)
 	}
 	bultin(shell, cmd);
 	if (redirect_std(shell))
+	{
+		shell->data->exit_code = 1;
 		return (1);
-	return (0);
-}
-
-int	verif_builtin(t_cmd *cmd)
-{
-	if (ft_strcmp(cmd->arg[0], "echo") == 0
-		|| ft_strcmp(cmd->arg[0], "env") == 0
-		|| ft_strcmp(cmd->arg[0], "exit") == 0
-		|| ft_strcmp(cmd->arg[0], "pwd") == 0
-		|| ft_strcmp(cmd->arg[0], "cd") == 0
-		|| ft_strcmp(cmd->arg[0], "export") == 0
-		|| ft_strcmp(cmd->arg[0], "unset") == 0)
-		return (1);
+	}
+	shell->data->exit_code = 0;
 	return (0);
 }
