@@ -72,13 +72,14 @@ FSRC = src/main.c \
 	   src/exec/builtin/env.c \
 	   src/exec/builtin/exit.c \
 	   src/exec/builtin/pwd.c \
-	   src/exec/builtin/cd.c \
-	   src/exec/builtin/cd_utils.c \
+	   src/exec/builtin/cd/cd.c \
+	   src/exec/builtin/cd/cd_utils.c \
 	   src/exec/builtin/export/export.c \
 	   src/exec/builtin/export/export_utils.c \
 	   src/exec/builtin/export/export_utils2.c \
 	   src/exec/builtin/export/export_utils3.c \
-	   src/exec/builtin/unset.c \
+	   src/exec/builtin/unset/unset.c \
+	   src/exec/builtin/unset/unset_utils.c \
 	   \
 	   src/testeur/test.c
 

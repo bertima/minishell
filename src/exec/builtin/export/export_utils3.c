@@ -12,3 +12,18 @@ void	update(t_shell *shell, char **av, int i)
 			return ;
 	}
 }
+
+int	check_char_export(char *var)
+{
+	int		i;
+
+	i = 0;
+	while (var[i] && (var[i] != '='))
+	{
+		if ((var[i] != '_') && (var[i] < 'a' || var[i] > 'z')
+			&& (var[i] < 'A' || var[i] > 'Z'))
+			return (1);
+		i++;
+	}
+	return (0);
+}

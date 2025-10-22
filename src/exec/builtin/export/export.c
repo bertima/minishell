@@ -89,7 +89,7 @@ static void	update_all(t_shell *shell, char **av)
 	i = 1;
 	while (av[i])
 	{
-		if (ft_valid_expand(av[i][0]))
+		if (check_char_export(av[i]) == 0)
 		{
 			update(shell, av, i);
 		}

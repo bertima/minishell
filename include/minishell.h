@@ -216,6 +216,7 @@ void	end_prog(t_shell *shell, char **av);
 char	**move_fd(t_shell *shell, char **av, char **env);
 char	*return_oldpwd(char **env);
 char	*return_home(char *str);
+char	**add_oldpwd(t_shell *shell, char **env, char *oldpwd);
 
 /* -------------- export -------------- */
 void	export(t_shell *shell, char **args, char **tmp);
@@ -232,7 +233,10 @@ int		var_exists_export(char **env, char *var);
 char	*quote_value(char *var);
 
 /* -------------- unset -------------- */
+void	modif_env(char **env, int i);
 char	**unset(t_shell *shell, char **env, char **av);
+int		check_name_variable(char *env, char *av);
+int		check_option(t_shell *shell, char **av);
 
 /*===================== error =====================*/
 /* -------------- error -------------- */
