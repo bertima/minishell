@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init_struct.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bertrmar <bertrmar@student.s19.be>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/22 10:26:27 by bertrmar          #+#    #+#             */
+/*   Updated: 2025/10/22 10:26:29 by bertrmar         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static int	shell_levelup(char ***env, char *environ, int i)
@@ -90,11 +102,11 @@ int	init_struct(t_shell *shell, char **environ)
 	ft_memset(shell, 0, sizeof(t_shell));
 	shell->data = ft_calloc(1, sizeof(t_data));
 	if (!shell->data)
-		return (1);
+		return (error_find_int(shell, MALLOC, 1, NULL));
 	if (copie_env(&shell->data->env, environ))
-		return (1);
+		return (error_find_int(shell, MALLOC, 1, NULL));
 	if (init_export(&shell->data->exp, shell->data->env))
-		return (1);
+		return (error_find_int(shell, MALLOC, 1, NULL));
 	shell->data->fd_stock_in = -1;
 	shell->data->fd_stock_out = -1;
 	return (0);

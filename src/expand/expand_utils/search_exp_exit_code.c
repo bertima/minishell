@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   search_exp_exit_code.c                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bertrmar <bertrmar@student.s19.be>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/22 10:25:28 by bertrmar          #+#    #+#             */
+/*   Updated: 2025/10/22 10:25:29 by bertrmar         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-static int	remplace(char **str_new, int j, char *var, int len_var)
+static int	remplace(char **str_new, int j, char *var, int len_name_var)
 {
 	char	*pre;
 	char	*post;
@@ -9,7 +21,7 @@ static int	remplace(char **str_new, int j, char *var, int len_var)
 
 	if (!var)
 		var = "";
-	len_post = len_var + 1 + j;
+	len_post = len_name_var + 1 + j;
 	pre = ft_substr(*str_new, 0, j);
 	if (!pre)
 		return (1);

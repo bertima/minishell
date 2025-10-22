@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   prompt.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bertrmar <bertrmar@student.s19.be>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/22 10:26:36 by bertrmar          #+#    #+#             */
+/*   Updated: 2025/10/22 10:26:38 by bertrmar         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static int	join_dir(char **w_dir, char **split_path, int len)
@@ -10,7 +22,7 @@ static int	join_dir(char **w_dir, char **split_path, int len)
 		return (free(*w_dir), 1);
 	last = ft_strdup("$ ");
 	if (!last)
-		return (free(w_dir), free(first), 1);
+		return (free(*w_dir), free(first), 1);
 	*w_dir = ft_strjoin_var(3, first, split_path[len - 1], last);
 	if (!*w_dir)
 		return (1);
@@ -35,7 +47,7 @@ static int	path(char **w_dir)
 	split_path = ft_split(*w_dir, "/");
 	if (!split_path)
 		return (1);
-	free(*w_dir);
+	ft_free(w_dir);
 	len = ft_len_array(split_path);
 	if (join_dir(w_dir, split_path, len))
 		return ((ft_free_split(split_path), 1));
@@ -50,22 +62,22 @@ char	*recup_wd(t_shell *shell)
 	w_dir = getcwd(NULL, 0);
 	if (!w_dir)
 	{
-		perror("minishell: répertoire courant inaccessible ou supprimé");
+		perror("minishell: directorie delete or change");
 		if (chdir("/") == -1)
 		{
-			perror("minishell: impossible de changer vers la racine /");
+			perror("minishell: root not accessible /");
 			return (error_find_char(shell, -1, 1, NULL));
 		}
 		w_dir = getcwd(NULL, 0);
 		if (!w_dir)
 		{
-			perror("minishell: getcwd après chdir / a échoué");
+			perror("");
 			return (error_find_char(shell, -1, 1, NULL));
 		}
 	}
 	if (path(&w_dir))
 	{
-		free(w_dir);
+		ft_free(&w_dir);
 		return (error_find_char(shell, -1, 1, NULL));
 	}
 	return (w_dir);
@@ -73,12 +85,10 @@ char	*recup_wd(t_shell *shell)
 
 int	put_prompt(char *line, t_shell *shell)
 {
-	char	*w_dir_prompt;
-
-	w_dir_prompt = recup_wd(shell);
-	if (!w_dir_prompt)
+	shell->data->w_dir_prompt = recup_wd(shell);
+	if (!shell->data->w_dir_prompt)
 		return (1);
-	line = readline(w_dir_prompt);
+	line = readline(shell->data->w_dir_prompt);
 	if (!line)
 	{
 		all_free(shell);
@@ -89,10 +99,10 @@ int	put_prompt(char *line, t_shell *shell)
 		add_history(line);
 	shell->data->line = ft_strdup(line);
 	if (!shell->data->line)
-		return (free(line), free(w_dir_prompt), 1);
-	free(line);
-	free(w_dir_prompt);
+		return (free(line), free(shell->data->w_dir_prompt), 1);
+	ft_free(&line);
+	ft_free(&shell->data->w_dir_prompt);
 	line = NULL;
-	w_dir_prompt = NULL;
+	shell->data->w_dir_prompt = NULL;
 	return (0);
 }
