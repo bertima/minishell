@@ -65,7 +65,7 @@ int	error_export(char **av)
 	return (0);
 }
 
-void	tri_bubule(char **ex)
+void	sort_list_export(char **ex)
 {
 	int		len;
 	int		i;
