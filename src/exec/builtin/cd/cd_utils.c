@@ -40,30 +40,7 @@ char	*return_oldpwd(char **env)
 	return (str);
 }
 
-char	*stock_pwd(const char *s, int i)
-{
-	int		len;
-	int		j;
-	char	*str;
-
-	len = i;
-	while (s[len])
-		len++;
-	str = (char *)malloc(sizeof(char) * len + 1);
-	if (!str)
-		return (NULL);
-	j = 0;
-	while (s[i])
-	{
-		str[j] = s[i];
-		i++;
-		j++;
-	}
-	str[j] = '\0';
-	return (str);
-}
-
-char	**add_oldpwd(char **env, char *oldpwd)
+char	**add_oldpwd(t_shell *shell, char **env, char *oldpwd)
 {
 	int		i;
 	char	**new_env;
@@ -83,5 +60,6 @@ char	**add_oldpwd(char **env, char *oldpwd)
 	new_env[i++] = ft_strjoin("OLDPWD=", oldpwd);
 	new_env[i] = NULL;
 	free(env);
+	shell->data->exp = new_env;
 	return (new_env);
 }

@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-char	**update_pwd_env(char **env, char *oldpwd, int i, char *newpwd)
+char	**update_pwd_env(t_shell *shell, char **env, char *oldpwd, int i, char *newpwd)
 {
 	int	oldpwd_found;
 
@@ -16,7 +16,7 @@ char	**update_pwd_env(char **env, char *oldpwd, int i, char *newpwd)
 		i++;
 	}
 	if (!oldpwd_found)
-		env = add_oldpwd(env, oldpwd);
+		env = add_oldpwd(shell, env, oldpwd);
 	newpwd = getcwd(NULL, 0);
 	if (!newpwd)
 		perror("minishell: getcwd");
@@ -127,7 +127,7 @@ char	**dep_fd(t_shell *shell, char **av, char **env)
 		free(prev_dir);
 		return (env);
 	}
-	env = update_pwd_env(env, prev_dir, 0, NULL);
+	env = update_pwd_env(shell, env, prev_dir, 0, NULL);
 	if (prev_dir)
 		free(prev_dir);
 	shell->data->exit_code = 0;

@@ -216,10 +216,9 @@ void	end_prog(t_shell *shell, char **av);
 /* -------------- cd -------------- */
 char	**dep_fd(t_shell *shell, char **av, char **env);
 char	*return_oldpwd(char **env);
-char	*stock_pwd(const char *s, int i);
 char	*get_env_value(char **env, const char *key);
 char	*return_home(char *str);
-char	**add_oldpwd(char **env, char *oldpwd);
+char	**add_oldpwd(t_shell *shell, char **env, char *oldpwd);
 
 /* -------------- export -------------- */
 void	export(t_shell *shell, char **args, char **tmp);
