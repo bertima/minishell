@@ -32,7 +32,7 @@
 # include <sys/time.h>
 # include <sys/types.h>
 
-extern int	g_exit_code;
+extern int		g_exit_code;
 
 typedef struct s_shell		t_shell;
 typedef struct s_token		t_token;
@@ -77,7 +77,6 @@ struct s_shell
 struct	s_data
 {
 	char		*line;
-	char		*w_dir_prompt;
 	char		**env;
 	char		**exp;
 	int			fd_stock_in;
@@ -161,14 +160,14 @@ int		loop_remove_quote(char ***arg, int stock, int i);
 int		expand_in_arg(t_shell *shell, char ***arg, int *i, int *j);
 int		insert_arg_expand(char ***arg, int *start_end, int *i, int *j);
 int		expand_without_quote(t_shell *shell, char ***arg, int *i, int *j);
-int		quote_process(t_shell *shell, char ***arg, int *i, int *j);
+int		quote_handler(t_shell *shell, char ***arg, int *i, int *j);
 
 /* -------------- del_quote -------------- */
-int		remove_quote(char **str, int *start);
+int		remove_quote_expand(char **str, int *start);
 
 /* -------------- utils -------------- */
 int		ft_valid_expand(char c);
-char	*search_name(char *str, int start);
+char	*search_name_env(char *str, int start);
 int		search_expand(t_shell *shell, char ***arg, int *i, int *j);
 int		exit_code_expand(t_shell *shell, char **arg, int *i, int *end);
 int		suppress_arg(char ***arg, int *i);
@@ -214,29 +213,24 @@ void	print_emplacement(t_shell *shell);
 void	end_prog(t_shell *shell, char **av);
 
 /* -------------- cd -------------- */
-char	**dep_fd(t_shell *shell, char **av, char **env);
+char	**move_fd(t_shell *shell, char **av, char **env);
 char	*return_oldpwd(char **env);
-char	*get_env_value(char **env, const char *key);
 char	*return_home(char *str);
 char	**add_oldpwd(t_shell *shell, char **env, char *oldpwd);
 
 /* -------------- export -------------- */
 void	export(t_shell *shell, char **args, char **tmp);
 void	update(t_shell *shell, char **av, int i);
-char	**update_or_add_env(char **env, char *var);
 char	**update_exp(char **exp, char *var, char *new_var, int i);
-int		check_char_export(char *var);
-int		check_sign(char *av);
-void	show_ex(char **av);
-void	tri_bubule(char **ex);
+char	**update_or_add_env(char **env, char *var);
+void	show_export(char **av);
+void	sort_list_export(char **ex);
 int		error_export(char **av);
 char	**normalize_export(char **exp);
-char	**cp_ex(char **env);
-char	*remove_quotes_value(char *var);
-int		var_exists(char **env, char *var);
+char	**copie_export(char **env);
+char	*remove_quotes_export(char *var);
+int		var_exists_export(char **env, char *var);
 char	*quote_value(char *var);
-int		var_name_match(char *s1, char *s2);
-int		is_quoted(char *value);
 
 /* -------------- unset -------------- */
 void	modif_env(char **env, int i);
@@ -252,7 +246,6 @@ int		error_find_int(t_shell *shell, int e_code, int code_err, char *str);
 /* -------------- free -------------- */
 void	all_free(t_shell *shell);
 void	free_command_redir_token_children(t_shell *shell);
-void	free_expand(t_shell *shell);
 
 /*||||||||||||||||||||| test |||||||||||||||||||||*/
 /*--------------- test ----------------*/

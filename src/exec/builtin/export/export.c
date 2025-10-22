@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-char	**add_var_to_env(char **env, char *var, int i, int len)
+static char	**add_var_to_env(char **env, char *var, int i, int len)
 {
 	char	**new_env;
 
@@ -36,10 +36,10 @@ char	**update_or_add_env(char **env, char *var)
 
 	if (!var)
 		return (env);
-	new_var = remove_quotes_value(var);
+	new_var = remove_quotes_export(var);
 	if (!new_var)
 		return (NULL);
-	index = var_exists(env, var);
+	index = var_exists_export(env, var);
 	if (index != -1)
 	{
 		ft_free(&env[index]);
@@ -58,7 +58,7 @@ char	**update_exp(char **exp, char *var, char *new_var, int i)
 {
 	char	**new_exp;
 
-	i = var_exists(exp, var);
+	i = var_exists_export(exp, var);
 	if (i != -1)
 	{
 		if (ft_strchr(var, '='))
@@ -82,7 +82,7 @@ char	**update_exp(char **exp, char *var, char *new_var, int i)
 	return (new_exp);
 }
 
-void	update_all(t_shell *shell, char **av)
+static void	update_all(t_shell *shell, char **av)
 {
 	int		i;
 
@@ -109,14 +109,14 @@ void	export(t_shell *shell, char **args, char **tmp)
 	args = shell->cmd->arg;
 	if (ft_len_array(args) == 1)
 	{
-		tmp = cp_ex(shell->data->exp);
+		tmp = copie_export(shell->data->exp);
 		if (!tmp)
 			return ;
 		tmp = normalize_export(tmp);
 		if (!tmp)
 			return ;
-		tri_bubule(tmp);
-		show_ex(tmp);
+		sort_list_export(tmp);
+		show_export(tmp);
 		shell->data->exit_code = 0;
 		ft_free_split(tmp);
 	}

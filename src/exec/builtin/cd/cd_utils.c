@@ -11,7 +11,7 @@ char	*return_home(char *str)
 	return (str);
 }
 
-char	*get_env_value(char **env, const char *key)
+static char	*get_env_value(char **env, const char *key)
 {
 	int	i;
 	int	len;

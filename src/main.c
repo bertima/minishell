@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int g_exit_code = 0;
+int	g_exit_code = 0;
 
 void	gst_handler(int sig)
 {

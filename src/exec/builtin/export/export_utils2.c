@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int	is_quoted(char *value)
+static int	is_quoted(char *value)
 {
 	size_t	len;
 
@@ -10,7 +10,7 @@ int	is_quoted(char *value)
 	return (0);
 }
 
-int	var_name_match(char *s1, char *s2)
+static int	var_name_match(char *s1, char *s2)
 {
 	size_t	len1;
 	size_t	len2;
@@ -61,7 +61,7 @@ char	*quote_value(char *var)
 	return (quoted);
 }
 
-int	var_exists(char **env, char *var)
+int	var_exists_export(char **env, char *var)
 {
 	int	i;
 
@@ -75,7 +75,7 @@ int	var_exists(char **env, char *var)
 	return (-1);
 }
 
-char	*remove_quotes_value(char *var)
+char	*remove_quotes_export(char *var)
 {
 	char	*eq_pos;
 	char	*cleaned;

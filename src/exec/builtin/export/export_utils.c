@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void	show_ex(char **av)
+void	show_export(char **av)
 {
 	int	i;
 	int	len;
@@ -65,7 +65,7 @@ int	error_export(char **av)
 	return (0);
 }
 
-void	tri_bubule(char **ex)
+void	sort_list_export(char **ex)
 {
 	int		len;
 	int		i;
@@ -91,7 +91,7 @@ void	tri_bubule(char **ex)
 	}
 }
 
-char	**cp_ex(char **env)
+char	**copie_export(char **env)
 {
 	char	**ex;
 	int		i;

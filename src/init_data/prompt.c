@@ -73,10 +73,12 @@ char	*recup_wd(t_shell *shell)
 
 int	put_prompt(char *line, t_shell *shell)
 {
-	shell->data->w_dir_prompt = recup_wd(shell);
-	if (!shell->data->w_dir_prompt)
+	char	*w_dir_prompt;
+
+	w_dir_prompt = recup_wd(shell);
+	if (!w_dir_prompt)
 		return (1);
-	line = readline(shell->data->w_dir_prompt);
+	line = readline(w_dir_prompt);
 	if (!line)
 	{
 		all_free(shell);
@@ -87,10 +89,10 @@ int	put_prompt(char *line, t_shell *shell)
 		add_history(line);
 	shell->data->line = ft_strdup(line);
 	if (!shell->data->line)
-		return (free(line), free(shell->data->w_dir_prompt), 1);
+		return (free(line), free(w_dir_prompt), 1);
 	free(line);
-	free(shell->data->w_dir_prompt);
+	free(w_dir_prompt);
 	line = NULL;
-	shell->data->w_dir_prompt = NULL;
+	w_dir_prompt = NULL;
 	return (0);
 }
