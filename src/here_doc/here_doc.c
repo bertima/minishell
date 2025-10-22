@@ -82,8 +82,10 @@ int	recup_in(t_shell *shell, t_redir *redir, char *av, int fd_temp)
 	str = get_next_line(STDIN_FILENO);
 	while (str)
 	{
+		signal(SIGINT, gst_handler);
 		if (ft_strcmp(str, word_stop) == 0 || g_exit_code == 130)
 		{
+			printf("%d", g_exit_code);
 			get_next_line(-1);
 			ft_free(&str);
 			break ;
