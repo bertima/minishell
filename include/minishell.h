@@ -32,7 +32,7 @@
 # include <sys/time.h>
 # include <sys/types.h>
 
-extern int	g_exit_code;
+extern int		g_exit_code;
 
 typedef struct s_shell		t_shell;
 typedef struct s_token		t_token;
@@ -223,17 +223,17 @@ char	*return_home(char *str);
 /* -------------- export -------------- */
 void	export(t_shell *shell, char **args, char **tmp);
 void	update(t_shell *shell, char **av, int i);
+char	**update_exp(char **exp, char *var, char *new_var, int i);
+char	**update_or_add_env(char **env, char *var);
 int		check_sign(char *av);
 void	show_ex(char **av);
-void	tri_bubule(char **ex);
+void	sort_list_export(char **ex);
 int		error_export(char **av);
 char	**normalize_export(char **exp);
 char	**cp_ex(char **env);
 char	*remove_quotes_value(char *var);
 int		var_exists(char **env, char *var);
 char	*quote_value(char *var);
-int		var_name_match(char *s1, char *s2);
-int		is_quoted(char *value);
 
 /* -------------- unset -------------- */
 char	**unset(t_shell *shell, char **env, char **av);

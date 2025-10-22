@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-char	**add_var_to_env(char **env, char *var, int i, int len)
+static char	**add_var_to_env(char **env, char *var, int i, int len)
 {
 	char	**new_env;
 
@@ -82,15 +82,14 @@ char	**update_exp(char **exp, char *var, char *new_var, int i)
 	return (new_exp);
 }
 
-void	update_all(t_shell *shell, char **av)
+static void	update_all(t_shell *shell, char **av)
 {
 	int		i;
 
 	i = 1;
 	while (av[i])
 	{
-		if ((av[i][0] == '_') || (av[i][0] >= 'a' && av[i][0] <= 'z')
-		|| (av[i][0] >= 'A' && av[i][0] <= 'Z'))
+		if (ft_valid_expand(av[i][0]))
 		{
 			update(shell, av, i);
 		}
@@ -116,7 +115,7 @@ void	export(t_shell *shell, char **args, char **tmp)
 		tmp = normalize_export(tmp);
 		if (!tmp)
 			return ;
-		tri_bubule(tmp);
+		sort_list_export(tmp);
 		show_ex(tmp);
 		shell->data->exit_code = 0;
 		ft_free_split(tmp);

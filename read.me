@@ -12,3 +12,28 @@ bash: cd: OLDPWD not set        ===> ici c'est correct
 ~/minishell$ cd                 ===>> ici, cd est sense reset OLDPWD (si il est unset il doit le recreer)
 ~/marheste$ cd -                ==>> donc ca doit marcher
 bash: cd: OLDPWD not set
+
+
+corriger pour pouvoir export n'import quoi
+
+void	update_all(t_shell *shell, char **av)
+{
+	int		i;
+
+	i = 1;
+	while (av[i])
+	{
+		if (ft_valid_expand(av[i][0]))
+		{
+			update(shell, av, i);
+		}
+		else
+		{
+			ft_putstr_fd("bash: export: '", 2);
+			ft_putstr_fd(av[i], 2);
+			ft_putstr_fd("': not a valid identifier\n", 2);
+			shell->data->exit_code = 1;
+		}
+		i++;
+	}
+}
