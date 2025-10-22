@@ -52,7 +52,7 @@ char	*return_oldpwd(char **env)
 	return (str);
 }
 
-char	**add_oldpwd(t_shell *shell, char **env, char *oldpwd)
+char	**add_oldpwd_env(char **env, char *oldpwd)
 {
 	int		i;
 	char	**new_env;
@@ -66,12 +66,34 @@ char	**add_oldpwd(t_shell *shell, char **env, char *oldpwd)
 	i = 0;
 	while (env[i])
 	{
-		new_env[i] = env[i];
+		new_env[i] = ft_strdup(env[i]);
 		i++;
 	}
 	new_env[i++] = ft_strjoin("OLDPWD=", oldpwd);
 	new_env[i] = NULL;
 	free(env);
-	shell->data->exp = new_env;
+	return (new_env);
+}
+
+char	**add_oldpwd_export(t_shell *shell, char *oldpwd)
+{
+	int		i;
+	char	**new_env;
+
+	i = 0;
+	while (shell->data->exp[i])
+		i++;
+	new_env = malloc(sizeof(char *) * (i + 2));
+	if (!new_env)
+		return (shell->data->exp);
+	i = 0;
+	while (shell->data->exp[i])
+	{
+		new_env[i] = ft_strdup(shell->data->exp[i]);
+		i++;
+	}
+	new_env[i++] = ft_strjoin("OLDPWD=", oldpwd);
+	new_env[i] = NULL;
+	free(shell->data->exp);
 	return (new_env);
 }
