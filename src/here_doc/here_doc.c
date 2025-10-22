@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   here_doc.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bertrmar <bertrmar@student.s19.be>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/22 10:26:07 by bertrmar          #+#    #+#             */
+/*   Updated: 2025/10/22 10:26:08 by bertrmar         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	manage_delimiter_hd(t_redir *redir)
@@ -77,7 +89,7 @@ int	recup_in(t_shell *shell, t_redir *redir, char *av, int fd_temp)
 
 	word_stop = ft_strjoin(av, "\n");
 	if (!word_stop)
-		return (1);
+		return (error_find_int(shell, MALLOC, 1, NULL));
 	write(1, "> ", 2);
 	str = get_next_line(STDIN_FILENO);
 	while (str)
@@ -89,7 +101,7 @@ int	recup_in(t_shell *shell, t_redir *redir, char *av, int fd_temp)
 			break ;
 		}
 		if (read_input(shell, redir, str, fd_temp))
-			return (1);
+			return (error_find_int(shell, MALLOC, 1, NULL));
 		str = get_next_line(STDIN_FILENO);
 	}
 	ft_free(&word_stop);
@@ -106,7 +118,7 @@ int	creat_here_doc(t_shell *shell, t_cmd *temp_cmd, char *file_temp, int fd)
 		if (temp_redir->type == HERE_DOC)
 		{
 			if (generator_of_file_name(&file_temp, NULL, NULL))
-				return (1);
+				return (error_find_int(shell, MALLOC, 1, NULL));
 			fd = open(file_temp, O_WRONLY | O_CREAT, 0600);
 			if (fd < 0)
 				return (perror(""), unlink(file_temp), 1);
@@ -115,7 +127,7 @@ int	creat_here_doc(t_shell *shell, t_cmd *temp_cmd, char *file_temp, int fd)
 			close(fd);
 			temp_redir->file_temp = ft_strdup(file_temp);
 			if (!temp_redir->file_temp)
-				return (1);
+				return (error_find_int(shell, MALLOC, 1, NULL));
 			ft_free(&file_temp);
 		}
 		temp_redir = temp_redir->next;

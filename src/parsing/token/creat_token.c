@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   creat_token.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bertrmar <bertrmar@student.s19.be>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/22 10:27:12 by bertrmar          #+#    #+#             */
+/*   Updated: 2025/10/22 10:27:13 by bertrmar         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static int	add_back_token(t_shell *shell, int i, int j)
@@ -91,7 +103,7 @@ int	tokening(t_shell *shell)
 		if (search_arg(shell, line, start, &len))
 			return (1);
 		if (add_token(shell, start, len))
-			return (1);
+			return (error_find_int(shell, MALLOC, 1, NULL));
 		start += len;
 		len = 0;
 	}

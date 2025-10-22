@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec_com.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bertrmar <bertrmar@student.s19.be>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/22 10:33:27 by bertrmar          #+#    #+#             */
+/*   Updated: 2025/10/22 10:33:29 by bertrmar         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static char	*search_path(char **environ)
@@ -78,6 +90,11 @@ int	exec_com(t_shell *shell, char **av, char **environ)
 {
 	char	*path;
 
+	if (!av || !av[0])
+	{
+		all_free(shell);
+		exit (0);
+	}
 	if (ft_strchr(av[0], '/'))
 		exec_binaire(shell, av, environ);
 	path = com_find(av[0], environ);

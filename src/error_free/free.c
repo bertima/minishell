@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   free.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bertrmar <bertrmar@student.s19.be>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/22 10:19:49 by bertrmar          #+#    #+#             */
+/*   Updated: 2025/10/22 10:19:54 by bertrmar         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static void	free_data(t_shell *shell)
@@ -9,6 +21,7 @@ static void	free_data(t_shell *shell)
 		ft_free_split(shell->data->exp);
 	shell->data->exp = NULL;
 	ft_free(&shell->data->line);
+	ft_free(&shell->data->w_dir_prompt);
 	close_fd(&shell->data->fd_stock_in);
 	close_fd(&shell->data->fd_stock_out);
 	free(shell->data);

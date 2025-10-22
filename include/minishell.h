@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bertrmar <bertrmar@student.s19.be>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/22 10:19:04 by bertrmar          #+#    #+#             */
+/*   Updated: 2025/10/22 10:19:08 by bertrmar         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -32,7 +44,7 @@
 # include <sys/time.h>
 # include <sys/types.h>
 
-extern int		g_exit_code;
+extern int					g_exit_code;
 
 typedef struct s_shell		t_shell;
 typedef struct s_token		t_token;
@@ -79,6 +91,7 @@ struct	s_data
 	char		*line;
 	char		**env;
 	char		**exp;
+	char		*w_dir_prompt;
 	int			fd_stock_in;
 	int			fd_stock_out;
 	int			exit_code;
@@ -161,6 +174,7 @@ int		expand_in_arg(t_shell *shell, char ***arg, int *i, int *j);
 int		insert_arg_expand(char ***arg, int *start_end, int *i, int *j);
 int		expand_without_quote(t_shell *shell, char ***arg, int *i, int *j);
 int		quote_handler(t_shell *shell, char ***arg, int *i, int *j);
+int		suppress_arg(char ***arg, int *i);
 
 /* -------------- del_quote -------------- */
 int		remove_quote_expand(char **str, int *start);
@@ -170,7 +184,6 @@ int		ft_valid_expand(char c);
 char	*search_name_env(char *str, int start);
 int		search_expand(t_shell *shell, char ***arg, int *i, int *j);
 int		exit_code_expand(t_shell *shell, char **arg, int *i, int *end);
-int		suppress_arg(char ***arg, int *i);
 
 /*===================== redirection =====================*/
 /* -------------- redirection -------------- */
@@ -223,6 +236,7 @@ void	export(t_shell *shell, char **args, char **tmp);
 void	update(t_shell *shell, char **av, int i);
 char	**update_exp(char **exp, char *var, char *new_var, int i);
 char	**update_or_add_env(char **env, char *var);
+int		check_char_export(char *var);
 void	show_export(char **av);
 void	sort_list_export(char **ex);
 int		error_export(char **av);

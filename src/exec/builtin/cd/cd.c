@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cd.c                                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bertrmar <bertrmar@student.s19.be>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/22 10:22:13 by bertrmar          #+#    #+#             */
+/*   Updated: 2025/10/22 10:22:14 by bertrmar         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 char	**update_pwd_env(t_shell *shell, char **env, char *oldpwd, int i, char *newpwd)
@@ -81,6 +93,8 @@ char	*def_dir(char *av, char **env)
 		{
 			tmp = return_home(NULL);
 			str = join_home(tmp, av, 0, 1);
+			if (!str)
+				return (NULL);
 			ft_free(&tmp);
 		}
 		else

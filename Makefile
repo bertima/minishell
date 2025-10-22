@@ -47,12 +47,11 @@ FSRC = src/main.c \
 	   \
 	   \
 	   src/expand/expand.c \
-	   src/expand/expand_utils/ft_valid_expand.c \
 	   src/expand/expand_utils/search_exp_exit_code.c \
 	   src/expand/expand_utils/expand_manage.c \
 	   src/expand/expand_utils/remove_quote_search_name.c \
 	   src/expand/expand_utils/insert_arg_expand.c \
-	   src/expand/expand_utils/suppress_arg.c \
+	   src/expand/expand_utils/suppress_arg_valid_expand.c \
 	   \
 	   \
 	   src/here_doc/creat_file_generator.c \
@@ -65,7 +64,7 @@ FSRC = src/main.c \
 	   src/exec/exec_utils/redirection/redirection.c \
 	   \
 	   src/exec/exec_utils/execut_builtin_command.c \
-	   src/exec/exec_utils/execve.c \
+	   src/exec/exec_utils/exec_com.c \
 	   src/exec/exec_utils/children.c \
 	   \
 	   src/exec/builtin/echo.c \

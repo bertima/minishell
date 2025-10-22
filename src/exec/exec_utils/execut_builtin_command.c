@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execut_builtin_command.c                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bertrmar <bertrmar@student.s19.be>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/22 10:20:28 by bertrmar          #+#    #+#             */
+/*   Updated: 2025/10/22 10:20:30 by bertrmar         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static void	parent(t_shell *shell, int status, int pid)
@@ -79,6 +91,8 @@ int	exec_builtin(t_shell *shell, t_cmd *cmd)
 
 int	verif_builtin(t_cmd *cmd)
 {
+	if (!cmd)
+		return (0);
 	if (ft_strcmp(cmd->arg[0], "echo") == 0
 		|| ft_strcmp(cmd->arg[0], "env") == 0
 		|| ft_strcmp(cmd->arg[0], "exit") == 0

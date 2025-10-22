@@ -1,49 +1,47 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   unset_utils.c                                      :+:      :+:    :+:   */
+/*   suppress_arg_valid_expand.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bertrmar <bertrmar@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/22 10:24:06 by bertrmar          #+#    #+#             */
-/*   Updated: 2025/10/22 10:24:07 by bertrmar         ###   ########.fr       */
+/*   Created: 2025/10/22 10:31:04 by bertrmar          #+#    #+#             */
+/*   Updated: 2025/10/22 10:31:06 by bertrmar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	modif_env(char **env, int i)
+int	suppress_arg(char ***arg, int *i)
 {
-	ft_free(&env[i]);
-	while (env[i + 1])
-	{
-		env[i] = env[i + 1];
-		i++;
-	}
-	env[i] = NULL;
-}
-
-int	check_name_variable(char *env, char *av)
-{
-	int	j;
+	char	**temp;
+	int		j;
+	int		k;
 
 	j = 0;
-	while (env[j] != '=')
+	k = 0;
+	temp = calloc(ft_len_array(*arg), sizeof(char *));
+	if (!temp)
+		return (1);
+	while ((*arg)[j])
 	{
-		if (av[j] != env[j])
-			return (1);
+		if (j == *i)
+			ft_free(&(*arg)[j]);
+		else
+			temp[k++] = (*arg)[j];
 		j++;
 	}
+	temp[k] = NULL;
+	(*i)--;
+	free(*arg);
+	*arg = temp;
 	return (0);
 }
 
-int	check_option(t_shell *shell, char **av)
+int	ft_valid_expand(char c)
 {
-	if (av[1][0] == '-')
-	{
-		ft_putstr_fd("minishell : option not implement", 2);
-		shell->data->exit_code = 2;
+	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')
+		|| (c >= '0' && c <= '9') || c == '_')
 		return (1);
-	}
 	return (0);
 }
