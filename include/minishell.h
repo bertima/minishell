@@ -219,10 +219,14 @@ char	*return_oldpwd(char **env);
 char	*stock_pwd(const char *s, int i);
 char	*get_env_value(char **env, const char *key);
 char	*return_home(char *str);
+char	**add_oldpwd(char **env, char *oldpwd);
 
 /* -------------- export -------------- */
 void	export(t_shell *shell, char **args, char **tmp);
 void	update(t_shell *shell, char **av, int i);
+char	**update_or_add_env(char **env, char *var);
+char	**update_exp(char **exp, char *var, char *new_var, int i);
+int		check_char_export(char *var);
 int		check_sign(char *av);
 void	show_ex(char **av);
 void	tri_bubule(char **ex);
@@ -236,7 +240,10 @@ int		var_name_match(char *s1, char *s2);
 int		is_quoted(char *value);
 
 /* -------------- unset -------------- */
+void	modif_env(char **env, int i);
 char	**unset(t_shell *shell, char **env, char **av);
+int		check_name_variable(char *env, char *av);
+int		check_option(t_shell *shell, char **av);
 
 /*===================== error =====================*/
 /* -------------- error -------------- */

@@ -35,32 +35,3 @@ int	check_option(t_shell *shell, char **av)
 	}
 	return (0);
 }
-
-char	**unset(t_shell *shell, char **env, char **av)
-{
-	int	i;
-	int	j;
-
-	if (ft_len_array(av) >= 2)
-	{
-		if (check_option(shell, av) == 1)
-			return (env);
-		j = 1;
-		while (av[j])
-		{
-			i = 0;
-			while (env[i])
-			{
-				if (check_name_variable(env[i], av[j]) == 0)
-				{
-					modif_env(env, i);
-					break ;
-				}
-				i++;
-			}
-			j++;
-		}
-	}
-	shell->data->exit_code = 0;
-	return (env);
-}

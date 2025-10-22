@@ -62,3 +62,26 @@ char	*stock_pwd(const char *s, int i)
 	str[j] = '\0';
 	return (str);
 }
+
+char	**add_oldpwd(char **env, char *oldpwd)
+{
+	int		i;
+	char	**new_env;
+
+	i = 0;
+	while (env[i])
+		i++;
+	new_env = malloc(sizeof(char *) * (i + 2));
+	if (!new_env)
+		return (env);
+	i = 0;
+	while (env[i])
+	{
+		new_env[i] = env[i];
+		i++;
+	}
+	new_env[i++] = ft_strjoin("OLDPWD=", oldpwd);
+	new_env[i] = NULL;
+	free(env);
+	return (new_env);
+}

@@ -89,8 +89,7 @@ void	update_all(t_shell *shell, char **av)
 	i = 1;
 	while (av[i])
 	{
-		if ((av[i][0] == '_') || (av[i][0] >= 'a' && av[i][0] <= 'z')
-		|| (av[i][0] >= 'A' && av[i][0] <= 'Z'))
+		if (check_char_export(av[i]) == 0)
 		{
 			update(shell, av, i);
 		}

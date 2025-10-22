@@ -2,15 +2,21 @@
 
 char	**update_pwd_env(char **env, char *oldpwd, int i, char *newpwd)
 {
+	int	oldpwd_found;
+
+	oldpwd_found = 0;
 	while (env[i])
 	{
 		if (ft_strncmp(env[i], "OLDPWD=", 7) == 0)
 		{
 			ft_free(&env[i]);
 			env[i] = ft_strjoin("OLDPWD=", oldpwd);
+			oldpwd_found = 1;
 		}
 		i++;
 	}
+	if (!oldpwd_found)
+		env = add_oldpwd(env, oldpwd);
 	newpwd = getcwd(NULL, 0);
 	if (!newpwd)
 		perror("minishell: getcwd");
