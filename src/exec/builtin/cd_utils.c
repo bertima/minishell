@@ -11,7 +11,7 @@ char	*return_home(char *str)
 	return (str);
 }
 
-char	*get_env_value(char **env, const char *key)
+static char	*get_env_value(char **env, const char *key)
 {
 	int	i;
 	int	len;
@@ -37,28 +37,5 @@ char	*return_oldpwd(char **env)
 		printf("bash: cd: OLDPWD not set\n");
 		return (NULL);
 	}
-	return (str);
-}
-
-char	*stock_pwd(const char *s, int i)
-{
-	int		len;
-	int		j;
-	char	*str;
-
-	len = i;
-	while (s[len])
-		len++;
-	str = (char *)malloc(sizeof(char) * len + 1);
-	if (!str)
-		return (NULL);
-	j = 0;
-	while (s[i])
-	{
-		str[j] = s[i];
-		i++;
-		j++;
-	}
-	str[j] = '\0';
 	return (str);
 }

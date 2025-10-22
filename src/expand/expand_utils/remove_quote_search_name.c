@@ -34,7 +34,7 @@ static char	*new_string(char *str, int start, int end)
 	return (free(pre), free(inter), free(post), join);
 }
 
-int	remove_quote(char **str, int *start)
+int	remove_quote_expand(char **str, int *start)
 {
 	char	*temp;
 	int		end;
@@ -53,7 +53,7 @@ int	remove_quote(char **str, int *start)
 	return (0);
 }
 
-char	*search_name(char *str, int start)
+char	*search_name_env(char *str, int start)
 {
 	int		len;
 	char	*name;
