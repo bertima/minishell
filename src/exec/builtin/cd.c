@@ -93,7 +93,7 @@ int	to_many_argument(char **av)
 	return (0);
 }
 
-char	**dep_fd(t_shell *shell, char **av, char **env)
+char	**move_fd(t_shell *shell, char **av, char **env)
 {
 	char	*target_dir;
 	char	*prev_dir;

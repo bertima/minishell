@@ -71,7 +71,7 @@ int	search_expand(t_shell *shell, char ***arg, int *i, int *j)
 	c = (*arg)[*i][*j + 1];
 	if ((*arg)[*i][*j] == '$' && c && ft_valid_expand(c))
 	{
-		name = search_name((*arg)[*i], *j + 1);
+		name = search_name_env((*arg)[*i], *j + 1);
 		if (name)
 		{
 			var = search_var(shell->data->env, name);

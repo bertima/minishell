@@ -9,7 +9,6 @@ static void	free_data(t_shell *shell)
 		ft_free_split(shell->data->exp);
 	shell->data->exp = NULL;
 	ft_free(&shell->data->line);
-	ft_free(&shell->data->w_dir_prompt);
 	close_fd(&shell->data->fd_stock_in);
 	close_fd(&shell->data->fd_stock_out);
 	free(shell->data);

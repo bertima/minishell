@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void	show_ex(char **av)
+void	show_export(char **av)
 {
 	int	i;
 	int	len;
@@ -91,7 +91,7 @@ void	sort_list_export(char **ex)
 	}
 }
 
-char	**cp_ex(char **env)
+char	**copie_export(char **env)
 {
 	char	**ex;
 	int		i;

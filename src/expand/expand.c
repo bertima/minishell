@@ -12,7 +12,7 @@ int	loop_remove_quote(char ***arg, int stock, int i)
 		{
 			if ((*arg)[stock][j] == '\"' || (*arg)[stock][j] == '\'')
 			{
-				if (remove_quote(&(*arg)[stock], &j))
+				if (remove_quote_expand(&(*arg)[stock], &j))
 					return (1);
 			}
 			else
@@ -73,7 +73,7 @@ int	expand_in_arg(t_shell *shell, char ***arg, int *i, int *j)
 	stock = *i;
 	while (*arg && (*arg)[*i] && (*arg)[*i][*j])
 	{
-		result = quote_process(shell, arg, i, j);
+		result = quote_handler(shell, arg, i, j);
 		if (result == 1)
 			return (1);
 		if (result == 2)

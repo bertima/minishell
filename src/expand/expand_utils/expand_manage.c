@@ -47,7 +47,7 @@ static int	double_quote(t_shell *shell, char **arg, int *i, int *j)
 	return (0);
 }
 
-int	quote_process(t_shell *shell, char ***arg, int *i, int *j)
+int	quote_handler(t_shell *shell, char ***arg, int *i, int *j)
 {
 	if ((*arg)[*i][*j] == '\'')
 	{

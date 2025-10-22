@@ -61,7 +61,7 @@ char	*quote_value(char *var)
 	return (quoted);
 }
 
-int	var_exists(char **env, char *var)
+int	var_exists_export(char **env, char *var)
 {
 	int	i;
 
@@ -75,7 +75,7 @@ int	var_exists(char **env, char *var)
 	return (-1);
 }
 
-char	*remove_quotes_value(char *var)
+char	*remove_quotes_export(char *var)
 {
 	char	*eq_pos;
 	char	*cleaned;
