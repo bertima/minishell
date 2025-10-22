@@ -90,14 +90,13 @@ int	recup_in(t_shell *shell, t_redir *redir, char *av, int fd_temp)
 	word_stop = ft_strjoin(av, "\n");
 	if (!word_stop)
 		return (error_find_int(shell, MALLOC, 1, NULL));
+	signal(SIGINT, gst_handler_here_doc);
 	write(1, "> ", 2);
 	str = get_next_line(STDIN_FILENO);
 	while (str)
 	{
-		signal(SIGINT, gst_handler);
-		if (ft_strcmp(str, word_stop) == 0 || g_exit_code == 130)
+		if (ft_strcmp(str, word_stop) == 0)
 		{
-			printf("%d", g_exit_code);
 			get_next_line(-1);
 			ft_free(&str);
 			break ;

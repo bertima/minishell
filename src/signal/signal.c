@@ -21,9 +21,9 @@ void	gst_handler(int sig)
 		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
+		
 	}
 }
-
 void	gst_handler_here_doc(int sig)
 {
 	if (sig == SIGINT)
@@ -33,6 +33,7 @@ void	gst_handler_here_doc(int sig)
 		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
+		write (STDIN_FILENO, "\n",1);
 	}
 }
 
