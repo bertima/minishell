@@ -67,33 +67,41 @@ char	**add_oldpwd_env(char **env, char *oldpwd)
 	while (env[i])
 	{
 		new_env[i] = ft_strdup(env[i]);
+		if (!new_env[i])
+			return (ft_free_split(new_env), NULL);
 		i++;
 	}
 	new_env[i++] = ft_strjoin("OLDPWD=", oldpwd);
+	if (!new_env)
+		return (ft_free_split(new_env), NULL);
 	new_env[i] = NULL;
-	free(env);
+	ft_free_split(env);
 	return (new_env);
 }
 
 char	**add_oldpwd_export(t_shell *shell, char *oldpwd)
 {
 	int		i;
-	char	**new_env;
+	char	**new_export;
 
 	i = 0;
 	while (shell->data->exp[i])
 		i++;
-	new_env = malloc(sizeof(char *) * (i + 2));
-	if (!new_env)
+	new_export = malloc(sizeof(char *) * (i + 2));
+	if (!new_export)
 		return (shell->data->exp);
 	i = 0;
 	while (shell->data->exp[i])
 	{
-		new_env[i] = ft_strdup(shell->data->exp[i]);
+		new_export[i] = ft_strdup(shell->data->exp[i]);
+		if (!new_export[i])
+			return (ft_free_split(new_export), NULL);
 		i++;
 	}
-	new_env[i++] = ft_strjoin("OLDPWD=", oldpwd);
-	new_env[i] = NULL;
-	free(shell->data->exp);
-	return (new_env);
+	new_export[i++] = ft_strjoin("OLDPWD=", oldpwd);
+	if (!new_export[i - 1])
+		return (ft_free_split(new_export), NULL);
+	new_export[i] = NULL;
+	ft_free_split(shell->data->exp);
+	return (new_export);
 }

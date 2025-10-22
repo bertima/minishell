@@ -12,10 +12,11 @@
 
 #include "minishell.h"
 
-char	**update_pwd_env(t_shell *shell, char **env, char *oldpwd, char *newpwd)
+char	**update_pwd_env(t_shell *shell, char **env, char *oldpwd)
 {
-	int	oldpwd_found;
-	int	i;
+	char	*newpwd;
+	int		oldpwd_found;
+	int		i;
 
 	i = 0;
 	oldpwd_found = 0;
@@ -117,7 +118,7 @@ char	**move_fd(t_shell *shell, char **av, char **env)
 	prev_dir = getcwd(NULL, 0);
 	if (erreur_cd(shell, prev_dir, target_dir))
 		return (env);
-	env = update_pwd_env(shell, env, prev_dir, NULL);
+	env = update_pwd_env(shell, env, prev_dir);
 	if (prev_dir)
 		free(prev_dir);
 	shell->data->exit_code = 0;
