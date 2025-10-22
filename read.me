@@ -5,3 +5,15 @@ make && valgrind --leak-check=full --show-leak-kinds=definite  --track-fds=yes .
 make && valgrind --leak-check=full --track-fds=yes --show-leak-kinds=all ./minishell
 
 --------------------------------------------------------------------------------------------------------------------------------- 
+MARTIN
+cd de mort (copie plusieurs fois oldpwd quand cd utiliser)
+export refus numerique first + all accepted after
+exit protection long long + plusieur arg && check comportement si exit quand meme ou pas
+
+BERTRAND
+~/minishell$ export test="abcd'ef'ghij"
+~/minishell$ echo $test
+abcd'ef'ghij
+~/minishell$ echo "$test"
+"abcd'ef'ghij"
+~/minishell$ 
