@@ -94,7 +94,7 @@ int	recup_in(t_shell *shell, t_redir *redir, char *av, int fd_temp)
 	write(1, "> ", 2);
 	shell->data->line_here_doc += 1;
 	str = get_next_line(STDIN_FILENO);
-	if (!str)
+	if (!str && g_exit_code != 130)
 		warning_here_doc(shell, av);
 	while (str)
 	{
@@ -104,7 +104,7 @@ int	recup_in(t_shell *shell, t_redir *redir, char *av, int fd_temp)
 		if (read_input(shell, redir, str, fd_temp))
 			return (error_find_int(shell, MALLOC, 1, NULL));
 		str = get_next_line(STDIN_FILENO);
-		if (!str)
+		if (!str && g_exit_code != 130)
 			warning_here_doc(shell, av);
 	}
 	ft_free(&word_stop);

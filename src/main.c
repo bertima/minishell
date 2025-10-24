@@ -29,7 +29,8 @@ static void	programme(char *line, t_shell *shell)
 		return ;
 	if (here_doc(shell, NULL))
 		return ;
-	exec(shell);
+	if (g_exit_code != 130)
+		exec(shell);
 }
 
 int	main(int ac, char **av, char **environ)
