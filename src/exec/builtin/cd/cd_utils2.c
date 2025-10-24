@@ -29,7 +29,7 @@ char	**update_pwd(char **env, char *newpwd)
 	return (env);
 }
 
-char	**update_oldpwd(char **env, char *oldpwd, int oldpwd_found)
+char	**update_oldpwd(char **env, char *oldpwd, int *oldpwd_found)
 {
 	int	i;
 
@@ -40,7 +40,7 @@ char	**update_oldpwd(char **env, char *oldpwd, int oldpwd_found)
 		{
 			ft_free(&env[i]);
 			env[i] = ft_strjoin("OLDPWD=", oldpwd);
-			oldpwd_found = 1;
+			*oldpwd_found = 1;
 		}
 		i++;
 	}

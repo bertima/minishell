@@ -64,6 +64,8 @@ static void	free_command_redir(t_shell *shell)
 		shell->cmd->arg = NULL;
 		if (shell->cmd->redir)
 			free_redir(shell->cmd);
+		close_fd(&shell->cmd->fd_in);
+		close_fd(&shell->cmd->fd_out);
 		free(shell->cmd);
 		shell->cmd = NULL;
 		shell->cmd = temp_c;

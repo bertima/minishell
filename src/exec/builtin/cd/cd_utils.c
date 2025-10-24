@@ -57,9 +57,7 @@ char	**add_oldpwd_env(char **env, char *oldpwd)
 	int		i;
 	char	**new_env;
 
-	i = 0;
-	while (env[i])
-		i++;
+	i = ft_len_array(env);
 	new_env = malloc(sizeof(char *) * (i + 2));
 	if (!new_env)
 		return (env);

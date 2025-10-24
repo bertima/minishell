@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static int	regroupe(char ***new, char *str, int *start_end, int *j)
+static int	regroupe(char ***new, char *str, int *start_end)
 {
 	char	*temp;
 	char	*pre;
@@ -24,7 +24,6 @@ static int	regroupe(char ***new, char *str, int *start_end, int *j)
 	temp = ft_strjoin(pre, (*new)[0]);
 	if (!temp)
 		return (free(pre), 1);
-	*j = ft_strlen(temp);
 	free((*new)[0]);
 	free(pre);
 	(*new)[0] = temp;
@@ -40,50 +39,52 @@ static int	regroupe(char ***new, char *str, int *start_end, int *j)
 	return (0);
 }
 
-static void	copie_post_new(char ***arg, int *i, char ***temp, int j)
+static void	copie_post_new(char ***arg, int *i, char ***temp, int l)
 {
 	while ((*arg)[*i] && (*arg)[*i + 1])
 	{
-		(*temp)[j] = (*arg)[1 + *i];
+		(*temp)[l] = (*arg)[1 + *i];
 		(*i)++;
-		j++;
+		l++;
 	}
-	(*temp)[j] = NULL;
+	(*temp)[l] = NULL;
 }
 
-static void	copie_new(char **new, char ***temp, int *j, int *stock)
+static void	copie_new(char **new, char ***temp, int *l, int *stock)
 {
 	int	k;
 
 	k = 0;
 	while (new[k])
 	{
-		(*temp)[*j] = new[k];
-		(*j)++;
+		(*temp)[*l] = new[k];
+		(*l)++;
 		k++;
 	}
 	free(new);
-	*stock = *j - 1;
+	*stock = *l - 1;
 }
 
-static int	copie_cmd(char ***arg, char **new, int *i, int stock)
+static int	copie_cmd(char ***arg, char **new, int *i, int *j)
 {
-	int		j;
+	int		l;
 	int		k;
-	int		len;
+	int		stock;
 	char	**temp;
 
-	j = -1;
+	l = -1;
 	k = 0;
-	len = ft_len_array(*arg) + ft_len_array(new);
-	temp = calloc(len, sizeof(char *));
+	stock = 0;
+	temp = calloc(ft_len_array(*arg) + ft_len_array(new), sizeof(char *));
 	if (!temp)
 		return (1);
-	while (++j < *i)
-		temp[j] = (*arg)[j];
-	free((*arg)[j]);
-	copie_new(new, &temp, &j, &stock);
-	copie_post_new(arg, i, &temp, j);
+	while (++l < *i)
+		temp[l] = (*arg)[l];
+	if (ft_len_array(new) > 1)
+		*j = 0;
+	free((*arg)[l]);
+	copie_new(new, &temp, &l, &stock);
+	copie_post_new(arg, i, &temp, l);
 	free(*arg);
 	(*arg) = temp;
 	*i = stock;
@@ -106,9 +107,9 @@ int	insert_arg_expand(char ***arg, int *start_end, int *i, int *j)
 	new = ft_split(str_arg[0], " \t\n\v\f\r");
 	if (!new)
 		return (1);
-	if (regroupe(&new, str_arg[1], start_end, j))
+	if (regroupe(&new, str_arg[1], start_end))
 		return (ft_free_split(new), free(str_arg[0]), 1);
-	if (copie_cmd(arg, new, i, 0))
+	if (copie_cmd(arg, new, i, j))
 		return (free(str_arg[0]), 1);
 	free(str_arg[0]);
 	return (0);

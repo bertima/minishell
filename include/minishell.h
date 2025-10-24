@@ -233,7 +233,7 @@ char	*return_home(char *str);
 char	**add_oldpwd_env(char **env, char *oldpwd);
 char	**add_oldpwd_export(t_shell *shell, char *oldpwd);
 char	**update_pwd(char **env, char *newpwd);
-char	**update_oldpwd(char **env, char *oldpwd, int oldpwd_found);
+char	**update_oldpwd(char **env, char *oldpwd, int *oldpwd_found);
 int		erreur_cd(t_shell *shell, char *prev_dir, char *target_dir);
 
 /* -------------- export -------------- */
@@ -242,7 +242,6 @@ void	update(t_shell *shell, char **av, int i);
 int		check_char_export(char *var);
 char	**update_exp(char **exp, char *var, char *new_var, int i);
 char	**update_or_add_env(char **env, char *var);
-int		check_char_export(char *var);
 void	show_export(char **av);
 void	sort_list_export(char **ex);
 int		error_export(char **av);

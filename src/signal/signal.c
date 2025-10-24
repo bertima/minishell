@@ -6,7 +6,7 @@
 /*   By: bertrmar <bertrmar@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/22 10:28:08 by bertrmar          #+#    #+#             */
-/*   Updated: 2025/10/22 10:28:09 by bertrmar         ###   ########.fr       */
+/*   Updated: 2025/10/23 13:08:30 by bertrmar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ void	gst_handler(int sig)
 		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
-		
 	}
 }
+
 void	gst_handler_here_doc(int sig)
 {
 	if (sig == SIGINT)
@@ -33,7 +33,7 @@ void	gst_handler_here_doc(int sig)
 		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
-		write (STDIN_FILENO, "\n",1);
+		write (STDIN_FILENO, "\n", 1);
 	}
 }
 

@@ -54,8 +54,8 @@ FSRC = src/main.c \
 	   src/expand/expand_utils/suppress_arg_valid_expand.c \
 	   \
 	   \
-	   src/here_doc/creat_file_generator.c \
-	   src/here_doc/here_doc.c \
+	   src/here_doc/creat_here_doc_manage_delimiter.c \
+	   src/here_doc/here_doc_file_generator.c \
 	   \
 	   \
 	   src/exec/exec.c \

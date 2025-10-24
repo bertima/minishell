@@ -118,7 +118,6 @@ static void	update_all(t_shell *shell, char **av)
 
 void	export(t_shell *shell, char **args, char **tmp)
 {
-	args = shell->cmd->arg;
 	if (ft_len_array(args) == 1)
 	{
 		tmp = copie_export(shell->data->exp);
