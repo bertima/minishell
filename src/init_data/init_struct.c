@@ -12,15 +12,23 @@
 
 #include "minishell.h"
 
-static int	shell_levelup(char ***env, char *environ, int i)
+static int	shell_levelup(t_shell *shell, char ***env, char *environ, int i)
 {
 	long	nbr_sh;
 	char	*new_nbr_sh;
 
+	nbr_sh = 0;
 	if (ft_atol(&environ[6], &nbr_sh))
 	{
-		ft_putstr_fd("too much shell open\n", 2);
-		return (1);
+		ft_putstr_fd("SHLVL not support more than max long\n", 2);
+		nbr_sh = 0;
+		shell->data->exit_code = 1;
+	}
+	if (nbr_sh < 0)
+	{
+		ft_putstr_fd("No negative support for SHLVL\n", 2);
+		nbr_sh = 0;
+		shell->data->exit_code = 1;
 	}
 	nbr_sh++;
 	new_nbr_sh = ft_ltoa(nbr_sh);
@@ -32,7 +40,7 @@ static int	shell_levelup(char ***env, char *environ, int i)
 	return (free(new_nbr_sh), 0);
 }
 
-static int	malloc_env(char ***env, char **environ, int len)
+static int	malloc_env(t_shell *shell, char ***env, char **environ, int len)
 {
 	int	i;
 
@@ -41,7 +49,7 @@ static int	malloc_env(char ***env, char **environ, int len)
 	{
 		if (ft_strncmp(environ[i], "SHLVL=", 6) == 0)
 		{
-			if (shell_levelup(env, environ[i], i))
+			if (shell_levelup(shell, env, environ[i], i))
 				return (ft_free_split(*env), 1);
 		}
 		else
@@ -56,7 +64,7 @@ static int	malloc_env(char ***env, char **environ, int len)
 	return (0);
 }
 
-static int	copie_env(char ***env, char **environ)
+static int	copie_env(t_shell *shell, char ***env, char **environ)
 {
 	int	i;
 	int	len;
@@ -68,7 +76,7 @@ static int	copie_env(char ***env, char **environ)
 	(*env) = calloc(len + 1, sizeof(char *));
 	if (!(*env))
 		return (1);
-	if (malloc_env(env, environ, len))
+	if (malloc_env(shell, env, environ, len))
 		return (ft_free_split (*env), 1);
 	return (0);
 }
@@ -103,7 +111,7 @@ int	init_struct(t_shell *shell, char **environ)
 	shell->data = ft_calloc(1, sizeof(t_data));
 	if (!shell->data)
 		return (error_find_int(shell, MALLOC, 1, NULL));
-	if (copie_env(&shell->data->env, environ))
+	if (copie_env(shell, &shell->data->env, environ))
 		return (error_find_int(shell, MALLOC, 1, NULL));
 	if (init_export(&shell->data->exp, shell->data->env))
 		return (error_find_int(shell, MALLOC, 1, NULL));
