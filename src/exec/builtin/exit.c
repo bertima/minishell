@@ -42,9 +42,9 @@ int	is_not_valid_av(t_shell *shell, char **av, long long *ret)
 {
 	if (av && av[0] && ft_len_array(av) > 1)
 	{
-		if (is_numerique(av) == 1)
+		if (ft_atoll(av[1], ret))
 			error_numerique_required(shell, av);
-		else if (ft_atoll(av[1], ret))
+		else if (is_numerique(av) == 1)
 			error_numerique_required(shell, av);
 		else if (ft_len_array(av) > 2)
 		{

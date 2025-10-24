@@ -60,13 +60,13 @@ int	bultin(t_shell *shell, t_cmd *cmd)
 	if (ft_strcmp(cmd->arg[0], "env") == 0)
 		return (show_environ(shell, env), 1);
 	if (ft_strcmp(cmd->arg[0], "exit") == 0)
-		return (end_prog(shell, shell->cmd->arg), 1);
+		return (end_prog(shell, cmd->arg), 1);
 	if (ft_strcmp(cmd->arg[0], "pwd") == 0)
 		return (print_emplacement(shell), 1);
 	if (ft_strcmp(cmd->arg[0], "cd") == 0)
 		return (shell->data->env = move_fd(shell, cmd->arg, env), 1);
 	if (ft_strcmp(cmd->arg[0], "export") == 0)
-		return (export(shell, shell->cmd->arg, NULL), 1);
+		return (export(shell, cmd->arg, NULL), 1);
 	if (ft_strcmp(cmd->arg[0], "unset") == 0)
 		return (shell->data->env = unset(shell, env, cmd->arg), 1);
 	return (0);

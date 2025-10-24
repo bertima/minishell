@@ -93,7 +93,7 @@ int	put_prompt(char *line, t_shell *shell)
 	{
 		all_free(shell);
 		printf("exit\n");
-		exit(127);
+		exit(0);
 	}
 	if (*line)
 		add_history(line);
