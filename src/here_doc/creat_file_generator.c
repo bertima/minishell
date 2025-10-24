@@ -62,3 +62,14 @@ int	here_doc(t_shell *shell, t_cmd *temp_cmd)
 	}
 	return (0);
 }
+
+int	check_worlds_stop(char *str, char *word_stop)
+{
+	if (ft_strcmp(str, word_stop) == 0)
+	{
+		get_next_line(-1);
+		ft_free(&str);
+		return (1);
+	}
+	return (0);
+}

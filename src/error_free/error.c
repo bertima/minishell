@@ -51,3 +51,16 @@ int	error_find_int(t_shell *shell, int e_code, int code_err, char *str)
 	shell->data->exit_code = code_err;
 	return (1);
 }
+
+void	warning_here_doc(t_shell *shell, char *av)
+{
+	char	*line;
+
+	line = ft_itoa(shell->data->line_here_doc);
+	ft_putstr_fd("\nbash: warning: here-document at line ", 2);
+	ft_putstr_fd(line, 2);
+	ft_putstr_fd(" delimited by end-of-file (wanted `", 2);
+	ft_putstr_fd(av, 2);
+	ft_putstr_fd("')\n", 2);
+	free (line);
+}
