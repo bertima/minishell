@@ -92,6 +92,7 @@ struct	s_data
 	char		**env;
 	char		**exp;
 	char		*w_dir_prompt;
+	int			line_here_doc;
 	int			fd_stock_in;
 	int			fd_stock_out;
 	int			exit_code;
@@ -189,6 +190,7 @@ int		exit_code_expand(t_shell *shell, char **arg, int *i, int *end);
 /*===================== redirection =====================*/
 /* -------------- redirection -------------- */
 int		here_doc(t_shell *shell, t_cmd *temp_cmd);
+int		check_worlds_stop(char *str, char *word_stop);
 int		creat_here_doc(t_shell *shell, t_cmd *cmd, char *temp_file, int fd);
 int		manage_delimiter_hd(t_redir *redir);
 int		generator_of_file_name(char **str, char *nbr_count, char *nbr_pid);
@@ -261,6 +263,7 @@ int		check_option(t_shell *shell, char **av);
 /* -------------- error -------------- */
 char	*error_find_char(t_shell *shell, int e_code, int code_err, char *str);
 int		error_find_int(t_shell *shell, int e_code, int code_err, char *str);
+void	warning_here_doc(t_shell *shell, char *av);
 
 /* -------------- free -------------- */
 void	all_free(t_shell *shell);

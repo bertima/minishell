@@ -30,10 +30,14 @@ void	gst_handler_here_doc(int sig)
 	{
 		g_exit_code = 130;
 		write(1, "\n", 1);
+<<<<<<< HEAD
 		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
 		write (STDIN_FILENO, "\n", 1);
+=======
+		ioctl(1, TIOCSTI, "\x04");
+>>>>>>> main
 	}
 }
 

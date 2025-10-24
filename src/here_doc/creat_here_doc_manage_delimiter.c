@@ -92,18 +92,20 @@ int	recup_in(t_shell *shell, t_redir *redir, char *av, int fd_temp)
 		return (error_find_int(shell, MALLOC, 1, NULL));
 	signal(SIGINT, gst_handler_here_doc);
 	write(1, "> ", 2);
+	shell->data->line_here_doc += 1;
 	str = get_next_line(STDIN_FILENO);
+	if (!str)
+		warning_here_doc(shell, av);
 	while (str)
 	{
-		if (ft_strcmp(str, word_stop) == 0)
-		{
-			get_next_line(-1);
-			ft_free(&str);
+		shell->data->line_here_doc += 1;
+		if (check_worlds_stop(str, word_stop))
 			break ;
-		}
 		if (read_input(shell, redir, str, fd_temp))
 			return (error_find_int(shell, MALLOC, 1, NULL));
 		str = get_next_line(STDIN_FILENO);
+		if (!str)
+			warning_here_doc(shell, av);
 	}
 	ft_free(&word_stop);
 	return (0);

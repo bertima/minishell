@@ -42,6 +42,7 @@ int	main(int ac, char **av, char **environ)
 	line = NULL;
 	if (init_struct(&shell, environ))
 		return (1);
+	shell.data->line_here_doc = 0;
 	while (1)
 	{
 		setup_parent_signal();
