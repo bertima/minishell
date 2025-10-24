@@ -17,7 +17,7 @@ char	*return_home(char *str)
 	str = getenv("HOME");
 	if (!str)
 	{
-		printf("bash: cd: HOME not set\n");
+		printf("minishell: cd: HOME not set\n");
 		return (NULL);
 	}
 	return (str);
@@ -46,7 +46,7 @@ char	*return_oldpwd(char **env)
 	str = get_env_value(env, "OLDPWD");
 	if (!str)
 	{
-		printf("bash: cd: OLDPWD not set\n");
+		printf("minishell: cd: OLDPWD not set\n");
 		return (NULL);
 	}
 	return (str);

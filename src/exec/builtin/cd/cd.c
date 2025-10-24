@@ -95,7 +95,7 @@ int	to_many_argument(char **av)
 {
 	if (ft_len_array(av) > 2)
 	{
-		perror("bash: cd: too many arguments");
+		perror("minishell: cd: too many arguments");
 		return (1);
 	}
 	return (0);

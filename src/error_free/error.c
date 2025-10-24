@@ -20,7 +20,7 @@ static void	str_error(int e_code, char *str)
 		ft_putstr_fd("No argument for shell !\n", 2);
 	else if (e_code == META)
 	{
-		ft_putstr_fd("bash: syntax error near unexpected token '", 2);
+		ft_putstr_fd("minishell: syntax error near unexpected token '", 2);
 		ft_putstr_fd(str, 2);
 		ft_putstr_fd("'\n", 2);
 	}
@@ -28,7 +28,7 @@ static void	str_error(int e_code, char *str)
 		ft_putstr_fd("Error: Malloc fail\n", 2);
 	else if (e_code == AMBIGUOUS)
 	{
-		ft_putstr_fd("bash: ", 2);
+		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(str, 2);
 		ft_putstr_fd(": ambiguous redirect\n", 2);
 	}
@@ -57,7 +57,7 @@ void	warning_here_doc(t_shell *shell, char *av)
 	char	*line;
 
 	line = ft_itoa(shell->data->line_here_doc);
-	ft_putstr_fd("\nbash: warning: here-document at line ", 2);
+	ft_putstr_fd("\nminishell: warning: here-document at line ", 2);
 	ft_putstr_fd(line, 2);
 	ft_putstr_fd(" delimited by end-of-file (wanted `", 2);
 	ft_putstr_fd(av, 2);

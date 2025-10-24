@@ -15,7 +15,7 @@
 static int	error_numerique_required(t_shell *shell, char **av)
 {
 	ft_putstr_fd("exit\n", 2);
-	ft_putstr_fd("bash: exit: ", 2);
+	ft_putstr_fd("minishell: exit: ", 2);
 	ft_putstr_fd(av[1], 2);
 	ft_putstr_fd(": numeric argument required\n", 2);
 	all_free(shell);
@@ -49,7 +49,7 @@ int	is_not_valid_av(t_shell *shell, char **av, long long *ret)
 		else if (ft_len_array(av) > 2)
 		{
 			ft_putstr_fd("exit\n", 2);
-			ft_putstr_fd("bash: exit: too many arguments\n", 2);
+			ft_putstr_fd("minishell: exit: too many arguments\n", 2);
 			shell->data->exit_code = 1;
 			return (1);
 		}
