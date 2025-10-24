@@ -21,19 +21,16 @@ void	gst_handler(int sig)
 		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
-		
 	}
 }
+
 void	gst_handler_here_doc(int sig)
 {
 	if (sig == SIGINT)
 	{
 		g_exit_code = 130;
 		write(1, "\n", 1);
-		rl_replace_line("", 0);
-		rl_on_new_line();
-		rl_redisplay();
-		write (STDIN_FILENO, "\n",1);
+		ioctl(1, TIOCSTI, "\x04");
 	}
 }
 
