@@ -17,7 +17,7 @@ char	*return_home(char *str)
 	str = getenv("HOME");
 	if (!str)
 	{
-		printf("bash: cd: HOME not set\n");
+		printf("minishell: cd: HOME not set\n");
 		return (NULL);
 	}
 	return (str);
@@ -46,7 +46,7 @@ char	*return_oldpwd(char **env)
 	str = get_env_value(env, "OLDPWD");
 	if (!str)
 	{
-		printf("bash: cd: OLDPWD not set\n");
+		printf("minishell: cd: OLDPWD not set\n");
 		return (NULL);
 	}
 	return (str);
@@ -57,9 +57,7 @@ char	**add_oldpwd_env(char **env, char *oldpwd)
 	int		i;
 	char	**new_env;
 
-	i = 0;
-	while (env[i])
-		i++;
+	i = ft_len_array(env);
 	new_env = malloc(sizeof(char *) * (i + 2));
 	if (!new_env)
 		return (env);

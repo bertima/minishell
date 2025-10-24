@@ -60,8 +60,7 @@ static int	word_split(char ***arg, int *i, int j)
 	start_end[1] = 0;
 	if (!(*arg)[*i] || !(*arg)[*i][0])
 		return (suppress_arg(arg, i));
-	start_end[0] = 0;
-	while ((*arg)[*i][j])
+	while ((*arg) && (*arg)[*i] && (*arg)[*i][j])
 	{
 		if (skip_quote(*arg, start_end, *i, &j))
 			continue ;
@@ -72,6 +71,7 @@ static int	word_split(char ***arg, int *i, int j)
 		{
 			if (insert_arg_expand(arg, start_end, i, &j))
 				return (1);
+			continue ;
 		}
 	}
 	return (0);

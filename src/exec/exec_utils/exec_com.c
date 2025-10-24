@@ -107,7 +107,8 @@ int	exec_com(t_shell *shell, char **av, char **environ)
 		exit (127);
 	}
 	execve(path, av, environ);
-	all_free(shell);
+	ft_free(&path);
 	perror(av[0]);
+	all_free(shell);
 	exit (126);
 }

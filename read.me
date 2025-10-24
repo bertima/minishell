@@ -3,7 +3,11 @@ make && valgrind --track-fds=yes ./minishell
 make && valgrind --leak-check=full --show-leak-kinds=definite ./minishell
 make && valgrind --leak-check=full --show-leak-kinds=definite  --track-fds=yes ./minishell
 make && valgrind --leak-check=full --track-fds=yes --show-leak-kinds=all ./minishell
+make &&  valgrind --leak-check=full --track-fds=yes --suppressions=valgrind_readline.supp --show-leak-kinds=all --vgdb-error=0 ./minishell
 
+<<<<<<< HEAD
+=======
 --------------------------------------------------------------------------------------------------------------------------------- 
 
 fonction ioctl pour les here here_doc
+>>>>>>> main

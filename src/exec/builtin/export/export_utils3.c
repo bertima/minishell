@@ -29,13 +29,15 @@ int	check_char_export(char *var)
 {
 	int		i;
 
-	i = 0;
-	while (var[i] && (var[i] != '='))
+	i = 1;
+	if (var[0] && (var[0] != '_' || ft_isalpha(var[0])))
 	{
-		if ((var[i] != '_') && (var[i] < 'a' || var[i] > 'z')
-			&& (var[i] < 'A' || var[i] > 'Z'))
-			return (1);
-		i++;
+		while (var[i] && (var[i] != '='))
+		{
+			if ((var[i] != '_') && (ft_isalnum(var[i]) == 0))
+				return (1);
+			i++;
+		}
 	}
 	return (0);
 }

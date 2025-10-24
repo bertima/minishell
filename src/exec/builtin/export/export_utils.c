@@ -69,7 +69,7 @@ int	error_export(char **av)
 	if ((av[1][0] != '_') && (av[1][0] < 'a' || av[1][0] > 'z')
 		&& (av[1][0] < 'A' || av[1][0] > 'Z'))
 	{
-		ft_putstr_fd("bash: export: '", 2);
+		ft_putstr_fd("minishell: export: '", 2);
 		ft_putstr_fd(av[1], 2);
 		ft_putstr_fd("': not a valid identifier\n", 2);
 		return (1);

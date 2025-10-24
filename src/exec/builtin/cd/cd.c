@@ -20,7 +20,7 @@ char	**update_pwd_env(t_shell *shell, char **env, char *oldpwd)
 
 	i = 0;
 	oldpwd_found = 0;
-	env = update_oldpwd(env, oldpwd, oldpwd_found);
+	env = update_oldpwd(env, oldpwd, &oldpwd_found);
 	if (!oldpwd_found)
 	{
 		env = add_oldpwd_env(env, oldpwd);
@@ -95,7 +95,7 @@ int	to_many_argument(char **av)
 {
 	if (ft_len_array(av) > 2)
 	{
-		perror("bash: cd: too many arguments");
+		perror("minishell: cd: too many arguments");
 		return (1);
 	}
 	return (0);

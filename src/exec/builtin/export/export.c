@@ -107,7 +107,7 @@ static void	update_all(t_shell *shell, char **av)
 		}
 		else
 		{
-			ft_putstr_fd("bash: export: '", 2);
+			ft_putstr_fd("minishell: export: '", 2);
 			ft_putstr_fd(av[i], 2);
 			ft_putstr_fd("': not a valid identifier\n", 2);
 			shell->data->exit_code = 1;
@@ -118,7 +118,6 @@ static void	update_all(t_shell *shell, char **av)
 
 void	export(t_shell *shell, char **args, char **tmp)
 {
-	args = shell->cmd->arg;
 	if (ft_len_array(args) == 1)
 	{
 		tmp = copie_export(shell->data->exp);
