@@ -12,8 +12,6 @@
 
 #include "minishell.h"
 
-#include "minishell.h"
-
 static int	verif_environ(t_shell *shell, t_cmd *cmd)
 {
 	int	len;
