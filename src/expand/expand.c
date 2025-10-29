@@ -35,43 +35,50 @@ int	loop_remove_quote(char ***arg, int stock, int i)
 	return (0);
 }
 
-static int	skip_quote(char **arg, int *start_end, int i, int *j)
+static int	calcul_len_var_split(t_shell *shell)
 {
-	char	quote;
+	int	start;
+	int	len;
+	int	end;
+	int	i;
 
-	if (arg[i][*j] == '\'' || arg[i][*j] == '"')
-	{
-		quote = arg[i][*j];
-		(*j)++;
-		while (arg[i][*j] && arg[i][*j] != quote)
-			(*j)++;
-		(*j)++;
-		start_end[0] = *j;
-		return (1);
-	}
-	return (0);
+	i = ft_strlen(shell->data->var_value);
+	len = 0;
+	if (i == 0)
+		return (len);
+	while (shell->data->var_value[i] == '\0'
+		|| ft_isspace(shell->data->var_value[i]) == 1)
+		i--;
+	while (i > 0 && ft_isspace(shell->data->var_value[i]) == 0)
+		i--;
+	i++;
+	start = i;
+	while (ft_isspace(shell->data->var_value[i]) == 0
+		&& shell->data->var_value[i])
+		i++;
+	end = i;
+	len = end - start;
+	return (len);
 }
 
-static int	word_split(char ***arg, int *i, int j)
+static int	word_split(t_shell *shell, char ***arg, int *i, int *start_end)
 {
-	int		start_end[2];
+	int	j;
 
-	start_end[0] = 0;
-	start_end[1] = 0;
+	j = start_end[0];
 	if (!(*arg)[*i] || !(*arg)[*i][0])
-		return (suppress_arg(arg, i));
-	while ((*arg) && (*arg)[*i] && (*arg)[*i][j])
+		return (suppress_arg(shell, arg, i));
+	while ((*arg) && (*arg)[*i] && (*arg)[*i][j] && j < start_end[1])
 	{
-		if (skip_quote(*arg, start_end, *i, &j))
-			continue ;
-		while ((*arg)[*i][j] && (*arg)[*i][j] != '\'' && (*arg)[*i][j] != '\"')
+		while ((*arg)[*i][j])
 			j++;
 		start_end[1] = j;
 		if (start_end[1] > start_end[0])
 		{
-			if (insert_arg_expand(arg, start_end, i, &j))
+			if (insert_arg_expand(arg, start_end, i))
 				return (1);
-			continue ;
+			start_end[1] = calcul_len_var_split(shell);
+			j = start_end[1];
 		}
 	}
 	return (0);
@@ -79,28 +86,30 @@ static int	word_split(char ***arg, int *i, int j)
 
 int	expand_in_arg(t_shell *shell, char ***arg, int *i, int *j)
 {
-	int			result;
-	int			stock;
+	int			start_end[2];
 
-	stock = *i;
+	shell->data->stock = *i;
 	while (*arg && (*arg)[*i] && (*arg)[*i][*j])
 	{
-		result = quote_handler(shell, arg, i, j);
-		if (result == 1)
+		shell->data->result = quote_handler(shell, arg, i, j);
+		if (shell->data->result == 1)
 			return (1);
-		if (result == 2)
+		if (shell->data->result == 2)
 			continue ;
-		result = expand_without_quote(shell, arg, i, j);
-		if (result == 1)
+		start_end[0] = *j;
+		shell->data->result = expand_without_quote(shell, arg, i, j);
+		if (shell->data->result == 1)
 			return (1);
-		if (result == 2)
+		if (shell->data->result == 2)
+		{
+			start_end[1] = *j;
+			if (word_split(shell, arg, i, start_end))
+				return (1);
+			*j = start_end[1];
 			continue ;
+		}
 		(*j)++;
 	}
-	if (word_split(arg, i, 0))
-		return (1);
-	if (loop_remove_quote(arg, stock, *i))
-		return (1);
 	return (0);
 }
 

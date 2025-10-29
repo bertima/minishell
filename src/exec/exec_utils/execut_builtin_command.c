@@ -58,7 +58,7 @@ int	bultin(t_shell *shell, t_cmd *cmd)
 	if (ft_strcmp(cmd->arg[0], "echo") == 0)
 		return (echo(shell, cmd->arg), 1);
 	if (ft_strcmp(cmd->arg[0], "env") == 0)
-		return (show_environ(shell, env), 1);
+		return (show_environ(shell, cmd, env), 1);
 	if (ft_strcmp(cmd->arg[0], "exit") == 0)
 		return (end_prog(shell, cmd->arg), 1);
 	if (ft_strcmp(cmd->arg[0], "pwd") == 0)

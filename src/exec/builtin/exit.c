@@ -14,7 +14,6 @@
 
 static int	error_numerique_required(t_shell *shell, char **av)
 {
-	ft_putstr_fd("exit\n", 2);
 	ft_putstr_fd("minishell: exit: ", 2);
 	ft_putstr_fd(av[1], 2);
 	ft_putstr_fd(": numeric argument required\n", 2);
@@ -48,7 +47,6 @@ int	is_not_valid_av(t_shell *shell, char **av, long long *ret)
 			error_numerique_required(shell, av);
 		else if (ft_len_array(av) > 2)
 		{
-			ft_putstr_fd("exit\n", 2);
 			ft_putstr_fd("minishell: exit: too many arguments\n", 2);
 			shell->data->exit_code = 1;
 			return (1);
@@ -63,13 +61,14 @@ void	end_prog(t_shell *shell, char **av)
 	int			exit_stock;
 
 	ret = 0;
+	if (shell->data->mulit_commande == 0)
+		ft_putstr_fd("exit\n", 2);
 	if (is_not_valid_av(shell, av, &ret) == 1)
 		return ;
 	if (ft_len_array(av) == 1)
 	{
 		exit_stock = shell->data->exit_code;
 		all_free(shell);
-		printf("exit\n");
 		exit(exit_stock);
 	}
 	if (ft_len_array(av) > 1)
@@ -79,7 +78,6 @@ void	end_prog(t_shell *shell, char **av)
 		if (ret > 255 || ret < -255)
 			ret = (ret % 256);
 		all_free(shell);
-		printf("exit\n");
 		exit(ret);
 	}
 }
