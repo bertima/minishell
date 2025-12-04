@@ -92,6 +92,10 @@ struct	s_data
 	char		**env;
 	char		**exp;
 	char		*w_dir_prompt;
+	char		*var_value;
+	int			mulit_commande;
+	int			result;
+	int			stock;
 	int			line_here_doc;
 	int			fd_stock_in;
 	int			fd_stock_out;
@@ -173,10 +177,10 @@ int		expand(t_shell *shell, t_cmd *cmd, int i, int j);
 /* ............. utils ............. */
 int		loop_remove_quote(char ***arg, int stock, int i);
 int		expand_in_arg(t_shell *shell, char ***arg, int *i, int *j);
-int		insert_arg_expand(char ***arg, int *start_end, int *i, int *j);
+int		insert_arg_expand(char ***arg, int *start_end, int *i);
 int		expand_without_quote(t_shell *shell, char ***arg, int *i, int *j);
 int		quote_handler(t_shell *shell, char ***arg, int *i, int *j);
-int		suppress_arg(char ***arg, int *i);
+int		suppress_arg(t_shell *shell, char ***arg, int *i);
 
 /* -------------- del_quote -------------- */
 int		remove_quote_expand(char **str, int *start);
@@ -220,7 +224,7 @@ void	wait_parent(t_shell *shell);
 void	echo(t_shell *shell, char **str);
 
 /* -------------- env -------------- */
-void	show_environ(t_shell *shell, char **av);
+void	show_environ(t_shell *shell, t_cmd *cmd, char **av);
 
 /* -------------- pwd -------------- */
 void	print_emplacement(t_shell *shell);

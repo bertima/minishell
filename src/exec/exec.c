@@ -78,7 +78,7 @@ int	exec(t_shell *shell)
 	t_cmd		*cmd;
 
 	if (creat_children_struct(shell))
-		return (1);
+		return (error_find_int(shell, MALLOC, 1, NULL));
 	cmd = shell->cmd;
 	while (cmd)
 	{
@@ -91,6 +91,7 @@ int	exec(t_shell *shell)
 	else if (shell->children->nbr_cmd > 1)
 	{
 		shell->children->nbr_cmd = 0;
+		shell->data->mulit_commande = 1;
 		multi_command(shell, cmd);
 	}
 	return (0);

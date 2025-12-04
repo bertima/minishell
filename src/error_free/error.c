@@ -15,9 +15,9 @@
 static void	str_error(int e_code, char *str)
 {
 	if (e_code == QUOTE)
-		ft_putstr_fd("Quote no close\n", 2);
+		ft_putstr_fd("Minishell: Quote no close\n", 2);
 	else if (e_code == ARG_MINISHELL)
-		ft_putstr_fd("No argument for shell !\n", 2);
+		ft_putstr_fd("Minishell: No argument for shell !\n", 2);
 	else if (e_code == META)
 	{
 		ft_putstr_fd("minishell: syntax error near unexpected token '", 2);
@@ -25,7 +25,7 @@ static void	str_error(int e_code, char *str)
 		ft_putstr_fd("'\n", 2);
 	}
 	else if (e_code == MALLOC)
-		ft_putstr_fd("Error: Malloc fail\n", 2);
+		ft_putstr_fd("Minishell: Error: Malloc fail\n", 2);
 	else if (e_code == AMBIGUOUS)
 	{
 		ft_putstr_fd("minishell: ", 2);
@@ -36,9 +36,9 @@ static void	str_error(int e_code, char *str)
 
 char	*error_find_char(t_shell *shell, int e_code, int code_err, char *str)
 {
-	all_free(shell);
 	str_error(e_code, str);
-	shell->data->exit_code = code_err;
+	if (shell && shell->data)
+		shell->data->exit_code = code_err;
 	return (NULL);
 }
 
@@ -47,8 +47,8 @@ int	error_find_int(t_shell *shell, int e_code, int code_err, char *str)
 	str_error(e_code, str);
 	if (!shell)
 		return (1);
-	free_command_redir_token_children(shell);
-	shell->data->exit_code = code_err;
+	if (shell && shell->data)
+		shell->data->exit_code = code_err;
 	return (1);
 }
 

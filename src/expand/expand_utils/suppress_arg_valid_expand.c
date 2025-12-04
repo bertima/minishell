@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int	suppress_arg(char ***arg, int *i)
+int	suppress_arg(t_shell *shell, char ***arg, int *i)
 {
 	char	**temp;
 	int		j;
@@ -22,7 +22,7 @@ int	suppress_arg(char ***arg, int *i)
 	k = 0;
 	temp = calloc(ft_len_array(*arg), sizeof(char *));
 	if (!temp)
-		return (1);
+		return (error_find_int(shell, MALLOC, 1, NULL));
 	while ((*arg)[j])
 	{
 		if (j == *i)

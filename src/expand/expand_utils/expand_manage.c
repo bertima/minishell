@@ -61,18 +61,27 @@ static int	double_quote(t_shell *shell, char **arg, int *i, int *j)
 
 int	quote_handler(t_shell *shell, char ***arg, int *i, int *j)
 {
+	int	start;
+
+	start = *j;
 	if ((*arg)[*i][*j] == '\'')
 	{
 		(*j)++;
 		while ((*arg)[*i][*j] != '\'')
 			(*j)++;
 		(*j)++;
+		if (remove_quote_expand(&(*arg)[*i], &start))
+			return (1);
+		*j = start;
 		return (2);
 	}
 	else if ((*arg)[*i][*j] == '\"')
 	{
 		if (double_quote(shell, *arg, i, j) == 1)
 			return (1);
+		if (remove_quote_expand(&(*arg)[*i], &start))
+			return (1);
+		*j = start;
 		return (2);
 	}
 	return (0);

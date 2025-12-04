@@ -55,7 +55,7 @@ int	exit_code_expand(t_shell *shell, char **arg, int *i, int *end)
 	return (0);
 }
 
-static char	*search_var(char **env, char *name)
+static char	*search_var(t_shell *shell, char **env, char *name)
 {
 	int			i;
 	int			len;
@@ -67,7 +67,10 @@ static char	*search_var(char **env, char *name)
 	while (env[i])
 	{
 		if (ft_strncmp(name, env[i], len) == 0 && env[i][len] == '=')
+		{
+			shell->data->var_value = env[i] + len + 1;
 			return (env[i] + len + 1);
+		}
 		i++;
 	}
 	return (NULL);
@@ -86,7 +89,7 @@ int	search_expand(t_shell *shell, char ***arg, int *i, int *j)
 		name = search_name_env((*arg)[*i], *j + 1);
 		if (name)
 		{
-			var = search_var(shell->data->env, name);
+			var = search_var(shell, shell->data->env, name);
 			if (var)
 			{
 				if (remplace(&(*arg)[*i], *j, var, ft_strlen(name)))

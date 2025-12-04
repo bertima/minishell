@@ -93,6 +93,9 @@ void	free_command_redir_token_children(t_shell *shell)
 		shell->children = NULL;
 	}
 	ft_free(&shell->data->line);
+	shell->data->mulit_commande = 0;
+	shell->data->result = 0;
+	shell->data->stock = 0;
 }
 
 void	all_free(t_shell *shell)

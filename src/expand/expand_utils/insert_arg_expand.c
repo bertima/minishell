@@ -65,7 +65,7 @@ static void	copie_new(char **new, char ***temp, int *l, int *stock)
 	*stock = *l - 1;
 }
 
-static int	copie_cmd(char ***arg, char **new, int *i, int *j)
+static int	copie_cmd(char ***arg, char **new, int *i)
 {
 	int		l;
 	int		k;
@@ -80,8 +80,6 @@ static int	copie_cmd(char ***arg, char **new, int *i, int *j)
 		return (1);
 	while (++l < *i)
 		temp[l] = (*arg)[l];
-	if (ft_len_array(new) > 1)
-		*j = 0;
 	free((*arg)[l]);
 	copie_new(new, &temp, &l, &stock);
 	copie_post_new(arg, i, &temp, l);
@@ -91,7 +89,7 @@ static int	copie_cmd(char ***arg, char **new, int *i, int *j)
 	return (0);
 }
 
-int	insert_arg_expand(char ***arg, int *start_end, int *i, int *j)
+int	insert_arg_expand(char ***arg, int *start_end, int *i)
 {
 	int		len;
 	char	*str_arg[2];
@@ -109,7 +107,7 @@ int	insert_arg_expand(char ***arg, int *start_end, int *i, int *j)
 		return (1);
 	if (regroupe(&new, str_arg[1], start_end))
 		return (ft_free_split(new), free(str_arg[0]), 1);
-	if (copie_cmd(arg, new, i, j))
+	if (copie_cmd(arg, new, i))
 		return (free(str_arg[0]), 1);
 	free(str_arg[0]);
 	return (0);
