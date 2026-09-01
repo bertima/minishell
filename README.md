@@ -21,7 +21,7 @@ https://www.gnu.org/savannah-checkouts/gnu/bash/manual/
 ## Instructions
 
 ### Prerequisites
-- Disrtibution Linux / MacOS (POSIX-compliant systems).
+- Distribution Linux / MacOS (POSIX-compliant systems).
 - Compiler C (`cc` ou `gcc`)
 - Make
 - Library GNU Readline (`libreadline-dev`)
