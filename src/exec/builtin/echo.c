@@ -38,10 +38,8 @@ static void	flag_exist(char **str, int *i, int *flag, int j)
 void	echo(t_shell *shell, char **str)
 {
 	int	i;
-	int	j;
 	int	flag;
 
-	j = 0;
 	i = 1;
 	flag = 0;
 	flag_exist(str, &i, &flag, 0);

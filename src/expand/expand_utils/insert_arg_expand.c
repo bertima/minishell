@@ -68,12 +68,10 @@ static void	copie_new(char **new, char ***temp, int *l, int *stock)
 static int	copie_cmd(char ***arg, char **new, int *i)
 {
 	int		l;
-	int		k;
 	int		stock;
 	char	**temp;
 
 	l = -1;
-	k = 0;
 	stock = 0;
 	temp = calloc(ft_len_array(*arg) + ft_len_array(new), sizeof(char *));
 	if (!temp)

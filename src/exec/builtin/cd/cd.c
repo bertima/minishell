@@ -16,9 +16,7 @@ char	**update_pwd_env(t_shell *shell, char **env, char *oldpwd)
 {
 	char	*newpwd;
 	int		oldpwd_found;
-	int		i;
 
-	i = 0;
 	oldpwd_found = 0;
 	env = update_oldpwd(env, oldpwd, &oldpwd_found);
 	if (!oldpwd_found)

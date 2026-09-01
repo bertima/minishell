@@ -66,10 +66,8 @@ static int	malloc_env(t_shell *shell, char ***env, char **environ, int len)
 
 static int	copie_env(t_shell *shell, char ***env, char **environ)
 {
-	int	i;
 	int	len;
 
-	i = 0;
 	if (!environ || !environ[0])
 		return (creat_env(env));
 	len = ft_len_array(environ);

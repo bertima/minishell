@@ -90,7 +90,7 @@ OBJ_FILES = $(patsubst src/%.c,$(OBJDIR)/%.o,$(FSRC))
 all: $(NAME)
 
 $(NAME): $(LIBFT) $(OBJ_FILES)
-	@$(CC) $(CFLAGS) $(LIB_READ) $(OBJ_FILES) $(LIBFT) -o $(NAME)
+	@$(CC) $(CFLAGS) $(OBJ_FILES) $(LIB_READ) $(LIBFT) -o $(NAME)
 	@echo "$(NAME) ok"
 
 $(LIBFT):
