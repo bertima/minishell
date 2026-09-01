@@ -26,7 +26,7 @@ https://www.gnu.org/savannah-checkouts/gnu/bash/manual/
 - Make
 - Library GNU Readline (`libreadline-dev`)
 
-Clone th project in your computer and go in the folder created:
+Clone the project in your computer and go in the folder created:
 
 ```
 git clone git@github.com:bertima/minishell.git minishell && cd minishell
