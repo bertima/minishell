@@ -2,7 +2,7 @@ _This project has been created as part of the 42 curriculum by Bertrmar._
 
 # MINISHELL &nbsp; ![Bash](https://img.shields.io/badge/Bash-4EAA25?style=for-the-badge&logo=gnubash&logoColor=white)
 
-## Table of Content
+## Table of Contents
 
 1. [Description](#descitpion)
 2. [Instruction](#instructions)
